@@ -12,6 +12,7 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{subfig}
+\usepackage{mathtools}
 \usepackage{xcolor}
 \def\SBcomment[#1]{\textcolor{red}{#1}}
 \def\SWcomment[#1]{\textcolor{blue}{#1}}
@@ -26,11 +27,11 @@ This document shows the work done and documentation on dynamic boundary conditio
  
 \section{Explanation}
 Let's take the 1D wave equation in discrete time:
-\begin{equation}
+\begin{equation}\label{eq:1Dwave}
     \rho A\delta_{tt}u_l^n=T\delta_{xx}u_l^n,
 \end{equation}
 with simply supported boundary conditions such that
-\begin{equation}\label{eq:1Dwave}
+\begin{equation}\label{eq:boundaryCondition}
 u_l^n = \delta_{xx}u_l^n = 0 \quad \text{at} \quad l = 0, N,
 \end{equation}
 which states that both the state of and the curvature at the boundaries should be 0.
@@ -57,7 +58,7 @@ There are cases where we can satisfy condition \eqref{eq:stabilityCondition} wit
 \caption{\label{fig:dynamicGrid}{Grid changing over time.}}
 \end{figure}
 \subsection{Analogy with a real-life string}
-Imagine detuning a real-life string, or changing the value for tension $T$. If we imagine the tuning knob being at the nut (left boundary), more material will appear on that side when $T$ decreases, and vice versa. To make the transition to the finite-difference setting easier, imagine equidistant points drawn on this string in such a way that there is a point exactly at the nut and the bridge (i.e. at each boundary). Then, when decreasing the tension, the point at the nut will start moving towards the bridge. As a matter of fact, all points (except for the one at the bridge) will start moving towards the bridge! Effectively, we slowly decrease the space between the points which in finite-difference setting is analogous to decreasing the grid spacing $h$. If we do this according to condition \eqref{eq:stabilityCondition}, we get the great side-effect of always satisfying this condition with equality, which means that we don't lose accuracy (or bandwidth). The issue left to solve now is to figure out what to do around the boundary. We continue by still satisfy the boundary condition: the curvature around the boundary needs to be $0$. 
+Imagine detuning a real-life string, or changing the value for tension $T$. If we imagine the tuning knob being at the nut (left boundary), more material will appear on that side when $T$ decreases, and vice versa. To make the transition to the finite-difference setting easier, imagine equidistant points drawn on this string in such a way that there is a point exactly at the nut and the bridge (i.e. at each boundary). Then, when decreasing the tension, the point at the nut will start moving towards the bridge. As a matter of fact, all points (except for the one at the bridge) will start moving towards the bridge! Effectively, we slowly decrease the space between the points which in finite-difference setting is analogous to decreasing the grid spacing $h$. If we do this according to condition \eqref{eq:stabilityCondition}, we get the great side-effect of always satisfying this condition with equality, which means that we don't lose accuracy (or bandwidth). The issue left to solve now is to figure out what to do around the boundary. We continue by keeping in mind boundary condition \eqref{eq:boundaryCondition}.
 % \begin{figure}[h]
 % \centerline{\includegraphics[width=0.6\columnwidth]{plot2.eps}}
 % \caption{\label{fig:eta}{At the left boundary.}}
@@ -67,6 +68,28 @@ Imagine detuning a real-life string, or changing the value for tension $T$. If w
 % \centerline{\includegraphics[width=0.6\columnwidth]{plot3.eps}}
 % \caption{\label{fig:eta}{Boundary Condition. Curvature at $u_0$ needs to be 0.}}
 % \end{figure}
+\subsection{The interpolated boundary}
+In the normal case, i.e., when the first grid point ($u_0$) lays on the boundary, we can satisfy \eqref{eq:boundaryCondition} as follows:
+\begin{equation}\label{eq:expandedBoundCond}
+    \begin{aligned}
+        &\delta_{xx}u_0 = 0\\
+        &\frac{1}{h^2}(u_1 - 2u_0 + u_{-1}) = 0 \\
+        \xLeftrightarrow{u_0 = 0} \quad &u_{-1} = -u_1.
+    \end{aligned}
+\end{equation}
+Applying this to an expanded version of Eq. \eqref{eq:1Dwave} is unnecessary, as we know that $u_0 = 0$ at all times. If $u_0$ doesn't lay on the boundary, however, we need to satisfy the boundary condition differently. 
+
+
+% Using $\lambda = ck/h$, expanding \eqref{eq:1Dwave} at the boundary and applying \eqref{eq:expandedBoundCond}:
+% \begin{equation}
+%     \begin{aligned}
+%         u_0^{n+1} &= 2u_0^n - u_0^{n-1} + \lambda^2 (u_1^n-2u_0^n + u_{-1}^n)\\
+%         \xLeftrightarrow{\text{Eq. \eqref{eq:expandedBoundCond}}}\quad u_0^{n+1} &= 2u_0^n - u_0^{n-1} + \lambda^2 (u_1^n-2u_0^n - u_1^n)\\
+%         u_0^{n+1} &= 2u_0^n - u_0^{n-1} - 2\lambda^2 u_0^n
+%     \end{aligned}
+% \end{equation}
+% we can see that the virtual grid point $u_{-1}$ essentially cancels out the effect that $u_1$ has on $u_0$.  
+satisfy the boundary condition: the curvature around the boundary needs to be $0$. 
 
 \section{Energy}
 We can get the energy of Eq. \eqref{eq:1Dwave} by first taking the inner product with respect to $\delta_{t\cdot}u$ like
