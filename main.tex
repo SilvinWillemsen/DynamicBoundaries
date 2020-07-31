@@ -13,12 +13,14 @@
 \usepackage{amssymb}
 \usepackage{subfig}
 \usepackage{mathtools}
-\usepackage{xcolor}
+\usepackage{xcolor} 
 \usepackage{cases}
 \def\SBcomment[#1]{\textcolor{red}{#1}}
 \def\SWcomment[#1]{\textcolor{blue}{#1}}
 \def\SScomment[#1]{\textcolor{green}{#1}}
+
 \def\type[#1]{\textcolor{purple}{#1}}
+\def\mystrut{\rule[-.2\baselineskip]{0pt}{\baselineskip}}
 
 \begin{document}
 \maketitle
@@ -31,7 +33,7 @@ Let's take the 1D wave equation in discrete time (see Figure \ref{fig:fullString
 \begin{equation}\label{eq:1Dwave}
     \rho A\delta_{tt}u_l^n=T\delta_{xx}u_l^n,
 \end{equation}
-with simply supported boundary conditions such that
+parameterised using material density $\rho$, cross-sectional area $A$ and tension $T$, and with simply supported boundary conditions such that
 \begin{equation}\label{eq:boundaryCondition}
 u_l^n = \delta_{xx}u_l^n = 0 \quad \text{at} \quad l = 0, N,
 \end{equation}
@@ -45,7 +47,7 @@ where grid spacing $h$ is the distance between two neighbouring points, wave spe
 \begin{equation}
     \qquad N := \text{floor}(1/ck) \qquad h := 1/N.
 \end{equation}
-There are cases where we can satisfy condition \eqref{eq:stabilityCondition} with equality, i.e., when $1/ck$ is an integer and the flooring operation does not change anything. For example, when using a wave speed of $c = 1470$ m/s and sample rate $f_\text{s} = 44100$ Hz we can satisfy the stability condition with equality $h = 1/30$ (see Figure \ref{fig:fullString}). However, this is a special case, and if we want to change the wave speed dynamically we need to come up with something smarter. I would like to propose, \textit{interpolated boundary conditions}, the possibility of which has briefly been mentioned by Stefan Bilbao in a footnote \cite[p. 145]{Bilbao2009}, but never elaborated on\footnote{...as "Footnotes are usually written by people who are pretending to know something but actually don't!" -- Bilbao, 2020.}. 
+There are cases where we can satisfy condition \eqref{eq:stabilityCondition} with equality, i.e., when $1/ck$ is an integer ($1/ck = \text{floor}(1/ck)$). For example, when using a wave speed of $c = 1470$ m/s and sample rate $f_\text{s} = 44100$ Hz we can satisfy the stability condition with equality $h = 1/30$ (see Figure \ref{fig:fullString}). However, this is a special case, and if we want to change the wave speed dynamically we need to come up with something smarter. I would like to propose, \textit{interpolated boundary conditions}, the possibility of which has briefly been mentioned by Stefan Bilbao in a footnote \cite[p. 145]{Bilbao2009}, but never elaborated on\footnote{...as "Footnotes are usually written by people who are pretending to know something but actually don't!" -- Bilbao, 2020.}. 
 \begin{figure}[h]
     \centering
     \subfloat[String $N=30$.]{\label{fig:fullString}{ \includegraphics[width=0.33\textwidth]{plot1.eps}}}
@@ -60,7 +62,7 @@ There are cases where we can satisfy condition \eqref{eq:stabilityCondition} wit
 \end{figure}
 
 \subsection{Analogy with a real-life string}
-Imagine detuning a real-life string, or changing the value for tension $T$. If we imagine the tuning knob being at the nut (left boundary), more material will appear on that side when $T$ decreases, and vice versa. To make the transition to the finite-difference setting easier, imagine equidistant points drawn on this string in such a way that there is a point exactly at the nut and the bridge (i.e. at each boundary). Then, when decreasing the tension, the point at the nut will start moving towards the bridge. As a matter of fact, all points (except for the one at the bridge) will start moving towards the bridge! Effectively, we slowly decrease the space between the points which -- in a finite-difference setting -- is analogous to decreasing the grid spacing $h$ (see Figure \ref{fig:dynamicGrid} with time going from bottom to top). If we do this according to condition \eqref{eq:stabilityCondition}, we get the great side-effect of always satisfying this condition with equality, which means that we don't lose accuracy (or bandwidth). The issue left to solve now is to figure out what to do around the boundary. We continue by keeping in mind boundary condition \eqref{eq:boundaryCondition}.
+Imagine detuning a real-life string by turning the tuning knob, we essentially change the value for tension $T$ in Eq. \eqref{eq:1Dwave}. If we imagine the tuning knob being at the nut (left boundary), more material will appear on that side when $T$ decreases, and vice versa. To make the transition to the finite-difference setting easier, imagine equidistant points drawn on this string in such a way that there is a point exactly at the nut and the bridge (i.e. at each boundary). Then, when decreasing the tension, the point at the nut will start moving towards the bridge. As a matter of fact, all points (except for the one at the bridge) will start moving towards the bridge! Effectively, we slowly decrease the space between the points which -- in a finite-difference setting -- is analogous to decreasing the grid spacing $h$ (see Figure \ref{fig:dynamicGrid} with time going from bottom to top). If we do this according to condition \eqref{eq:stabilityCondition}, we get the great side-effect of always satisfying this condition with equality, which means that we don't lose accuracy (or bandwidth). The issue left to solve now is to figure out what to do around the boundary. We continue by keeping in mind boundary condition \eqref{eq:boundaryCondition}.
 % \begin{figure}[h]
 % \centerline{\includegraphics[width=0.6\columnwidth]{plot2.eps}}
 % \caption{\label{fig:eta}{At the left boundary.}}
@@ -75,11 +77,11 @@ In this section, the location of a grid point $u_l$ along the string will be giv
 \begin{equation}\label{eq:expandedBoundCond}
     \begin{aligned}
         &\delta_{xx}u_0 = 0\\
-        &\frac{1}{h^2}(u_1 - 2u_0 + u_{-1}) = 0 \\
-        \xLeftrightarrow{u_0 = 0} \quad &u_{-1} = -u_1.
+        &\frac{1}{h^2}(u_1 - 2u_0 + u_{-1}) = 0 \\[-13pt]
+        \xLeftrightarrow{\mystrut\ u_0 = 0\ } \quad &u_{-1} = -u_1.
     \end{aligned}
 \end{equation}
-Applying this to an expanded version of Eq. \eqref{eq:1Dwave} is unnecessary, as we know that $u_0 = 0$ at all times. If $u_0$ doesn't lay on the boundary, however, we need to define and satisfy the boundary condition differently. Let's change the boundary condition to something more general to apply to a point $u_\text{B}$ which may or may not coincide with (or be equal to) $u_0$:
+Applying this to an expanded version of Eq. \eqref{eq:1Dwave} is unnecessary, as we know that $u_0 = 0$ at all times, and therefore does not need to be updated. If $u_0$ doesn't lay on the boundary, however, we need to define and satisfy the boundary condition differently. Let's change the boundary condition to something more general to apply to a point $u_\text{B}$ which may or may not coincide with (or be equal to) $u_0$:
 \begin{equation}\label{eq:generalBoundary}
         u_\text{B} = \delta_{xx}u_\text{B} = 0,
 \end{equation}
@@ -91,7 +93,13 @@ As $u_0$ is not necessarily $0$ (as it used to according to Eq. \eqref{eq:bounda
 \end{equation}
 where $\lambda = ck/h$. Now, we need a definition for virtual grid point $u_{-1}$, which we can obtain using the new boundary condition \eqref{eq:generalBoundary}.
 
-In order to obtain a definition for the curvature at the boundary, we need two points that are equally distant from the boundary. Starting from the virtual grid point $u_{-1}$ at the left side of the boundary, we can define some interpolated grid point $u_\text{I}$ with the same distance from the boundary as $u_{-1}$ (see Figure \ref{fig:dynamicBoundary} for a visualisation of this). This distance can be calculated using
+In order to obtain a definition for the curvature at the boundary $\delta_{xx}u_\text{B}$, we need two points that are equally distant from the boundary. Starting from the virtual grid point $u_{-1}$ at the left side of the boundary, we can define some interpolated grid point $u_\text{I}$ with the same distance from the boundary as $u_{-1}$ (see Figure \ref{fig:dynamicBoundary} for a visualisation of this). 
+\begin{figure}[h]
+\centerline{\includegraphics[width=0.6\columnwidth]{dynamicBoundaryDrawChange.eps}}
+\caption{\label{fig:dynamicBoundary}{Boundary conditions at different values for $h$. Important to note is that the distance between $u_0$ and $u_{-1}$ always remains (the current) $h$. The distance between $u_{-1}$ and $u_\text{B}$ (and also $u_\text{I}$ and $u_\text{B}$) is defined as $h_\text{I}$. Then, from the location of $u_{-1}$, the location of $u_\text{I}$ (the interpolated point used to calculate the value of $u_{-1}$) is determined.}}
+\end{figure}
+
+This distance can be calculated using
 \begin{equation}
     h_\text{I} = h - x_0,
 \end{equation}
@@ -99,11 +107,11 @@ where $x_0$ is the location of $u_0$ along the string length. As $u_{-1}$ and $u
 \begin{equation}
     \begin{aligned}
         &\delta_{xx}u_\text{B} = 0\\
-        &\frac{1}{h_\text{I}^2} (u_\text{I} - 2u_\text{B} + u_{-1}) = 0\\
-        \xLeftrightarrow{u_\text{B} = 0} \quad & u_{-1} = - u_\text{I}.
+        &\frac{1}{h_\text{I}^2} (u_\text{I} - 2u_\text{B} + u_{-1}) = 0\\[-13pt]
+        \xLeftrightarrow{\mystrut\ u_\text{B} = 0\ } \quad & u_{-1} = - u_\text{I},
     \end{aligned}
 \end{equation}
-The last thing we need is a definition for interpolated grid point $u_\text{I}$ which is currently done using linear interpolation. We do, however, need different definitions in the cases where $x_\text{I} > x_0$ (third and fourth instance from the top in Figure \ref{fig:dynamicBoundary}) and $x_\text{I} \leq x_0$ (second instance from the top in Figure \ref{fig:dynamicBoundary})
+which is similar to condition \eqref{eq:expandedBoundCond}, but now using the interpolated state (or grid point) $u_\text{I}$. The last thing we need is a definition for this state which is currently done using linear interpolation. We do, however, need different definitions in the cases where $x_\text{I} > x_0$ (fourth instance from the top in Figure \ref{fig:dynamicBoundary}) and $x_\text{I} \leq x_0$ (second and third instance from the top in Figure \ref{fig:dynamicBoundary})
 \begin{subequations}
     \begin{numcases}{}
         u_\text{I} = (1-\alpha) u_0 + \alpha u_1 \quad \text{where} \quad \alpha = \frac{h-2x_0}{h} &$ x_\text{I} > x_0$\label{eq:xiLarger}\\
@@ -111,10 +119,6 @@ The last thing we need is a definition for interpolated grid point $u_\text{I}$ 
     \end{numcases}
 \end{subequations}
 % We can then use the distance of virtual grid point to $u_\text{B}$ to obtain a definition for it 
-\begin{figure}[h]
-\centerline{\includegraphics[width=0.6\columnwidth]{dynamicBoundaryDrawChange.eps}}
-\caption{\label{fig:dynamicBoundary}{Boundary conditions at different values for $h$. Important to note is that the distance between $u_0$ and $u_{-1}$ always remains (the current) $h$. Then, from the location of $u_{-1}$, the location of $u_\text{I}$ (the interpolated point used to calculate the value of $u_{-1}$) is determined.}}
-\end{figure}
 
 % Using $\lambda = ck/h$, expanding \eqref{eq:1Dwave} at the boundary and applying \eqref{eq:expandedBoundCond}:
 % \begin{equation}
@@ -154,27 +158,217 @@ Then, using the following identities
 we can finally obtain the energy $\mathfrak{h}$:
 \begin{gather}
         \mathfrak{h} = \mathfrak{t} + \mathfrak{v}\quad \text{where}\\
-    \mathfrak{t} = \frac{\rho A}{2} \sum_{\mathcal{D}} h (\delta_{t-}u_l^n)^2 \quad \text{and} \quad \mathfrak{v} =  \frac{T}{2}\sum_{\underline{\mathcal{D}}}h (\delta_{x+}u_l^n)(\delta_{x+}u_l^{n-1})
+    \mathfrak{t} = \frac{\rho A}{2} \sum_{\mathcal{D}} h (\delta_{t-}u_l^n)^2 \quad \text{and} \quad \mathfrak{v} =  \frac{T}{2}\sum_{\underline{\mathcal{D}}}h (\delta_{x+}u_l^n)(\delta_{x+}u_l^{n-1})\nonumber
 \end{gather}
 
 In the case when $x_\text{I} \leq x_0$ (case \eqref{eq:xiSmaller}) we can find an energy definition for the left boundary:
 \begin{equation}
     \begin{aligned}
         \delta_{t+}\mathfrak{h}_\text{l} &= T(\delta_{t\cdot}u_0)(\delta_{x-}u_0)\\
-        &= \frac{T}{h}(\delta_{t\cdot}u_0)(u_0 - u_{-1})\\
-        \xLeftrightarrow{u_{-1} = -\alpha u_0} \quad & = -\frac{T}{h}(\delta_{t\cdot}u_0)((1+\alpha)u_0)\\
-        &
-        = \frac{T(\alpha+1)}{h}(\delta_{t\cdot}u_0)u_0\\
-        \xLeftrightarrow{\text{Eq. \eqref{eq:identity2}}} \quad & = \frac{T(1+\alpha)}{h}\delta_{t+}\left(\frac{1}{2}u_0^nu_0^{n-1}\right)\\
+        &= \frac{T}{h}(\delta_{t\cdot}u_0)(u_0 - u_{-1})\\[-4pt]
+        \xLeftrightarrow{\mystrut\ u_{-1} = -\alpha u_0\ } \quad & = \frac{T}{h}(\delta_{t\cdot}u_0)((1+\alpha)u_0)\\
+        &= \frac{T(1+\alpha)}{h}(\delta_{t\cdot}u_0)u_0\\[-5pt]
+        \xLeftrightarrow{\mystrut\ \text{Eq. \eqref{eq:identity2}}\ } \quad & = \frac{T(1+\alpha)}{h}\delta_{t+}\left(\frac{1}{2}u_0^nu_0^{n-1}\right)\\
         \mathfrak{h}_l &= \frac{T(1+\alpha)}{2h}u_0^nu_0^{n-1}
     \end{aligned}
 \end{equation}
-The next step (after my vacation) will be to find the energy for case \eqref{eq:xiLarger} (if it exists....)
+The next step will be to find the energy for case \eqref{eq:xiLarger} (if it exists....). Here follow the first steps:
+\begin{equation}
+    \begin{aligned}
+        \delta_{t+}\mathfrak{h}_\text{l} &= T(\delta_{t\cdot}u_0)(\delta_{x-}u_0)\\
+        &= \frac{T}{h}(\delta_{t\cdot}u_0)(u_0 - u_{-1})\\[-5pt]
+        \xLeftrightarrow{\mystrut\ -u_{-1} = u_\text{I}\ \text{\&} \ \text{Eq. } \eqref{eq:xiLarger}\ } \quad & = \frac{T}{h}(\delta_{t\cdot}u_0)(u_0 + (1+\alpha) u_0 + \alpha u_1)\\
+        &= \frac{T(2+\alpha)}{h}(\delta_{t\cdot}u_0)u_0 + \frac{T}{h}(\delta_{t\cdot}u_0)(\alpha u_1)\\[-5pt]
+        \xLeftrightarrow{\mystrut\ \text{Eq. }\eqref{eq:identity2}\ } \quad &= \frac{T(2+\alpha)}{h}\delta_{t+}\left(\frac{1}{2}u_0^nu_0^{n-1}\right) + \underbrace{\frac{T}{h}(\delta_{t\cdot}u_0)(\alpha u_1)}_{\text{\SWcomment[The issue]}} 
+    \end{aligned}
+\end{equation}
 \bibliographystyle{plain}
 \bibliography{bibliography}
 
 \appendix
-\section{Issue regarding increasing $T$}
+\section{Note regarding issue when increasing $T$}
 If we decrease $T$, the points smoothly enter the scheme without issues. However, in the opposite case when we increase $T$ (moving from top to bottom in Figure \ref{fig:dynamicGrid}), the string will already be moving at $u_0$ and continue moving due to its inertia (the $\rho A \delta_{tt}u$ term). In other words, even though we can satisfy the $\delta_{xx}u_0 = 0$ part of the boundary condition, $u_0=0$ is harder to satisfy. Something needs to be figured out for this..
+
+\section{Dirichlet Condition (Stefan)}
+
+Consider a domain of length $L$, and grid spacing $h = ck$ (so, right at the Courant limit). Set $N = floor(L/h)$. Set the grid locations to be
+\begin{equation}
+x_{0} = 0,\quad x_{1} = h,\quad\hdots,\quad x_{N-1} = (N-1)h, \quad x_{N} = L = (N+\alpha)h
+\end{equation}
+where $0\leq \alpha\leq 1$. The final grid point lies directly on the boundary. 
+
+Under Dirichlet conditions, we set $u_{0} = 0$ and $u_{N} = 0$. The Laplacian takes the form\footnote{\SWcomment[$\frac{2}{\alpha+1} = \frac{2}{\alpha+\SWcomment[2]}+\frac{2}{(\alpha+2)(\alpha+1)}$]}
+\begin{eqnarray}
+    \delta_{xx}u_{1}&=& \frac{1}{h^2}\left(u_{2}-2u_{1}\right)\\
+    \delta_{xx}u_{l} &=& \frac{1}{h^2}\left(u_{l+1}-2u_{l}+u_{l-1}\right)\qquad 2\leq l\leq N-2\\
+    \delta_{xx}u_{N-1} &=& \frac{1}{h^2}\left(\frac{2}{\alpha+2}u_{N-2}-\frac{2}{\alpha+1}u_{N-1}\right)\label{eq:uNmin1}
+\end{eqnarray}
+and thus, in matrix form, 
+\begin{equation}
+{\bf D}_{xx} = \frac{1}{h^2} 
+    \begin{bmatrix}
+    -2 & 1 & & &\\
+    1 & -2 & 1 & &\\
+     & \ddots & \ddots & \ddots & \\
+     && 1 & -2 & 1\\
+     &&& \frac{2}{\alpha+2} & -\frac{2}{\alpha+1}\\
+    \end{bmatrix}
+\end{equation}
+The scheme, as a whole, then looks like
+\begin{equation}
+    \delta_{tt}{\bf u}^{n} = c^2{\bf D}_{xx}{\bf u}^{n}
+\end{equation}
+Define the matrix ${\bf P}$ as
+\begin{equation}
+    {\bf P} = {\rm diag}\left(1,1,\hdots,\frac{\alpha+2}{2}\right)
+\end{equation}
+Then ${\bf P D}_{xx}$ is now symmetric. 
+
+Left-multiplying the scheme by ${\bf P}$ and then taking the inner product with $\delta_{t\cdot}{\bf u}$ then gives a conserved energy. Notice that this reduces to the usual case when $\alpha = 0$. 
+
+\subsection{Taylor series expansion (Silvin)}
+To get to the coefficients for $u_{N-2}$ and $u_{N-1}$ in \eqref{eq:uNmin1} we use a Taylor series expansion around the grid point $N-1$. To start, it is easiest to assume an expansion around 0 and then apply it to a different location. 
+
+Suppose we have three grid locations $x_{-1} = -h, x_0 = 0$ and $x_1 = h (\alpha + 1)$ and their function values $u_{-1}, u_0$ and $u_1$. We then want to find an approximation $L = \frac{\partial^2 u}{\partial x^2} + O(h)$ (where $O(h)$ describes the order of the error) of the form
+%
+\begin{equation}\label{eq:formL}
+    L = a_{-1}u_{-1} + a_0 u_0 + a_1 u_1
+\end{equation}
+%
+where the coefficients $a_{-1}, a_0$ and $a_1$ depend on $\alpha$. \SWcomment[I suppose in the regular case ($\alpha = 0$) the coefficients end up being $a_{-1} = 1/h^2$, $a_0 = -2/h^2$ and $a_1 = 1/h^2$.] To find these coefficients we perform a Taylor series expansion. First we need to assume for a continuous function $u(x)$ that $u_{-1} = u(x_{-1}), u_0 = u(x_0)$ and $u_1 = u(x_1)$. We can then approximate this function $u$ around location $x_0 (=0)$ as 
+\begin{equation}\label{eq:taylor}
+    u(x) = u(0) + \frac{du(0)}{dx}x + \frac{1}{2}\frac{d^2u(0)}{dx^2}x^2 + O(x^3).
+\end{equation}
+Here, $O(x^3)$ describes the order of the error (or the collective error term with order of $x^3$).
+
+We can then fill in the values of $x_{-1}$ and $x_1$ above ($u(x_0) = u(0)$) to get
+\begin{align}
+    u(-h) &= u(0) + \frac{du(0)}{dx}(-h) + \frac{1}{2}\frac{d^2u(0)}{dx^2}(-h)^2 + O(h^3)\nonumber\\
+    &= u(0) - h \frac{du(0)}{dx} + \frac{h^2}{2}\frac{d^2u(0)}{dx^2} + O(h^3),
+\end{align}
+and 
+\begin{align}
+    u(h(\alpha+1)) &= u(0) + \frac{du(0)}{dx}(h(\alpha+1)) + \frac{1}{2}\frac{d^2u(0)}{dx^2}(h(\alpha+1))^2 + O(h^3)\nonumber\\
+    &= u(0) + h(\alpha+1) \frac{du(0)}{dx} + \frac{h^2(\alpha+1)^2}{2}\frac{d^2u(0)}{dx^2} + O(h^3).
+\end{align}
+The goal is then to solve for $\frac{d^2u(0)}{dx^2}$ as this is what we want to approximate in \eqref{eq:1Dwave}. We want to get rid of the first-order derivative term so we can perform the following addition
+\begin{align}
+    u(-h) + \frac{u(h(\alpha+1))}{\alpha+1} &= \left(1+\frac{1}{\alpha+1}\right)u(0) + \left(-h + \frac{h(\alpha+1)}{\alpha + 1}\right)\frac{du(0)}{dx} + \left(\frac{h^2}{2} + \frac{h^2(\alpha+1)^2}{2(\alpha+1)}\right)\frac{d^2u(0)}{dx^2}+ O(h^3)\nonumber\\
+    \frac{(\alpha+1)u(-h) + u(h(\alpha+1))}{\alpha+1}&= \left(\frac{\alpha + 2}{\alpha + 1}\right) u(0) + \left(\frac{h^2 + h^2(\alpha+1)}{2}\right)\frac{d^2u(0)}{dx^2}+ O(h^3)\nonumber\\
+    \!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\frac{(\alpha+1)u(-h) - (\alpha+2)u(0)+ u(h(\alpha+1))}{\alpha+1}&= \left(\frac{h^2(\alpha+2)}{2}\right)\frac{d^2u(0)}{dx^2}+ O(h^3)\nonumber\\
+    L = \frac{d^2u(0)}{dx^2} + O(h) &= \frac{2((\alpha+1)u(-h) - (\alpha+2) u(0) + u(h(\alpha+1)))}{h^2(\alpha+2)(\alpha+1)}.
+\end{align}
+Note that due to a division with $h^2$ the order of the error is $O(h)$ rather than $O(h^3)$.
+The coefficients in \eqref{eq:formL} are then as follows:
+\begin{equation}
+    a_{-1} = \frac{2}{h^2(\alpha+2)}, \quad a_0 = -\frac{2}{h^2(\alpha+1)}, \quad \text{and} \quad a_1 = \frac{2}{h^2(\alpha+2)(\alpha+1)}.
+\end{equation}
+% \subsubsection{Using forward and backward approximations for the first order derivatives}
+% Then, we need to approximate the derivatives in \eqref{eq:taylor}. When $x = x_{-1}$, the first derivative is defined as (backwards)
+% \begin{equation}
+%     \frac{du(0)}{dx} \approx \frac{u(0) - u(-h)}{h} = \frac{u_0 - u_{-1}}{h}\ ,
+% \end{equation}
+% and when $x = x_{1}$ it is (forwards)
+% \begin{equation}
+%     \frac{du(0)}{dx} \approx \frac{u(h(\alpha+1)) - u(0)}{h(\alpha+1)} = \frac{u_1 - u_{0}}{h(\alpha + 1)}\ .
+% \end{equation}
+% From these we can get a definition of the second derivative
+% \begin{align}
+%     \frac{d^2u(0)}{dx^2} &= \frac{\frac{u_1 - u_0}{h(\alpha+1)} - \frac{u_0 - u_{-1}}{h}}{\frac{h(\alpha+1) + h}{2}}\nonumber\\
+%     &= \frac{\left(\frac{2(u_1-u_0-(\alpha+1)u_0+(\alpha+1)u_{-1})}{h(\alpha+1)}\right)}{h(\alpha+2)}\nonumber\\
+%     &= \frac{2(u_1-(\alpha+2)u_0+(\alpha+1)u_{-1})}{h^2(\alpha+2)(\alpha+1)}\label{eq:secondOrderTaylor}
+% \end{align}
+
+% we can fill in the values of $x_{-1}$ and $x_1$ above ($u(x_0) = u_0$) to get
+% \begin{align}
+%     u(-h) &= u_0 + \frac{u_0 - u_{-1}}{h}(-h) + \frac{1}{2} \frac{2(u_1-(\alpha+2)u_0+(\alpha+1)u_{-1})}{h^2(\alpha+2)(\alpha+1)} (-h)^2\nonumber\\
+%     &= u_{-1} + \frac{u_1-(\alpha+2)u_0+(\alpha+1)u_{-1}}{(\alpha+2)(\alpha+1)}\nonumber\\
+% &= \left(1+\frac{1}{\alpha+2}\right)u_{-1} - \frac{1}{\alpha+1} u_0 + \frac{1}{(\alpha+2)(\alpha+1)}u_1,
+% \end{align}
+% and
+% \begin{align}
+%     u(h(\alpha+1)) &= u_0 + \frac{u_1-u_0}{h}(h(\alpha+1)) + \frac{1}{2} \frac{2(u_1-(\alpha+2)u_0+(\alpha+1)u_{-1})}{h^2(\alpha+2)(\alpha+1)} (h(\alpha+1))^2\nonumber\\
+%     &= u_0 + (\alpha + 1) (u_1 - u_0) + \frac{(\alpha+1)(u_1-(\alpha+2)u_0+(\alpha+1)u_{-1})}{\alpha + 2}\nonumber\\
+%     &= \frac{(\alpha + 1)^2}{\alpha + 2} u_{-1} - (2(\alpha+1) - 1)u_0 + \left((\alpha+1) + \frac{\alpha+1}{\alpha+2}\right)u_1.
+% \end{align}
+% We can then use these terms to approximate the second derivative
+% \begin{align}
+%     L &= \frac{1}{h^2}\big[u(-h)-2u(0)+u(h(\alpha+1))\big]\\
+%     &= \frac{1}{h^2}\left[\left(\frac{(\alpha+2) + 1 + (\alpha+1)^2}{\alpha+2}\right)u_{-1} - \left(\frac{1}{\alpha+1}+ 2(\alpha+1) - 1 + 2\right)u_0 + \left(\frac{1 + (\alpha+2)(\alpha+1)^2 + (\alpha+1)^2}{(\alpha+2)(\alpha+1)}\right)u_1\right]
+% \end{align}
+% \SWcomment[However, here it seems that if $\alpha = 0$, the approximation becomes $L = \frac{1}{h^2}(2u_{-1} - 4u_0 + 2u_1)$, i.e., twice what it is supposed to be..]
+% \subsubsection{Using the centered approximation for the first order derivative}
+% Instead, we can approximate the first derivative with a centered approximation:
+% \begin{equation}
+%     \frac{du(0)}{dx} \approx \frac{u(h(\alpha+1) - u(-h))}{h + h(\alpha+1)} = \frac{u_1 - u_{-1}}{h(\alpha + 2)}\ .
+% \end{equation}
+% In this case (and using \eqref{eq:secondOrderTaylor}) we get
+% \begin{align}
+%     u(-h) &= u_0 + \frac{u_1 - u_{-1}}{h(\alpha + 2)}(-h) + \frac{1}{2} \frac{2(u_1-(\alpha+2)u_0+(\alpha+1)u_{-1})}{h^2(\alpha+2)(\alpha+1)} (-h)^2\nonumber\\
+%     &= \left(\frac{2}{\alpha+2}\right)u_{-1}+\left(1-\frac{1}{\alpha+1}\right)u_0 +\left(\frac{1}{(\alpha+2)(\alpha+1)} - \frac{1}{\alpha+2}\right)u_1
+% \end{align}
+% and
+% \begin{align}
+%     u(h(\alpha+1)) &= u_0 + \frac{u_1 - u_{-1}}{h(\alpha + 2)}(h(\alpha+1)) + \frac{1}{2} \frac{2(u_1-(\alpha+2)u_0+(\alpha+1)u_{-1})}{h^2(\alpha+2)(\alpha+1)} (h(\alpha+1))^2\nonumber\\
+%     &= \left(\frac{(\alpha+1)^2}{\alpha+2} - \frac{\alpha+1}{\alpha+2}\right) u_{-1} + (1-(\alpha + 1))u_0 +\left(\frac{2(\alpha+1)}{\alpha+2}\right) u_1.
+% \end{align}
+% Then we can use these terms to approximate the second derivative
+% \begin{align}
+%     L &= \frac{1}{h^2}\big[u(-h) - 2u(0) + u(h(1+\alpha))\big]\nonumber\\
+%     &= \frac{1}{h^2}\left[\left(\frac{(\alpha+1)^2 - (\alpha + 1) + 2}{\alpha + 2}\right) u_{-1} + \left(2-\frac{1}{\alpha+1} - (\alpha + 1) - 2\right)u_0 + \left(\frac{1 - (\alpha + 1) + 2 (\alpha+1)^2}{(\alpha+2)(\alpha+1)}\right)u_1\right]\nonumber\\
+%     &= \frac{1}{h^2}\left[\left(\frac{\alpha^2 + \alpha + 2}{\alpha+2}\right)u_{-1} - \left(\frac{1 + (\alpha+1)^2}{\alpha+1}\right)u_0 + \left(\frac{2(\alpha+1)^2 - \alpha}{(\alpha+2)(\alpha+1)}\right)u_1\right]
+% \end{align}
+
+% This results in the following coefficients:
+% \begin{equation}
+%     a_{-1} = \frac{\alpha^2 + \alpha + 2}{h^2(\alpha + 2)}\quad a_0 = -\frac{1+(\alpha+1)^2}{h^2(\alpha+1)} \quad \text{and} \quad a_1 = \frac{2(\alpha+1)^2 - \alpha}{h^2(\alpha+2)(\alpha+1)}.
+% \end{equation}
+% Also, if $\alpha = 0$, $L = \frac{1}{h^2}(u_{-1}-2u_0 + u_1)$, i.e., a correct approximation to a second-order derivative.
+
+\section{Alternative Approach: Strings with Connected Free Ends}
+Another approach to changing the grid dynamically is to add points in the center of the string rather than the boundaries. Consider strings, $u$ and $w$ with $M = \text{floor}(0.5/ck) + 1$ points, i.e., half the number of points allowed by the stability condition $N$, plus one for overlap (will elaborate below). Then the following boundary conditions are imposed:
+\begin{equation}\label{eq:halfStringBoundaryCond}
+    u_0 = w_M = 0, \quad \delta_{xx}u_M = \delta_{xx}w_0 = 0.
+\end{equation}
+Then we can connect $u_M$ and $w_0$ using a rigid connection, i.e.,
+\begin{equation}\label{eq:rigid}
+    u_M^n = w_0^n
+\end{equation}
+for all $n$. The system will now be
+\begin{equation}
+    \begin{cases}\label{eq:systemHalfStrings}
+        \delta_{tt}u = \delta_{xx}u + J(x_M)F\\
+        \delta_{tt}w = \delta_{xx}w - J(x_0)F
+    \end{cases}
+\end{equation}
+where
+\begin{equation}
+    J(x_i) =
+    \begin{cases}
+        \frac{1}{h}, & l = l_i\\
+        0,& \text{otherwise}
+    \end{cases}
+\end{equation}
+In order to calculate $F$ we expand \eqref{eq:systemHalfStrings} and solve for the state at $n+1$ at the connection points $M$ for $u$ and $0$ for $w$. Knowing through \eqref{eq:halfStringBoundaryCond} that $u_{M+1} = u_{M-1}$ and $w_{-1} = w_1$   yields
+\begin{equation}\label{eq:expandedSystem}
+    \begin{cases}
+    u^{n+1}_M = 2u_M^n - u_M^{n-1} + \lambda^2(2u_{M-1}^n-2u_M^n) + \frac{1}{h} F\\
+    w^{n+1}_0 = 2w_0^n - w_0^{n-1} + \lambda^2(2w_1^n-2w_0^n) - \frac{1}{h} F\\
+    \end{cases}
+\end{equation}
+Recalling \eqref{eq:rigid} we can set the two equations equal to each other and solve for $F$
+\begin{align}
+    2u_M^n - u_M^{n-1} + \lambda^2(2u_{M-1}^n-2u_M^n) + \frac{1}{h} F &=
+    2w_0^n - w_0^{n-1} + \lambda^2(2w_1^n-2w_0^n) - \frac{1}{h} F\nonumber\\
+    \frac{2}{h}F = \lambda^2(2w_1^n - 2u_{M-1}^n)\nonumber\\
+    F = h \lambda^2(w_1^n - u_{M-1}^n)
+\end{align}
+Filling this into \eqref{eq:expandedSystem} yields
+\begin{equation}
+    \begin{cases}
+    u^{n+1}_M = 2u_M^n - u_n^{n-1} + \lambda^2(u_{M-1}^n-2u_M^n+w_1^n)\\
+    w^{n+1}_0 = 2w_0^n - w_0^{n-1} + \lambda^2(w_1^n-2w_0^n+u_{M-1}^n)\\
+    \end{cases}
+\end{equation}
 
 \end{document}
