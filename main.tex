@@ -50,7 +50,7 @@ where grid spacing $h$ is the distance between two neighbouring points, wave spe
 There are cases where we can satisfy condition \eqref{eq:stabilityCondition} with equality, i.e., when $1/ck$ is an integer ($1/ck = \text{floor}(1/ck)$). For example, when using a wave speed of $c = 1470$ m/s and sample rate $f_\text{s} = 44100$ Hz we can satisfy the stability condition with equality $h = 1/30$ (see Figure \ref{fig:fullString}). However, this is a special case, and if we want to change the wave speed dynamically we need to come up with something smarter. I would like to propose, \textit{interpolated boundary conditions}, the possibility of which has briefly been mentioned by Stefan Bilbao in a footnote \cite[p. 145]{Bilbao2009}, but never elaborated on\footnote{...as "Footnotes are usually written by people who are pretending to know something but actually don't!" -- Bilbao, 2020.}. 
 \begin{figure}[h]
     \centering
-    \subfloat[String $N=30$.]{\label{fig:fullString}{ \includegraphics[width=0.33\textwidth]{plot1.eps}}}
+    \subfloat[String $N=30$ (or $31$?).]{\label{fig:fullString}{ \includegraphics[width=0.33\textwidth]{plot1.eps}}}
     \subfloat[At the left boundary.]{\label{fig:leftBoundary}{ \includegraphics[width=0.33\textwidth]{plot2.eps}}}
     \subfloat[Curvature at the boundary (in this case at $u_0$) should be 0.]{\label{fig:boundaryCondition}{ \includegraphics[width=0.33\textwidth]{plot3.eps}}}
     \caption{Case of grid point on boundary.}
@@ -326,10 +326,16 @@ The coefficients in \eqref{eq:formL} are then as follows:
 % Also, if $\alpha = 0$, $L = \frac{1}{h^2}(u_{-1}-2u_0 + u_1)$, i.e., a correct approximation to a second-order derivative.
 
 \section{Alternative Approach: Strings with Connected Free Ends}
-Another approach to changing the grid dynamically is to add points in the center of the string rather than the boundaries. Consider strings, $u$ and $w$ with $M = \text{floor}(0.5/ck) + 1$ points, i.e., half the number of points allowed by the stability condition $N$, plus one for overlap (will elaborate below). Then the following boundary conditions are imposed:
+Another approach to changing the grid dynamically is to add points in the center of the string rather than the boundaries. See Figure \ref{fig:twoFreeStrings} for illustration of the explanation below. Consider strings, $u$ and $w$ with $M = \text{floor}(0.5/ck) + 1$ points, i.e., half the number of points allowed by the stability condition $N$, plus one for overlap (will elaborate below). Then the following boundary conditions are imposed:
 \begin{equation}\label{eq:halfStringBoundaryCond}
     u_0 = w_M = 0, \quad \delta_{xx}u_M = \delta_{xx}w_0 = 0.
 \end{equation}
+%
+\begin{figure}[h]
+\centerline{\includegraphics[width=0.6\columnwidth]{twoFreeStrings.eps} }
+\caption{\label{fig:twoFreeStrings}{Two strings connected at boundary.}}
+\end{figure}
+%
 Then we can connect $u_M$ and $w_0$ using a rigid connection, i.e.,
 \begin{equation}\label{eq:rigid}
     u_M^n = w_0^n
@@ -367,8 +373,14 @@ Filling this into \eqref{eq:expandedSystem} yields
 \begin{equation}
     \begin{cases}
     u^{n+1}_M = 2u_M^n - u_n^{n-1} + \lambda^2(u_{M-1}^n-2u_M^n+w_1^n)\\
-    w^{n+1}_0 = 2w_0^n - w_0^{n-1} + \lambda^2(w_1^n-2w_0^n+u_{M-1}^n)\\
+    w^{n+1}_0 = 2w_0^n - w_0^{n-1} + \lambda^2(u_{M-1}^n-2w_0^n+w_1^n)\\
     \end{cases}
 \end{equation}
+which, (again, recalling \eqref{eq:rigid}) are indeed equivalent expressions for the connected point.
 
+Then, if we want to dynamically changed the grid. 
+
+The previous is an exact solution to the problem when the stability condition is satisfied with equality
+
+Instead of 
 \end{document}
