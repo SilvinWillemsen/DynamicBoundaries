@@ -325,7 +325,7 @@ The coefficients in \eqref{eq:formL} are then as follows:
 % \end{equation}
 % Also, if $\alpha = 0$, $L = \frac{1}{h^2}(u_{-1}-2u_0 + u_1)$, i.e., a correct approximation to a second-order derivative.
 
-\section{Alternative Approach: Strings with Connected Free Ends}
+\section{Alternative Approach: 1D-waves with connected free (Neumann) ends}
 Another approach to changing the grid dynamically is to add points in the center of the string rather than the boundaries. See Figure \ref{fig:twoFreeStrings} for illustration of the explanation below. Consider strings, $u$ and $w$ with $M = \text{floor}(0.5/ck) + 1$ points, i.e., half the number of points allowed by the stability condition $N$, plus one for overlap (will elaborate below). Then the following boundary conditions are imposed:
 \begin{equation}\label{eq:halfStringBoundaryCond}
     u_0 = w_M = 0, \quad \delta_{xx}u_M = \delta_{xx}w_0 = 0.
@@ -343,8 +343,8 @@ Then we can connect $u_M$ and $w_0$ using a rigid connection, i.e.,
 for all $n$. The system will now be
 \begin{equation}
     \begin{cases}\label{eq:systemHalfStrings}
-        \delta_{tt}u = \delta_{xx}u + J(x_M)F\\
-        \delta_{tt}w = \delta_{xx}w - J(x_0)F
+        \delta_{tt}u = \delta_{xx}u + J(x_{u_M})F\\
+        \delta_{tt}w = \delta_{xx}w - J(x_{w_0})F
     \end{cases}
 \end{equation}
 where
@@ -358,16 +358,16 @@ where
 In order to calculate $F$ we expand \eqref{eq:systemHalfStrings} and solve for the state at $n+1$ at the connection points $M$ for $u$ and $0$ for $w$. Knowing through \eqref{eq:halfStringBoundaryCond} that $u_{M+1} = u_{M-1}$ and $w_{-1} = w_1$   yields
 \begin{equation}\label{eq:expandedSystem}
     \begin{cases}
-    u^{n+1}_M = 2u_M^n - u_M^{n-1} + \lambda^2(2u_{M-1}^n-2u_M^n) + \frac{1}{h} F\\
-    w^{n+1}_0 = 2w_0^n - w_0^{n-1} + \lambda^2(2w_1^n-2w_0^n) - \frac{1}{h} F\\
+    u^{n+1}_M = 2u_M^n - u_M^{n-1} + \lambda^2(2u_{M-1}^n-2u_M^n) + \frac{k^2}{h} F\\
+    w^{n+1}_0 = 2w_0^n - w_0^{n-1} + \lambda^2(2w_1^n-2w_0^n) - \frac{k^2}{h} F\\
     \end{cases}
 \end{equation}
 Recalling \eqref{eq:rigid} we can set the two equations equal to each other and solve for $F$
 \begin{align}
-    2u_M^n - u_M^{n-1} + \lambda^2(2u_{M-1}^n-2u_M^n) + \frac{1}{h} F &=
-    2w_0^n - w_0^{n-1} + \lambda^2(2w_1^n-2w_0^n) - \frac{1}{h} F\nonumber\\
-    \frac{2}{h}F = \lambda^2(2w_1^n - 2u_{M-1}^n)\nonumber\\
-    F = h \lambda^2(w_1^n - u_{M-1}^n)
+    2u_M^n - u_M^{n-1} + \lambda^2(2u_{M-1}^n-2u_M^n) + \frac{k^2}{h} F &=
+    2w_0^n - w_0^{n-1} + \lambda^2(2w_1^n-2w_0^n) - \frac{k^2}{h} F\nonumber\\
+    \frac{2k^2}{h}F = \lambda^2(2w_1^n - 2u_{M-1}^n)\nonumber\\
+    F = h \frac{c^2}{h^2}(w_1^n - u_{M-1}^n)
 \end{align}
 Filling this into \eqref{eq:expandedSystem} yields
 \begin{equation}
@@ -376,18 +376,58 @@ Filling this into \eqref{eq:expandedSystem} yields
     w^{n+1}_0 = 2w_0^n - w_0^{n-1} + \lambda^2(u_{M-1}^n-2w_0^n+w_1^n)\\
     \end{cases}
 \end{equation}
-which, (again, recalling \eqref{eq:rigid}) are indeed equivalent expressions for the connected point.
+which, (again, recalling \eqref{eq:rigid}) are indeed equivalent expressions for the connected point. Here, $w_1$ in the first expression acts as virtual grid point $u_{M+1}^n$ and $u_{M-1}^n$ as virtual grid point $w_{-1}^n$. 
+Another, slightly trickier, setup could be that the left string has an extra point at its right side to cause some overlap. This might come in handy later if we want to interpolate the forces between the strings for better quality. 
 
-Then, if we want to dynamically change the grid...
+As an overlap happens, the string is ``heavier" at this point if we keep the same physical parameters. However, in reality, the string is equally heavy everywhere so some scaling needs to happen. Imagine changing the material density of the overlapping points to half of what they usually are so that they eventually add up to have the same mass as the other points. This will change the wavespeed according to:
+\begin{equation}
+    c^2 = T/\rho A \quad \xRightarrow[]{\ 0.5\rho\ }\quad c^2 = T/0.5\rho A \quad \Rightarrow \quad 0.5c^2 = T/\rho A.
+\end{equation}
+For the overlapping points, we will now have the following update equations
+\begin{align}
+    u_{M-1}^{n+1}& = 2u_{M-1}^n - u_{M-1}^{n-1} + \lambda^2 (2u_{M-2}^n - 2u_{M-1}^n + u_{M}^n) + \frac{k^2}{h}F_1\\
+    u_{M}^{n+1} &= 2u_{M}^n - u_{M}^{n-1} + \lambda^2 (u_{M-1}^n - 2u_{M-1}^n) + \frac{k^2}{h}F_2\\
+    w_0^{n+1} &= 2w_0^n-w_0^{n-1} + \lambda^2 (w_1^n-2w_0^n) - \frac{k^2}{h}F_1\\
+    w_1^{n+1} &= 2w_1^n-w_1^{n-1} + \lambda^2 (w_0^n-2w_1^n+w_2^n) - \frac{k^2}{h}F_2
+\end{align}
 
-The previous is an exact solution to the problem when the stability condition is satisfied with equality..
+We can change the ratio between $u_{M-1}$ and $u_{M-2}$ to be 2
 
+This weight ratio also automatically happened in the previous case because of the Neumann boundary condition
+
+The previous is an exact solution to the problem when the stability condition is satisfied with equality. If we want to dynamically change the grid we can have these virtual grid points be interpolated versions of themselves (see Figure \ref{eq:interpolated}), i.e.,
+\begin{align}
+    u_{M+1}^n &= I(x_{u_{M+1}})w^n = \alpha w_0^n + (1-\alpha)w_1^n\\
+    w_{-1}^n &= I(x_{w_{-1}})u^n = \alpha u_M^n + (1-\alpha)u_{M-1}^n
+\end{align}
+where
+\begin{equation}
+    \alpha = \frac{x_{w_0} - x_{u_M}}{h}.
+\end{equation}
 
 
 \begin{figure}[h]
     \centering
     \subfloat[When $h$ changes.]{\label{fig:interpolatedFull}{ \includegraphics[width=0.5\textwidth]{twoFreeStringsInterpolatedFull.eps}}}
-    \subfloat[At the left boundary.]{\label{fig:interpolatedZoom}{ \includegraphics[width=0.5\textwidth]{twoFreeStringsInterpolated.eps}}}
-    \caption{Zoomed}
+    \subfloat[Zoomed]{\label{fig:interpolatedZoom}{ \includegraphics[width=0.5\textwidth]{twoFreeStringsInterpolated.eps}}}
+    \caption{}\label{eq:interpolated}
 \end{figure}
+
+\section{Quick note on connections}
+When connecting elements (for now with a spring) we need to use interpolation and spreading operators. We can add a connection to two elements by localising the along the strings using a spreading operator $J(x_\text{c})$:
+\begin{align}\label{eq:twoConnectedStrings}
+    \delta_{tt}u = c^2 \delta_{xx}u + J(x_{u,\text{c}})F\\
+    \delta_{tt}w = c^2 \delta_{xx}u - J(x_{w,\text{c}})F,
+\end{align}
+where $x_{u,\text{c}}$ and $x_{w,\text{c}}$ are the locations of connection along string $u$ and $w$ respectively. Note that the forces are equal and opposite when applied to their respective components. 
+
+Call the relative distance between the states at the connection location $\eta = I(x_{u,\text{c}})u - I(x_{w,\text{c}})w$. Using \eqref{eq:twoConnectedStrings}, we can then arrive at a definition for $\delta_{tt}\eta^{n+1}$
+\begin{equation}
+    \delta_{tt}\eta = c^2I(x_{u,\text{c}})\delta_{xx}u +  I(x_{u,\text{c}})J(x_{u,\text{c}})F - c^2 I(x_{w,\text{c}})\delta_{xx} + I(x_{w,\text{c}})J(x_{w,\text{c}})F
+\end{equation}
+We can connect the two elements using a rigid connection, i.e. $\eta = 0$. From this we can calculate the force directly:
+\begin{equation}
+    F = \frac{c^2(I(x_{w,\text{c}})\delta_{xx}w-I(x_{u,\text{c}})\delta_{xx}u)}{I(x_{u,\text{c}})J(x_{u,\text{c}}) + I(x_{w,\text{c}})J(x_{w,\text{c}})}.
+\end{equation}
+
 \end{document}
