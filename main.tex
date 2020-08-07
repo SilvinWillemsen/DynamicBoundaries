@@ -377,7 +377,14 @@ Filling this into \eqref{eq:expandedSystem} yields
     \end{cases}
 \end{equation}
 which, (again, recalling \eqref{eq:rigid}) are indeed equivalent expressions for the connected point. Here, $w_1$ in the first expression acts as virtual grid point $u_{M+1}^n$ and $u_{M-1}^n$ as virtual grid point $w_{-1}^n$. 
-Another, slightly trickier, setup could be that the left string has an extra point at its right side to cause some overlap. This might come in handy later if we want to interpolate the forces between the strings for better quality. 
+Another, slightly trickier, setup could be that the left string has an extra point at its right side to cause some overlap. This might come in handy later if we want to interpolate the forces between the strings for better quality. See Figure \ref{fig:overlap}
+
+\begin{figure}[h]
+    \centering
+    \subfloat[When $h$ changes.]{\label{fig:overlapFuul}{ \includegraphics[width=0.5\textwidth]{twoStringsOverlap.eps}}}
+    \subfloat[Zoomed]{\label{fig:overlapZoom}{ \includegraphics[width=0.5\textwidth]{twoFreeStringsInterpolated.eps}}}
+    \caption{}\label{eq:overlap}
+\end{figure}
 
 As an overlap happens, the string is ``heavier" at this point if we keep the same physical parameters. However, in reality, the string is equally heavy everywhere so some scaling needs to happen. Imagine changing the material density of the overlapping points to half of what they usually are so that they eventually add up to have the same mass as the other points. This will change the wavespeed according to:
 \begin{equation}
@@ -388,10 +395,10 @@ For the overlapping points, we will now have the following update equations
     u_{M-1}^{n+1}& = 2u_{M-1}^n - u_{M-1}^{n-1} + \lambda^2 (2u_{M-2}^n - 2u_{M-1}^n + u_{M}^n) + \frac{k^2}{h}F_1\\
     u_{M}^{n+1} &= 2u_{M}^n - u_{M}^{n-1} + \lambda^2 (u_{M-1}^n - 2u_{M-1}^n) + \frac{k^2}{h}F_2\\
     w_0^{n+1} &= 2w_0^n-w_0^{n-1} + \lambda^2 (w_1^n-2w_0^n) - \frac{k^2}{h}F_1\\
-    w_1^{n+1} &= 2w_1^n-w_1^{n-1} + \lambda^2 (w_0^n-2w_1^n+w_2^n) - \frac{k^2}{h}F_2
+    w_1^{n+1} &= 2w_1^n-w_1^{n-1} + \lambda^2 (w_0^n-2w_1^n+2w_2^n) - \frac{k^2}{h}F_2
 \end{align}
+We can then 
 
-We can change the ratio between $u_{M-1}$ and $u_{M-2}$ to be 2
 
 This weight ratio also automatically happened in the previous case because of the Neumann boundary condition
 
