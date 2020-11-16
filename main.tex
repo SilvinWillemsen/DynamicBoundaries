@@ -295,7 +295,7 @@ Then, when the boundary points surpass with the virtual points (i.e. $x_{u_M} \l
         % u^{n-1} = [u^{n-1}, I(x_{u_{M+1}})w^{n-1}];
     \end{cases}
 \end{equation}
-The interpolator used is
+The interpolator used is (cubic)
 \begin{equation}
     I = \begin{bmatrix} -\frac{\alpha(\alpha+1)}{(\alpha+2)(\alpha+3)} &\frac{2\alpha}{\alpha+2} &\frac{2}{\alpha+2} 
     &-\frac{2\alpha}{(\alpha+3)(\alpha+2)}
@@ -459,18 +459,42 @@ The modal frequencies (eigenfrequencies) of the system can then be calculated us
 \begin{equation}
     f_p = \frac{1}{2\pi k}\cos^{-1}\left(\frac{1}{2}\text{eig}_p(\mathbf{B})\right).
 \end{equation}
-
-\subsubsection{Deciding the location of adding / removing points}
-Until now we have only looked at adding / removing points at the center of the string as in Eq. \eqref{eq:addingRemovingPoints}. The results for this can be found in Figure \ref{fig:modesAddInCenter}. Multiple things can be seen from this figure: 
+The results for a system going linearly from $c=2940$ m/s ($N=15$) to $c = 2205$ m/s ($N=20$), can be found in Figure \ref{fig:addInCenter}. Figure \ref{fig:modesAddInCenter} shows a number of interesting things 
 \begin{itemize}
-    \item At every integer $N$, there are $N-1$ modes (related to the number of moving points at that point) that are integer multiples of the fundamental. Due to the extra point used for overlap, an extra mode arises between the lower and the upper half of the harmonics. If the system is excited on an integer $N$, this extra mode will not be excited due to the constraint of a rigid connection. 
-    \item Modal crossings: 
+    \item At every integer $N$, there are $N-1$ modes (related to the number of moving points at that point) that are integer multiples of the fundamental. This is expected and desired. However, due to the extra point used for overlap, an extra mode arises between the lower and the upper half of the harmonics. If the system is excited when the system has an integer $N$ (and $\alpha = 0$ in Eq. \eqref{eq:connectionInterpol}), this extra mode will not be excited due to the constraint of a rigid connection. 
+    \item Modes lower than and equal to half the number of total modes follow a linear pattern down, whereas higher modes follow a ``squiggly" pattern upwards.
+    \item Modal crossings can be seen when moving from an even to an odd $N$.
 \end{itemize}
+The spectrogram in Figure \ref{fig:specAddCenter} shows that excited modes follow the ``paths of least resistance" looking at Figure \ref{fig:modesAddInCenter}. The latter two points are an undesired behaviour. 
+
+\SWcomment[Notes about what the expected / desired behaviour should be. -- or -- System Requirements
+\begin{itemize}
+    \item Smooth between different number-of-points-configurations
+    \item Linearly down / up
+\end{itemize}]
+The following section goes into how to get closer to a desired behaviour.
 
 \begin{figure}[h]
-\centerline{\includegraphics[width=0.6\columnwidth]{modesAddPointsInCenter.eps} }
-\caption{\label{fig:modesAddInCenter}{Modal analysis of 1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$).}}
+    \centering
+    \subfloat[Modal analysis. Modes are sorted at all times.]{\label{fig:modesAddInCenter}{ \includegraphics[width=0.5\textwidth]{modesAddPointsInCenter.eps}}}
+    \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:specAddCenter}{ \includegraphics[width=0.5\textwidth]{specAddCenter.eps}}}
+    \caption{1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$). Points are added in the middle.}\label{fig:addInCenter}
 \end{figure}
+
+\subsubsection{Deciding the location of adding / removing points}
+Until now we have only looked at adding / removing points at the center of the string as in Eq. \eqref{eq:addingRemovingPoints}, i.e, alternating between the left and the right half. To get decrease of some of the undesired behaviour described above, such as "squiggly" patterns for high modes and modal crossings. Trial and error showed that the closer the point add / remove location is to a boundary, the less undesired behaviour shows up. The closest we can get to a boundary is to have $u$ be $N-1$ points (including the boundary) and $w$ two points, one moving, one boundary. If we then want to calculate the interpolated points using \eqref{eq:Av} we can use the boundary condition in Eq. \eqref{eq:halfStringBoundaryCond} to find the definition for $w_2^n$
+\begin{equation}
+    w_2^n = -w_0^n.
+\end{equation}
+As $w_1 = 0$, because it is the boundary, we can build matrix $B_3'$
+\begin{equation}
+    \mathbf{B}_3' = 2\mathbf{I} + \lambda^2 \begin{bmatrix}[cccc|cc]
+     & \ddots  &\ddots & & 0 & \\
+       & 1 & -2 & 1 & & \\
+      & \mathbf{A}_{1, 2}^\text{i}\alpha_\text{I} &\mathbf{A}_{1, 2}^\text{i}\beta_\text{I} + 1 &\mathbf{A}_{1, 2}^\text{i}\gamma_\text{I} -2 & \mathbf{A}_{1, 1}^\text{i}(\gamma_\text{I}-\alpha_\text{I})& \\ \cline{2-5 }
+      &\mathbf{A}_{2, 2}^\text{i}\alpha_\text{I} &\mathbf{A}_{2, 2}^\text{i}\beta_\text{I}&\mathbf{A}_{2, 2}^\text{i}\gamma_\text{I} & \mathbf{A}^\text{i}_{2,1}(\gamma_\text{I} - \alpha_\text{I})-2 & 
+    \end{bmatrix}
+\end{equation}
 
 \subsection{Stiff string}
 To prove that this technique also works with more complicated schemes, we can apply the above to the stiff string with the following scheme
