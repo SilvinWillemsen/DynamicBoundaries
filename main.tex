@@ -461,11 +461,15 @@ The modal frequencies (eigenfrequencies) of the system can then be calculated us
 \end{equation}
 
 \subsubsection{Deciding the location of adding / removing points}
-Until now we have only looked at adding / removing points at the center of the string as in Eq. \eqref{eq:addingRemovingPoints}. The results for this can be found in 
+Until now we have only looked at adding / removing points at the center of the string as in Eq. \eqref{eq:addingRemovingPoints}. The results for this can be found in Figure \ref{fig:modesAddInCenter}. Multiple things can be seen from this figure: 
+\begin{itemize}
+    \item At every integer $N$, there are $N-1$ modes (related to the number of moving points at that point) that are integer multiples of the fundamental. Due to the extra point used for overlap, an extra mode arises between the lower and the upper half of the harmonics. If the system is excited on an integer $N$, this extra mode will not be excited due to the constraint of a rigid connection. 
+    \item Modal crossings: 
+\end{itemize}
 
 \begin{figure}[h]
-\centerline{\includegraphics[width=0.6\columnwidth]{twoFreeStrings.eps} }
-\caption{\label{fig:twoFreeStrings}{Two strings connected at one of their boundaries.}}
+\centerline{\includegraphics[width=0.6\columnwidth]{modesAddPointsInCenter.eps} }
+\caption{\label{fig:modesAddInCenter}{Modal analysis of 1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$).}}
 \end{figure}
 
 \subsection{Stiff string}
