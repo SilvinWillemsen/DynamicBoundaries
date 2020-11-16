@@ -496,6 +496,13 @@ As $w_1 = 0$, because it is the boundary, we can build matrix $B_3'$
     \end{bmatrix}
 \end{equation}
 
+\begin{figure}[h]
+    \centering
+    \subfloat[Modal analysis when points are added close at the boundary]{\label{fig:modesAddInCenter}{ \includegraphics[width=0.5\textwidth]{modesAddPointsInCenter.eps}}}
+    \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:specAddCenter}{ \includegraphics[width=0.5\textwidth]{specAddCenter.eps}}}
+    \caption{1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$). Points are added in the middle.}\label{fig:addInCenter}
+\end{figure}
+
 \subsection{Stiff string}
 To prove that this technique also works with more complicated schemes, we can apply the above to the stiff string with the following scheme
 \begin{equation}
