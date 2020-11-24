@@ -284,8 +284,8 @@ and grid-point locations $x_{u_{M+1}}$ and $w_{-1}$. Note that when $h$ changes 
 Then, when the boundary points surpass with the virtual points (i.e. $x_{u_M} \leq x_{w_{-1}}$ and $x_{u_{M+1}} \leq x_{w_0}$) we alternate between adding / removing a point to the right side of $u$ and the left side of $w$.
 \begin{equation}\label{eq:addingRemovingPoints}
     \begin{cases}
-        \begin{cases}\mathbf{u}^n = [\mathbf{u}^n, I(x_{u_{M+1}})\mathbf{w}^n]^T & \text{if $N^n$ is odd}\\
-        \mathbf{w}^n = [I(x_{w_{-1}})\mathbf{u}^n, \mathbf{w}^n]^T & \text{if $N^n$ is even}
+        \begin{cases}\mathbf{u}^n = [\mathbf{u}^n, \mathcal{I}(x_{u_{M+1}})\mathbf{v}^n]^T & \text{if $N^n$ is odd}\\
+        \mathbf{w}^n = [\mathcal{I}(x_{w_{-1}})\mathbf{v}_\star^n, \mathbf{w}^n]^T & \text{if $N^n$ is even}
         \end{cases} & \text{if } N^n > N^{n-1} \text{ (adding a point)}\\
         \\
         \begin{cases}
@@ -295,9 +295,14 @@ Then, when the boundary points surpass with the virtual points (i.e. $x_{u_M} \l
         % u^{n-1} = [u^{n-1}, I(x_{u_{M+1}})w^{n-1}];
     \end{cases}
 \end{equation}
+where
+\begin{align}
+    \mathbf{v}^n &= [u_{M-1}^n, u_M^n, w_0^n, w_1^n]^T \quad \text{and}\\
+    \mathbf{v}_\star^n &= [w_1^n, w_0^n, u_M^n, u_{M-1}^n]^T
+\end{align}
 The interpolator used is (cubic)
 \begin{equation}
-    I = \begin{bmatrix} -\frac{\alpha(\alpha+1)}{(\alpha+2)(\alpha+3)} &\frac{2\alpha}{\alpha+2} &\frac{2}{\alpha+2} 
+    \mathcal{I} = \begin{bmatrix} -\frac{\alpha(\alpha+1)}{(\alpha+2)(\alpha+3)} &\frac{2\alpha}{\alpha+2} &\frac{2}{\alpha+2} 
     &-\frac{2\alpha}{(\alpha+3)(\alpha+2)}
     \end{bmatrix},
 \end{equation}
@@ -305,6 +310,35 @@ with
 \begin{equation}
     \alpha = \frac{x_{w_0} - (x_{u_M} + h)}{h}\ .
 \end{equation}
+We get here by using Lagrange interpolation defined as
+\begin{equation}
+    \mathcal{I}_i = \prod_{k = 0, k\neq i}^m \frac{x-x_k}{x_i-x_k}.
+\end{equation}
+We then need the locations of the points we are using to interpolate. If we let (normalised by $h$ as all of the terms contain it)
+\begin{equation}
+    \begin{aligned}
+     x_0 &= x_{u_{M-1}} = 0, \quad \text{then}\\
+     x_1 &= x_{u_M} = 1, \\
+     x_2& = x_{w_0} = 2 + \alpha , \quad \text{and}\\
+     x_3 &= x_{w_1} = 3 + \alpha .
+    \end{aligned}
+\end{equation}
+The $x$ that we're solving for is 
+\begin{equation}
+    x = x_{u_M+1} = 2\ .
+\end{equation}
+As all of these contain a multiplication with $h$, these can be divided out. The interpolator can then be built as follows:
+
+\begin{align}
+    \mathcal{I}_0 &= \left(\frac{2-1}{0-1}\right)\left(\frac{2-(\alpha+2)}{0-(\alpha+2)}\right)\left(\frac{2-(\alpha+3)}{0-(\alpha+3)}\right)= \left(-1\right)\left(\frac{-\alpha}{-(\alpha+2)}\right)\left(\frac{-(\alpha+1)}{-(\alpha+3)}\right)\nonumber\\
+    &= -\frac{\alpha(\alpha+1)}{(\alpha+2)(\alpha+3)}\\
+    \mathcal{I}_1 &= \left(\frac{2-0}{1-0}\right)\left(\frac{2-(\alpha+2)}{1-(\alpha+2)}\right)\left(\frac{2-(\alpha+3)}{1-(\alpha+3)}\right) = \left(2\right)\left(\frac{-\alpha}{-(\alpha+1)}\right)\left(\frac{-(\alpha+1)}{-(\alpha+2)}\right)\\
+    &= \frac{2\alpha}{\alpha+2}\\
+    \mathcal{I}_2 &= \left(\frac{2-0}{(\alpha+2)-0}\right)\left(\frac{2-1}{(\alpha+2)-1}\right)\left(\frac{2-(\alpha+3)}{(\alpha+2)-(\alpha+3)}\right) = \left(\frac{2}{\alpha+2}\right) \left(\frac{1}{\alpha+1}\right)\left(\frac{-(\alpha+1)}{-1}\right)\\
+    &= \frac{2}{\alpha+2}\\
+    \mathcal{I}_3 &= \left(\frac{2-0}{(\alpha+3)-0}\right)\left(\frac{2-1}{(\alpha+3)-1}\right)\left(\frac{2-(\alpha+2)}{(\alpha+3)-(\alpha+2)}\right) = \left(\frac{2}{\alpha+3}\right)\left(\frac{1}{\alpha+2}\right)\left(\frac{-\alpha}{1}\right) \\
+    &= -\frac{2\alpha}{(\alpha+3)(\alpha+2)}
+\end{align}
 Even though subjective listening confirmed that the sound is smooth when adding / removing points using linear interpolation, the expected fundamental frequency ($f_0 \approx c/2$) was slightly too high when interpolation needed to happen. Instead of a linear, we will use cubic interpolator $I_3$ according to 
 % \begin{equation}\label{eq:connectionInterpol}
 %     \begin{aligned}
@@ -372,12 +406,12 @@ It is possible to write the complete system in matrix form as
 \end{equation}
 where \begin{equation}
 \mathbf{U}^n = \begin{bmatrix}
-\mathbf{u}^n\\
-\mathbf{w}^n
-\end{bmatrix}.
+u^n_1, \hdots, u^n_M, w_0^n, \hdots, w_{M_w-2}^n
+\end{bmatrix}^T,
 \end{equation}
-%
-If $\alpha = 0$ and the outer boundaries of the system ($u_0$ and $w_{M_w}$) are excluded from $\mathbf{U}$, $\mathbf{B}$ looks like
+(so $\mathbf{u}^n$ and $\mathbf{w}^n$ concatenated excluding the outer boundaries).
+
+If $\alpha = 0$, $\mathbf{B}$ looks like
 \begin{equation}
     \mathbf{B} = 2\mathbf{I} + \lambda^2 \begin{bmatrix}[cccccc|cccccc]
         &-2 & 1 & & & & & & & & & \\
@@ -456,7 +490,7 @@ we can use this to insert the solution from \eqref{eq:matSolution} into $\mathbf
     \end{bmatrix}
 \end{equation}
 The modal frequencies (eigenfrequencies) of the system can then be calculated using the following formula \cite[p. 174]{Bilbao2009}
-\begin{equation}
+\begin{equation}\label{eq:modalAnalysis}
     f_p = \frac{1}{2\pi k}\cos^{-1}\left(\frac{1}{2}\text{eig}_p(\mathbf{B})\right).
 \end{equation}
 The results for a system going linearly from $c=2940$ m/s ($N=15$) to $c = 2205$ m/s ($N=20$), can be found in Figure \ref{fig:addInCenter}. Figure \ref{fig:modesAddInCenter} shows a number of interesting things 
@@ -476,31 +510,38 @@ The following section goes into how to get closer to a desired behaviour.
 
 \begin{figure}[h]
     \centering
-    \subfloat[Modal analysis. Modes are sorted at all times.]{\label{fig:modesAddInCenter}{ \includegraphics[width=0.5\textwidth]{modesAddPointsInCenter.eps}}}
-    \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:specAddCenter}{ \includegraphics[width=0.5\textwidth]{specAddCenter.eps}}}
+    \subfloat[Modal analysis. Modes are sorted at all times.]{\label{fig:modesAddInCenter}{ \includegraphics[width=0.45\textwidth]{modesAddPointsInCenter.eps}}}
+    \hspace{0.05\textwidth}
+    \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:specAddCenter}{ \includegraphics[width=0.45\textwidth]{specAddCenter.eps}}}
     \caption{1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$). Points are added in the middle.}\label{fig:addInCenter}
 \end{figure}
 
-\subsubsection{Deciding the location of adding / removing points}
-Until now we have only looked at adding / removing points at the center of the string as in Eq. \eqref{eq:addingRemovingPoints}, i.e, alternating between the left and the right half. To get decrease of some of the undesired behaviour described above, such as "squiggly" patterns for high modes and modal crossings. Trial and error showed that the closer the point add / remove location is to a boundary, the less undesired behaviour shows up. The closest we can get to a boundary is to have $u$ be $N-1$ points (including the boundary) and $w$ two points, one moving, one boundary. If we then want to calculate the interpolated points using \eqref{eq:Av} we can use the boundary condition in Eq. \eqref{eq:halfStringBoundaryCond} to find the definition for $w_2^n$
+\subsubsection{Deciding where to add / remove points}
+Until now we have only looked at adding / removing points at the center of the string as in Eq. \eqref{eq:addingRemovingPoints}, i.e, alternating between the left and the right half. To get decrease of some of the undesired behaviour described above, such as ``squiggly" patterns for high modes and modal crossings. Trial and error showed that the closer the point add / remove location is to a boundary, the less this undesired behaviour shows up. The closest we can get to a boundary is to have $u$ be $N-1$ points (including the boundary) and $w$ two points, one moving, one boundary. If we then want to calculate the interpolated points using \eqref{eq:Av} we can extend the Dirichlet boundary condition in Eq. \eqref{eq:halfStringBoundaryCond} to the simply supported one
+\begin{equation}
+    w_{M_w} = \delta_{xx}w_{M_w} = 0, \quad \text{(Simply Supported)}
+\end{equation}
+to find the definition for $w_2^n$
 \begin{equation}
     w_2^n = -w_0^n.
 \end{equation}
-As $w_1 = 0$, because it is the boundary, we can build matrix $B_3'$
+This condition can be exploited to have less points interacting with each other (which probably caused the undesired behaviour described above). As $w_1$ is the boundary and thus excluded from the calculation we can build matrix $B_3'$
 \begin{equation}
     \mathbf{B}_3' = 2\mathbf{I} + \lambda^2 \begin{bmatrix}[cccc|cc]
      & \ddots  &\ddots & & 0 & \\
        & 1 & -2 & 1 & & \\
-      & \mathbf{A}_{1, 2}^\text{i}\alpha_\text{I} &\mathbf{A}_{1, 2}^\text{i}\beta_\text{I} + 1 &\mathbf{A}_{1, 2}^\text{i}\gamma_\text{I} -2 & \mathbf{A}_{1, 1}^\text{i}(\gamma_\text{I}-\alpha_\text{I})& \\ \cline{2-5 }
+      & \mathbf{A}_{1, 2}^\text{i}\alpha_\text{I} &\mathbf{A}_{1, 2}^\text{i}\beta_\text{I} + 1 &\mathbf{A}_{1, 2}^\text{i}\gamma_\text{I} -2 & \mathbf{A}_{1, 1}^\text{i}(\gamma_\text{I}-\alpha_\text{I})& \\ \cline{2-5}
       &\mathbf{A}_{2, 2}^\text{i}\alpha_\text{I} &\mathbf{A}_{2, 2}^\text{i}\beta_\text{I}&\mathbf{A}_{2, 2}^\text{i}\gamma_\text{I} & \mathbf{A}^\text{i}_{2,1}(\gamma_\text{I} - \alpha_\text{I})-2 & 
     \end{bmatrix}
 \end{equation}
+Analysing this using Eq. \eqref{eq:modalAnalysis} yields Figure \ref{fig:modesAddAtRightBound}.
 
 \begin{figure}[h]
     \centering
-    \subfloat[Modal analysis when points are added close at the boundary]{\label{fig:modesAddInCenter}{ \includegraphics[width=0.5\textwidth]{modesAddPointsInCenter.eps}}}
-    \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:specAddCenter}{ \includegraphics[width=0.5\textwidth]{specAddCenter.eps}}}
-    \caption{1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$). Points are added in the middle.}\label{fig:addInCenter}
+    \subfloat[Modal analysis when points are added close at the boundary]{\label{fig:modesAddAtRightBound}{ \includegraphics[width=0.45\textwidth]{modesAddPointsAtRightBound.eps}}}
+    \hspace{0.05\textwidth}
+    \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:specAddCenter}{ \includegraphics[width=0.45\textwidth]{specAddPointsAtRightBound.eps}}}
+    \caption{1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$). Points are added at the boundary.}\label{fig:addAtBoundary}
 \end{figure}
 
 \subsection{Stiff string}
