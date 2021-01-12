@@ -300,8 +300,14 @@ where
     \mathbf{v}^n &= [u_{M-1}^n, u_M^n, w_0^n, w_1^n]^T \quad \text{and}\\
     \mathbf{v}_\star^n &= [w_1^n, w_0^n, u_M^n, u_{M-1}^n]^T
 \end{align}
+Figure \ref{fig:addingPoint} shows a point being added to the grid
+\begin{figure}[h]
+\centerline{\includegraphics[width=0.6\columnwidth]{addingPoint.eps} }
+\caption{\label{fig:addingPoint}{Point added to the grid according to \eqref{eq:addingRemovingPoints}}}   
+\end{figure}
+
 The interpolator used is (cubic)
-\begin{equation}
+\begin{equation}\label{eq:customInterp}
     \mathcal{I} = \begin{bmatrix} -\frac{\alpha(\alpha+1)}{(\alpha+2)(\alpha+3)} &\frac{2\alpha}{\alpha+2} &\frac{2}{\alpha+2} 
     &-\frac{2\alpha}{(\alpha+3)(\alpha+2)}
     \end{bmatrix},
@@ -310,35 +316,8 @@ with
 \begin{equation}
     \alpha = \frac{x_{w_0} - (x_{u_M} + h)}{h}\ .
 \end{equation}
-We get here by using Lagrange interpolation defined as
-\begin{equation}
-    \mathcal{I}_i = \prod_{k = 0, k\neq i}^m \frac{x-x_k}{x_i-x_k}.
-\end{equation}
-We then need the locations of the points we are using to interpolate. If we let (normalised by $h$ as all of the terms contain it)
-\begin{equation}
-    \begin{aligned}
-     x_0 &= x_{u_{M-1}} = 0, \quad \text{then}\\
-     x_1 &= x_{u_M} = 1, \\
-     x_2& = x_{w_0} = 2 + \alpha , \quad \text{and}\\
-     x_3 &= x_{w_1} = 3 + \alpha .
-    \end{aligned}
-\end{equation}
-The $x$ that we're solving for is 
-\begin{equation}
-    x = x_{u_M+1} = 2\ .
-\end{equation}
-As all of these contain a multiplication with $h$, these can be divided out. The interpolator can then be built as follows:
+See section \ref{sec:lagrangeDeriv} for a derivation of Eq. \eqref{eq:customInterp}.
 
-\begin{align}
-    \mathcal{I}_0 &= \left(\frac{2-1}{0-1}\right)\left(\frac{2-(\alpha+2)}{0-(\alpha+2)}\right)\left(\frac{2-(\alpha+3)}{0-(\alpha+3)}\right)= \left(-1\right)\left(\frac{-\alpha}{-(\alpha+2)}\right)\left(\frac{-(\alpha+1)}{-(\alpha+3)}\right)\nonumber\\
-    &= -\frac{\alpha(\alpha+1)}{(\alpha+2)(\alpha+3)}\\
-    \mathcal{I}_1 &= \left(\frac{2-0}{1-0}\right)\left(\frac{2-(\alpha+2)}{1-(\alpha+2)}\right)\left(\frac{2-(\alpha+3)}{1-(\alpha+3)}\right) = \left(2\right)\left(\frac{-\alpha}{-(\alpha+1)}\right)\left(\frac{-(\alpha+1)}{-(\alpha+2)}\right)\\
-    &= \frac{2\alpha}{\alpha+2}\\
-    \mathcal{I}_2 &= \left(\frac{2-0}{(\alpha+2)-0}\right)\left(\frac{2-1}{(\alpha+2)-1}\right)\left(\frac{2-(\alpha+3)}{(\alpha+2)-(\alpha+3)}\right) = \left(\frac{2}{\alpha+2}\right) \left(\frac{1}{\alpha+1}\right)\left(\frac{-(\alpha+1)}{-1}\right)\\
-    &= \frac{2}{\alpha+2}\\
-    \mathcal{I}_3 &= \left(\frac{2-0}{(\alpha+3)-0}\right)\left(\frac{2-1}{(\alpha+3)-1}\right)\left(\frac{2-(\alpha+2)}{(\alpha+3)-(\alpha+2)}\right) = \left(\frac{2}{\alpha+3}\right)\left(\frac{1}{\alpha+2}\right)\left(\frac{-\alpha}{1}\right) \\
-    &= -\frac{2\alpha}{(\alpha+3)(\alpha+2)}
-\end{align}
 Even though subjective listening confirmed that the sound is smooth when adding / removing points using linear interpolation, the expected fundamental frequency ($f_0 \approx c/2$) was slightly too high when interpolation needed to happen. Instead of a linear, we will use cubic interpolator $I_3$ according to 
 % \begin{equation}\label{eq:connectionInterpol}
 %     \begin{aligned}
@@ -398,6 +377,57 @@ where
 \end{equation}
 
 Using cubic interpolation gives us the expected fundamental frequency for any wave speed. This can be proven using modal analysis, described in the following section.
+
+\subsection{Sinc interpolation}
+An even better result is obtained using \textit{sinc interpolation}. One can retrieve a continuous-time signal $y(t)$ from a descrete time-series $y[n]$ using 
+\begin{equation}\label{eq:generalSinc}
+    y(t) = \sum_{n = -\infty}^{\infty} y[n] \cdot \text{sinc}\left(\frac{t - nT}{T}\right).
+\end{equation}
+where the normalised sinc function is defined as
+\begin{equation}
+    \text{sinc}(x) = \begin{cases}
+        \frac{\sin(\pi x)}{\pi x} & x\neq 0\\
+        1 & x = 0
+    \end{cases}
+\end{equation}
+Naturally, \eqref{eq:generalSinc} can not be implemented as is, due to the infinite sum. The continuous-time signal $y$ can, however, be quite well approximated even with a truncated version of Eq. \eqref{eq:generalSinc}.
+
+Going from DSP back to FDTD methods, \eqref{eq:generalSinc} can be rewritten in terms we already know and applied to grid function $u$ in space (rather than time)
+\begin{equation}\label{eq:generalSinc}
+    u(x^\star) = \sum_{l = \mathcal{D}_\text{i}} u_l \cdot \text{sinc}\left(\frac{x^\star - lh}{h}\right).
+\end{equation}
+where $\mathcal{D}_\text{i}$ is the range for interpolation. Ideally, one uses the entire
+
+\subsubsection{Derivation of the LaGrange interpolator}\label{sec:lagrangeDeriv}
+This subsection shows a derivation of how to get to Eq. \eqref{eq:customInterp}. We use Lagrange interpolation defined as
+\begin{equation}
+    \mathcal{I}_i = \prod_{k = 0, k\neq i}^m \frac{x-x_k}{x_i-x_k}.
+\end{equation}
+We then need the locations of the points we are using to interpolate. If we let (normalised by $h$ as all of the terms contain it)
+\begin{equation}
+    \begin{aligned}
+     x_0 &= x_{u_{M-1}} = 0, \quad \text{then}\\
+     x_1 &= x_{u_M} = 1, \\
+     x_2& = x_{w_0} = 2 + \alpha , \quad \text{and}\\
+     x_3 &= x_{w_1} = 3 + \alpha .
+    \end{aligned}
+\end{equation}
+The $x$ that we're solving for is 
+\begin{equation}
+    x = x_{u_M+1} = 2\ .
+\end{equation}
+As all of these contain a multiplication with $h$, these can be divided out. The interpolator can then be built as follows:
+
+\begin{align}
+    \mathcal{I}_0 &= \left(\frac{2-1}{0-1}\right)\left(\frac{2-(\alpha+2)}{0-(\alpha+2)}\right)\left(\frac{2-(\alpha+3)}{0-(\alpha+3)}\right)= \left(-1\right)\left(\frac{-\alpha}{-(\alpha+2)}\right)\left(\frac{-(\alpha+1)}{-(\alpha+3)}\right)\nonumber\\
+    &= -\frac{\alpha(\alpha+1)}{(\alpha+2)(\alpha+3)}\\
+    \mathcal{I}_1 &= \left(\frac{2-0}{1-0}\right)\left(\frac{2-(\alpha+2)}{1-(\alpha+2)}\right)\left(\frac{2-(\alpha+3)}{1-(\alpha+3)}\right) = \left(2\right)\left(\frac{-\alpha}{-(\alpha+1)}\right)\left(\frac{-(\alpha+1)}{-(\alpha+2)}\right)\\
+    &= \frac{2\alpha}{\alpha+2}\\
+    \mathcal{I}_2 &= \left(\frac{2-0}{(\alpha+2)-0}\right)\left(\frac{2-1}{(\alpha+2)-1}\right)\left(\frac{2-(\alpha+3)}{(\alpha+2)-(\alpha+3)}\right) = \left(\frac{2}{\alpha+2}\right) \left(\frac{1}{\alpha+1}\right)\left(\frac{-(\alpha+1)}{-1}\right)\\
+    &= \frac{2}{\alpha+2}\\
+    \mathcal{I}_3 &= \left(\frac{2-0}{(\alpha+3)-0}\right)\left(\frac{2-1}{(\alpha+3)-1}\right)\left(\frac{2-(\alpha+2)}{(\alpha+3)-(\alpha+2)}\right) = \left(\frac{2}{\alpha+3}\right)\left(\frac{1}{\alpha+2}\right)\left(\frac{-\alpha}{1}\right) \\
+    &= -\frac{2\alpha}{(\alpha+3)(\alpha+2)}
+\end{align}
 
 \subsection{Modal Analysis}
 It is possible to write the complete system in matrix form as
@@ -821,4 +851,22 @@ We can connect the two elements using a rigid connection, i.e. $\eta = 0$. From 
     F = \frac{c^2(I(x_{w,\text{c}})\delta_{xx}w-I(x_{u,\text{c}})\delta_{xx}u)}{I(x_{u,\text{c}})J(x_{u,\text{c}}) + I(x_{w,\text{c}})J(x_{w,\text{c}})}.
 \end{equation}
 
+\section{Interpolants (Stefan)}
+
+OK, suppose you have a set of distinct grid locations, $x_{l}, l=1,\hdots,N$. We don't assume they are equally spaced, as you will be working at the interface between two grids. Suppose also that $x^{*}$ is the point at which you wish to find an interpolated value. Normally, $x^{*}$ is enclosed by the set of points $x_{l}$, but it doesn't have to be (in which case you're doing extrapolation). Also assume dependent values $y_{l}$, $l=1,\hdots,N$. Now, define a general interpolant, at a coordinate $x^{*}$ as
+\begin{equation}
+    y^{*} = \sum_{l=1}^{n}a_{l}y_{l}
+\end{equation}
+
+Now, assume that the original samples are drawn from a single complex exponential of the form
+\begin{equation}
+    y_{l} = e^{j\beta x_{l}}
+\end{equation}
+for some wavenumber $\beta$. WLOG, assume $x^{*} = 0$. You can then define an error measure as
+\begin{equation}
+    E(x_{1},\hdots,x_{N}) = \int_{-\beta_{max}}^{\beta_{max}}|1-y^{*}|^2 d\beta
+\end{equation}
+where here, $\beta_{max}$ is a maximal wavenumber; if the grid points are equally spaced, with spacing $h$, you might choose $\beta_{max} = \pi/h$, but you don't have to! It could be smaller than this, allowing for optimisation over a smaller range of wavenumbers. 
+
+Then...you need to minimise this error with respect to all the parameters $a_{l}$. If the points are equally spaced, you end up with a sinc interpolant. If not, well, you end up with something else. 
 \end{document}
