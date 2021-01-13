@@ -303,7 +303,7 @@ where
 Figure \ref{fig:addingPoint} shows a point being added to the grid
 \begin{figure}[h]
 \centerline{\includegraphics[width=0.6\columnwidth]{addingPoint.eps} }
-\caption{\label{fig:addingPoint}{Point added to the grid according to \eqref{eq:addingRemovingPoints}}}   
+\caption{\label{fig:addingPoint}{Point added to the grid according to \eqref{eq:addingRemovingPoints} (at the boundary though..)}}   
 \end{figure}
 
 The interpolator used is (cubic)
@@ -376,27 +376,7 @@ where
     \end{bmatrix}.
 \end{equation}
 
-Using cubic interpolation gives us the expected fundamental frequency for any wave speed. This can be proven using modal analysis, described in the following section.
-
-\subsection{Sinc interpolation}
-An even better result is obtained using \textit{sinc interpolation}. One can retrieve a continuous-time signal $y(t)$ from a descrete time-series $y[n]$ using 
-\begin{equation}\label{eq:generalSinc}
-    y(t) = \sum_{n = -\infty}^{\infty} y[n] \cdot \text{sinc}\left(\frac{t - nT}{T}\right).
-\end{equation}
-where the normalised sinc function is defined as
-\begin{equation}
-    \text{sinc}(x) = \begin{cases}
-        \frac{\sin(\pi x)}{\pi x} & x\neq 0\\
-        1 & x = 0
-    \end{cases}
-\end{equation}
-Naturally, \eqref{eq:generalSinc} can not be implemented as is, due to the infinite sum. The continuous-time signal $y$ can, however, be quite well approximated even with a truncated version of Eq. \eqref{eq:generalSinc}.
-
-Going from DSP back to FDTD methods, \eqref{eq:generalSinc} can be rewritten in terms we already know and applied to grid function $u$ in space (rather than time)
-\begin{equation}\label{eq:generalSinc}
-    u(x^\star) = \sum_{l = \mathcal{D}_\text{i}} u_l \cdot \text{sinc}\left(\frac{x^\star - lh}{h}\right).
-\end{equation}
-where $\mathcal{D}_\text{i}$ is the range for interpolation. Ideally, one uses the entire
+Using cubic interpolation gives us the expected fundamental frequency for any wave speed. This can be proven using modal analysis, described in \ref{sec:modal}.
 
 \subsubsection{Derivation of the LaGrange interpolator}\label{sec:lagrangeDeriv}
 This subsection shows a derivation of how to get to Eq. \eqref{eq:customInterp}. We use Lagrange interpolation defined as
@@ -429,7 +409,36 @@ As all of these contain a multiplication with $h$, these can be divided out. The
     &= -\frac{2\alpha}{(\alpha+3)(\alpha+2)}
 \end{align}
 
-\subsection{Modal Analysis}
+\subsection{Sinc interpolation}
+An even better result is obtained using \textit{sinc interpolation}. One can retrieve a continuous-time signal $y(t)$ from a discrete time-series $y[n]$ using 
+\begin{equation}\label{eq:generalSincIP}
+    y(t) = \sum_{n = -\infty}^{\infty} y[n] \cdot \text{sinc}\left(\frac{t - nT}{T}\right).
+\end{equation}
+where the normalised sinc function is defined as
+\begin{equation}\label{eq:sinc}
+    \text{sinc}(x) = \begin{cases}
+        \frac{\sin(\pi x)}{\pi x} & x\neq 0\\
+        1 & x = 0.
+    \end{cases}
+\end{equation}
+Also see Figure \ref{fig:sinc}.
+\begin{figure}[h]
+\centerline{\includegraphics[width=0.6\columnwidth]{sincFig.eps} }
+\caption{\label{fig:sinc}{Sinc function in Eq. \eqref{eq:sinc} truncated at $x = -5$ and $x = 5$.}}
+\end{figure}
+
+
+Naturally, \eqref{eq:generalSincIP} can not be implemented ``as is", due to the infinite sum. The continuous-time signal $y$ can, however, be quite well approximated even with a truncated version of Eq. \eqref{eq:generalSincIP}.
+
+Going from DSP back to FDTD methods, \eqref{eq:generalSincIP} can be rewritten in terms we already know and applied to grid function $u$ in space (rather than time)
+\begin{equation}\label{eq:FDSSinc}
+    u(x^\star) = \sum_{l = \mathcal{D}_\text{i}} u_l \cdot \text{sinc}\left(\frac{x^\star - lh}{h}\right).
+\end{equation}
+where $\mathcal{D}_\text{i}$ is the range for interpolation. Ideally, one uses the entire domain of 
+
+
+
+\subsection{Modal Analysis}\label{sec:modal}
 It is possible to write the complete system in matrix form as
 \begin{equation}
     \mathbf{U}^{n+1} = \mathbf{B}\mathbf{U}^n - \mathbf{U}^{n-1}
