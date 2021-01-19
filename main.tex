@@ -306,7 +306,7 @@ Figure \ref{fig:addingPoint} shows a point being added to the grid
 \caption{\label{fig:addingPoint}{Point added to the grid according to \eqref{eq:addingRemovingPoints} (at the boundary though..)}}   
 \end{figure}
 
-The interpolator used is (cubic)
+The interpolator used is (cubic Lagrange)
 \begin{equation}\label{eq:customInterp}
     \mathcal{I} = \begin{bmatrix} -\frac{\alpha(\alpha+1)}{(\alpha+2)(\alpha+3)} &\frac{2\alpha}{\alpha+2} &\frac{2}{\alpha+2} 
     &-\frac{2\alpha}{(\alpha+3)(\alpha+2)}
@@ -318,7 +318,7 @@ with
 \end{equation}
 See section \ref{sec:lagrangeDeriv} for a derivation of Eq. \eqref{eq:customInterp}.
 
-Even though subjective listening confirmed that the sound is smooth when adding / removing points using linear interpolation, the expected fundamental frequency ($f_0 \approx c/2$) was slightly too high when interpolation needed to happen. Instead of a linear, we will use cubic interpolator $I_3$ according to 
+Even though subjective listening confirmed that the sound is smooth when adding / removing points using linear interpolation, the expected fundamental frequency ($f_0 \approx c/2$) was slightly too high when interpolation needed to happen. Instead of a linear, the cubic interpolator $I_3$ can be used according to 
 % \begin{equation}\label{eq:connectionInterpol}
 %     \begin{aligned}
 %         u_{M+1}^n = I_3(x_{u_{M+1}})w_l^n &= \frac{\alpha(\alpha - 1)(\alpha - 2)}{-6} w_2^n + \frac{(\alpha - 1)(\alpha + 1)(\alpha - 2)}{2}w_1^n \\
@@ -434,12 +434,15 @@ Going from DSP back to FDTD methods, \eqref{eq:generalSincIP} can be rewritten i
 \begin{equation}\label{eq:FDSSinc}
     u(x^\star) = \sum_{l = \mathcal{D}_\text{i}} u_l \cdot \text{sinc}\left(\frac{x^\star - lh}{h}\right).
 \end{equation}
-where $\mathcal{D}_\text{i}$ is the range for interpolation. Ideally, one uses the entire domain of 
+where $\mathcal{D}_\text{i}$ is the range for interpolation. Ideally, one uses the entire known domain of 
 
-
+\begin{figure}[h]
+\centerline{\includegraphics[width=0.6\columnwidth]{sincExplanation.eps} }
+\caption{\label{fig:sincExp}{Explanation of sinc interpolation in Eq. \eqref{eq:FDSSinc}. a) The ``true" state of the system is sinusoidal and is sampled at $l \in [0, 9]$ marked in red. b) Sinc functions with their centers at the sampled points scaled by the value of $u_l$ are drawn in grey with the one centered at $l = 2$ highlighted in black. Notice that exactly at a sample point $l$, all functions are 0 except for the one centered at $l$. c) The interpolated system is retrieved by adding all the functions in b) and plotted in blue. The interpolated state is almost identical to the true state shown in a).}}
+\end{figure}
 
 \subsection{Modal Analysis}\label{sec:modal}
-It is possible to write the complete system in matrix form as
+In order to analyse the behaviour of the interpolator, one can perform a modal analysis. It is possible to write the complete system in matrix form as
 \begin{equation}
     \mathbf{U}^{n+1} = \mathbf{B}\mathbf{U}^n - \mathbf{U}^{n-1}
 \end{equation}
