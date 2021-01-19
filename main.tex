@@ -380,7 +380,7 @@ Using cubic interpolation gives us the expected fundamental frequency for any wa
 
 \subsubsection{Derivation of the LaGrange interpolator}\label{sec:lagrangeDeriv}
 This subsection shows a derivation of how to get to Eq. \eqref{eq:customInterp}. We use Lagrange interpolation defined as
-\begin{equation}
+\begin{equation}\label{eq:lagrangeForm}
     \mathcal{I}_i = \prod_{k = 0, k\neq i}^m \frac{x-x_k}{x_i-x_k}.
 \end{equation}
 We then need the locations of the points we are using to interpolate. If we let (normalised by $h$ as all of the terms contain it)
@@ -410,7 +410,10 @@ As all of these contain a multiplication with $h$, these can be divided out. The
 \end{align}
 
 \subsection{Sinc interpolation}
-An even better result is obtained using \textit{sinc interpolation}. One can retrieve a continuous-time signal $y(t)$ from a discrete time-series $y[n]$ using 
+An even better result is obtained using \textit{sinc interpolation}. 
+
+\subsubsection{Introduction}
+One can retrieve a continuous-time signal $y(t)$ from a discrete time-series $y[n]$ using 
 \begin{equation}\label{eq:generalSincIP}
     y(t) = \sum_{n = -\infty}^{\infty} y[n] \cdot \text{sinc}\left(\frac{t - nT}{T}\right).
 \end{equation}
@@ -441,6 +444,8 @@ where $\mathcal{D}_\text{i}$ is the range for interpolation. Ideally, one uses t
 \caption{\label{fig:sincExp}{Explanation of sinc interpolation in Eq. \eqref{eq:FDSSinc}. a) The ``true" state of the system is sinusoidal and is sampled at $l \in [0, 9]$ marked in red. b) Sinc functions with their centers at the sampled points scaled by the value of $u_l$ are drawn in grey with the one centered at $l = 2$ highlighted in black. Notice that exactly at a sample point $l$, all functions are 0 except for the one centered at $l$. c) The interpolated system is retrieved by adding all the functions in b) and plotted in blue. The interpolated state is almost identical to the true state shown in a).}}
 \end{figure}
 
+
+
 \subsection{Modal Analysis}\label{sec:modal}
 In order to analyse the behaviour of the interpolator, one can perform a modal analysis. It is possible to write the complete system in matrix form as
 \begin{equation}
@@ -451,10 +456,13 @@ where \begin{equation}
 u^n_1, \hdots, u^n_M, w_0^n, \hdots, w_{M_w-2}^n
 \end{bmatrix}^T,
 \end{equation}
-(so $\mathbf{u}^n$ and $\mathbf{w}^n$ concatenated excluding the outer boundaries).
+(so $\mathbf{u}^n$ and $\mathbf{w}^n$ concatenated excluding the outer boundaries).  The modal frequencies (eigenfrequencies) of the system can then be calculated using the following formula \cite[p. 174]{Bilbao2009}
 
-If $\alpha = 0$, $\mathbf{B}$ looks like
-\begin{equation}
+\begin{equation}\label{eq:modalAnalysis}
+    f_p = \frac{1}{2\pi k}\cos^{-1}\left(\frac{1}{2}\text{eig}_p(\mathbf{B})\right).
+\end{equation}
+If $\alpha = 0$, i.e., $x_{u_M} = x_{w_0}$ $\mathbf{B}$ looks like
+\begin{equation}\label{eq:alphaIs0Full}
     \mathbf{B} = 2\mathbf{I} + \lambda^2 \begin{bmatrix}[cccccc|cccccc]
         &-2 & 1 & & & & & & & & & \\
         &1 & -2 & 1 & & & & & & & & \\
@@ -468,8 +476,24 @@ If $\alpha = 0$, $\mathbf{B}$ looks like
         & & & & & & & & & 1 & -2 & 
     \end{bmatrix}
 \end{equation}
-The $1$'s in the top-right and bottom-left quadrant show the interaction between $\mathbf{u}$ and $\mathbf{w}$ as shown in \eqref{eq:resultOneConnectedPoint}. In other words, $u_M^n$ is calculated using $w_1^n$ and $w_0^n$ using $u_{M-1}^n$.
+As $\lambda = 1$ at all times we can write \eqref{eq:alphaIs0Full} as 
+\begin{equation}\label{eq:alphaIs0}
+    \mathbf{B} = \begin{bmatrix}[cccccc|cccccc]
+        &0 & 1 & & & & & & & & & \\
+        &1 & 0 & 1 & & & & & & & & \\
+        &  & \ddots  &\ddots & \ddots & & & & 0 & & & \\
+       & & & 1 & 0 & 1 &  & & & & & \\
+       && & & 1 & 0 & 0 & 1 & & & & \\ \cline{2-11}
+      & & & & 1 & 0 &0 & 1 & & & & \\
+         & & & & & &1 & 0 & 1 & & & \\
+         & & & 0 & & &  & \ddots  &\ddots & \ddots & & \\
+        & & & & & & & & 1 & 0 & 1 & \\
+        & & & & & & & & & 1 & 0 & 
+    \end{bmatrix}
+\end{equation}
+The $1$'s in the top-right and bottom-left quadrant show the interaction between $\mathbf{u}$ and $\mathbf{w}$ as shown in \eqref{eq:resultOneConnectedPoint}. In other words, $u_M^n$ is calculated using $w_1^n$ and $w_0^n$ using $u_{M-1}^n$. The following subsections show the experiments done with the three different types of interpolation mentioned in the previous section, i.e., linear, cubic and sinc interpolation.
 
+\subsubsection{Linear interpolation}
 We can change $\mathbf{B}$ to include linear interpolation using (focusing only on the middle of the matrix)
 % \begin{equation}
 %     \mathbf{B}_1 = 2\mathbf{I} + \lambda^2 \begin{bmatrix}[cccccc|cccccc]
@@ -487,17 +511,26 @@ We can change $\mathbf{B}$ to include linear interpolation using (focusing only 
 % \end{equation}
 
 \begin{equation}
-    \mathbf{B}_1 = 2\mathbf{I} + \lambda^2 \begin{bmatrix}[cccc|cccc]
+    \mathbf{B}_1 = \begin{bmatrix}[cccc|cccc]
      & \ddots  &\ddots & & & & 0 & \\
-       & 1 & -2 & 1 & & & & \\
-      & & 1 & -2 & \alpha & (1-\alpha) & \\ \cline{2-7}
-      & & (1-\alpha) & \alpha &-2 & 1 & & \\
-         & & & &1 & -2 & 1  \\
+       & 1 & 0 & 1 & & & & \\
+      & & 1 & 0 & \alpha & (1-\alpha) & \\ \cline{2-7}
+      & & (1-\alpha) & \alpha &0 & 1 & & \\
+         & & & &1 & 0 & 1  \\
          & 0 & &  &  &\ddots & \ddots &
     \end{bmatrix}
 \end{equation}
 
-Cubic interpolation is slightly trickier but still possible. Renaming $\mathbf{A}^{-1}$ from Eq. \eqref{eq:Av} to $\mathbf{A}^\text{i}$ and writing out \eqref{eq:matSolution} yields
+\begin{figure}[h]
+    \centering
+    \subfloat[Modal analysis for linear interpolation.]{\label{fig:linearModesAddInCenter}{ \includegraphics[width=0.45\textwidth]{modalAnalysisFigs/linearMid.eps}}}
+    \hspace{0.05\textwidth}
+    \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:specLinAddCenter}{ \includegraphics[width=0.45\textwidth]{modalAnalysisFigs/specLinearMid.eps}}}
+    \caption{1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$). Points are added in the middle.}\label{fig:linAddInCenter}
+\end{figure}
+
+\subsubsection{Cubic Interpolation}
+Cubic interpolation (using equally spaced points) is slightly trickier but still possible. Renaming $\mathbf{A}^{-1}$ from Eq. \eqref{eq:Av} to $\mathbf{A}^\text{i}$ and writing out \eqref{eq:matSolution} yields
 \begin{align}
     u_{M+1}^n = \mathbf{A}^\text{i}_{1, 1}\begin{bmatrix}
    \gamma_\text{I} & \beta_\text{I} & \alpha_\text{I}
@@ -522,19 +555,64 @@ Recalling Eq. \eqref{eq:resultOneConnectedPoint1} where $w_1^n$ acts as virtual 
 we can use this to insert the solution from \eqref{eq:matSolution} into $\mathbf{B}$ according to
 
 \begin{equation}
-    \mathbf{B}_3 = 2\mathbf{I} + \lambda^2 \begin{bmatrix}[cccc|cccc]
+    \mathbf{B}_3 = \begin{bmatrix}[cccc|cccc]
      & \ddots  &\ddots & & & & 0 & \\
-       & 1 & -2 & 1 & & & & \\
-      & \mathbf{A}_{1, 2}^\text{i}\alpha_\text{I} &\mathbf{A}_{1, 2}^\text{i}\beta_\text{I} + 1 &\mathbf{A}_{1, 2}^\text{i}\gamma_\text{I} -2 & \mathbf{A}_{1, 1}^\text{i}\gamma_\text{I} & \mathbf{A}_{1, 1}^\text{i}\beta_\text{I}& \mathbf{A}_{1, 1}^\text{i}\alpha_\text{I}\\ \cline{2-7}
-      &\mathbf{A}_{2, 2}^\text{i}\alpha_\text{I} &\mathbf{A}_{2, 2}^\text{i}\beta_\text{I}&\mathbf{A}_{2, 2}^\text{i}\gamma_\text{I} & \mathbf{A}^\text{i}_{2,1}\gamma_\text{I}-2 & \mathbf{A}^\text{i}_{2,1}\beta_\text{I}+ 1 &\mathbf{A}_{2, 1}^\text{i}\alpha_\text{I} & \\
-         & & & &1 & -2 & 1  \\
+       & 1 & 0 & 1 & & & & \\
+      & \mathbf{A}_{1, 2}^\text{i}\alpha_\text{I} &\mathbf{A}_{1, 2}^\text{i}\beta_\text{I} + 1 &\mathbf{A}_{1, 2}^\text{i}\gamma_\text{I} & \mathbf{A}_{1, 1}^\text{i}\gamma_\text{I} & \mathbf{A}_{1, 1}^\text{i}\beta_\text{I}& \mathbf{A}_{1, 1}^\text{i}\alpha_\text{I}\\ \cline{2-7}
+      &\mathbf{A}_{2, 2}^\text{i}\alpha_\text{I} &\mathbf{A}_{2, 2}^\text{i}\beta_\text{I}&\mathbf{A}_{2, 2}^\text{i}\gamma_\text{I} & \mathbf{A}^\text{i}_{2,1}\gamma_\text{I} & \mathbf{A}^\text{i}_{2,1}\beta_\text{I}+ 1 &\mathbf{A}_{2, 1}^\text{i}\alpha_\text{I} & \\
+         & & & &1 & 0 & 1  \\
          & 0 & &  &  &\ddots & \ddots &
     \end{bmatrix}
 \end{equation}
-The modal frequencies (eigenfrequencies) of the system can then be calculated using the following formula \cite[p. 174]{Bilbao2009}
-\begin{equation}\label{eq:modalAnalysis}
-    f_p = \frac{1}{2\pi k}\cos^{-1}\left(\frac{1}{2}\text{eig}_p(\mathbf{B})\right).
+\begin{figure}[h]
+    \centering
+    \subfloat[Modal analysis. Modes are sorted at all times.]{\label{fig:cubModesAddInCenter}{ \includegraphics[width=0.45\textwidth]{modesAddPointsInCenter.eps}}}
+    \hspace{0.05\textwidth}
+    \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:cubSpecAddCenter}{ \includegraphics[width=0.45\textwidth]{specAddCenter.eps}}}
+    \caption{1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$). Points are added in the middle.}\label{fig:cubAddInCenter}
+\end{figure}
+Alternatively, one can create a custom cubic interpolator for unequally spaced gridpoints using \eqref{eq:lagrangeForm}. If we want the number of points to the left and the right of $u_{M+1}$ to be the same we need to consider $u_M$ and $w_0$ and right of it are $w_1$ and $w_2$ (look at Figure \ref{fig:interpolatedZoom} for reference). Similar to section \ref{sec:lagrangeDeriv} we define the following 
+\begin{equation}
+    \begin{aligned}
+     x_0 &= x_{u_{M}} = 0 \\
+     x_1 &= x_{w_0} = \alpha \\
+     x_2& = x_{w_1} = \alpha + 1 \\
+     x_3 &= x_{w_2} = \alpha + 2,
+    \end{aligned}
 \end{equation}
+and the $x$ that we're solving for is 
+\begin{equation}
+    x = x_{u_M+1} = 1.
+\end{equation}
+This results in the following interpolator:
+\begin{equation}
+    \mathcal{I}_3^\star = 
+    \begin{bmatrix}
+        \frac{\alpha - 1}{\alpha + 2} &
+        \frac{\alpha + 1}{2}&
+       (1-\alpha) &
+       \frac{\alpha(\alpha - 1)}{2(\alpha + 2)}
+    \end{bmatrix}\ .
+\end{equation}
+This results in the following $\mathbf{B}$ matrix:
+\begin{equation}
+    \mathbf{B}_3^\star = \begin{bmatrix}[cccc|cccc]
+     & \ddots  &\ddots & & & & 0 & \\
+       & 1 & 0 & 1 & & & & \\
+      & & 1 & \frac{\alpha - 1}{\alpha + 2} & \frac{\alpha + 1}{2} & (1-\alpha) &\frac{\alpha(\alpha - 1)}{2(\alpha + 2)} \\ \cline{2-7}
+      & \frac{\alpha(\alpha - 1)}{2(\alpha + 2)} & (1-\alpha) & \frac{\alpha + 1}{2} & \frac{\alpha - 1}{\alpha + 2} & 1 & & \\
+         & & & &1 & 0 & 1  \\
+         & 0 & &  &  &\ddots & \ddots &
+    \end{bmatrix}
+\end{equation}
+\begin{figure}[h]
+    \centering
+    \subfloat[Modal analysis. Modes are sorted at all times.]{\label{fig:altCubModesAddInCenter}{ \includegraphics[width=0.45\textwidth]{modalAnalysisFigs/altCubicMid.eps}}}
+    \hspace{0.05\textwidth}
+    \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:altCubSpecAddCenter}{ \includegraphics[width=0.45\textwidth]{modalAnalysisFigs/specAltCubicMid.eps}}}
+    \caption{1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$). Points are added in the middle.}\label{fig:altCubAddInCenter}
+\end{figure}
+
 The results for a system going linearly from $c=2940$ m/s ($N=15$) to $c = 2205$ m/s ($N=20$), can be found in Figure \ref{fig:addInCenter}. Figure \ref{fig:modesAddInCenter} shows a number of interesting things 
 \begin{itemize}
     \item At every integer $N$, there are $N-1$ modes (related to the number of moving points at that point) that are integer multiples of the fundamental. This is expected and desired. However, due to the extra point used for overlap, an extra mode arises between the lower and the upper half of the harmonics. If the system is excited when the system has an integer $N$ (and $\alpha = 0$ in Eq. \eqref{eq:connectionInterpol}), this extra mode will not be excited due to the constraint of a rigid connection. 
@@ -549,14 +627,6 @@ The spectrogram in Figure \ref{fig:specAddCenter} shows that excited modes follo
     \item Linearly down / up
 \end{itemize}]
 The following section goes into how to get closer to a desired behaviour.
-
-\begin{figure}[h]
-    \centering
-    \subfloat[Modal analysis. Modes are sorted at all times.]{\label{fig:modesAddInCenter}{ \includegraphics[width=0.45\textwidth]{modesAddPointsInCenter.eps}}}
-    \hspace{0.05\textwidth}
-    \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:specAddCenter}{ \includegraphics[width=0.45\textwidth]{specAddCenter.eps}}}
-    \caption{1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$). Points are added in the middle.}\label{fig:addInCenter}
-\end{figure}
 
 \subsubsection{Deciding where to add / remove points}
 Until now we have only looked at adding / removing points at the center of the string as in Eq. \eqref{eq:addingRemovingPoints}, i.e, alternating between the left and the right half. To get decrease of some of the undesired behaviour described above, such as ``squiggly" patterns for high modes and modal crossings. Trial and error showed that the closer the point add / remove location is to a boundary, the less this undesired behaviour shows up. The closest we can get to a boundary is to have $u$ be $N-1$ points (including the boundary) and $w$ two points, one moving, one boundary. If we then want to calculate the interpolated points using \eqref{eq:Av} we can extend the Dirichlet boundary condition in Eq. \eqref{eq:halfStringBoundaryCond} to the simply supported one
