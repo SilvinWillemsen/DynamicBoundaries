@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.3)  19 JAN 2021 16:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.3)  21 JAN 2021 15:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -532,6 +532,9 @@ File: dvipsnam.def 2015/12/30 v3.0k Driver-dependent file (DPC,SPQR)
 Package: cases 2002/05/02 ver 2.5 
 ) (/Users/SilvinW/repositories/DynamicBoundaries/main.aux
 
+LaTeX Warning: Label `fig:linAddInCenter' multiply defined.
+
+
 LaTeX Warning: Label `eq:systemHalfStiffStrings' multiply defined.
 
 
@@ -863,6 +866,39 @@ File: modalAnalysisFigs/specLinearMid-eps-converted-to.pdf Graphic file (type pd
  <use modalAnalysisFigs/specLinearMid-eps-converted-to.pdf>
 Package pdftex.def Info: modalAnalysisFigs/specLinearMid-eps-converted-to.pdf used on input line 528.
 (pdftex.def)             Requested size: 199.60895pt x 149.70198pt.
+Package epstopdf Info: Source file: <modalAnalysisFigs/quadraticMid.eps>
+(epstopdf)                    date: 2021-01-21 13:38:10
+(epstopdf)                    size: 110830 bytes
+(epstopdf)             Output file: <modalAnalysisFigs/quadraticMid-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-21 14:54:13
+(epstopdf)                    size: 104397 bytes
+(epstopdf)             Command: <repstopdf --outfile=modalAnalysisFigs/quadraticMid-eps-converted-to.pdf modalAnalysisFigs/quadraticMid.eps>
+(epstopdf)             \includegraphics on input line 545.
+Package epstopdf Info: Output file is already uptodate.
+ <modalAnalysisFigs/quadraticMid-eps-converted-to.pdf, id=123, 562.1pt x 421.575pt>
+File: modalAnalysisFigs/quadraticMid-eps-converted-to.pdf Graphic file (type pdf)
+ <use modalAnalysisFigs/quadraticMid-eps-converted-to.pdf>
+Package pdftex.def Info: modalAnalysisFigs/quadraticMid-eps-converted-to.pdf used on input line 545.
+(pdftex.def)             Requested size: 199.60895pt x 149.70198pt.
+Package epstopdf Info: Source file: <modalAnalysisFigs/specQuadraticMid.eps>
+(epstopdf)                    date: 2021-01-21 15:06:38
+(epstopdf)                    size: 300989 bytes
+(epstopdf)             Output file: <modalAnalysisFigs/specQuadraticMid-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-21 15:06:43
+(epstopdf)                    size: 344750 bytes
+(epstopdf)             Command: <repstopdf --outfile=modalAnalysisFigs/specQuadraticMid-eps-converted-to.pdf modalAnalysisFigs/specQuadraticMid.eps>
+(epstopdf)             \includegraphics on input line 547.
+Package epstopdf Info: Output file is already uptodate.
+ <modalAnalysisFigs/specQuadraticMid-eps-converted-to.pdf, id=124, 562.1pt x 421.575pt>
+File: modalAnalysisFigs/specQuadraticMid-eps-converted-to.pdf Graphic file (type pdf)
+ <use modalAnalysisFigs/specQuadraticMid-eps-converted-to.pdf>
+Package pdftex.def Info: modalAnalysisFigs/specQuadraticMid-eps-converted-to.pdf used on input line 547.
+(pdftex.def)             Requested size: 199.60895pt x 149.70198pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[12 </Users/SilvinW/repositories/DynamicBoundaries/modalAnalysisFigs/linearMid-eps-converted-to.pdf> </Users/SilvinW/repositories/DynamicBoundaries/modalAnalysisFigs/specLinearMid-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <modesAddPointsInCenter.eps>
 (epstopdf)                    date: 2020-11-14 11:03:04
 (epstopdf)                    size: 111266 bytes
@@ -870,12 +906,12 @@ Package epstopdf Info: Source file: <modesAddPointsInCenter.eps>
 (epstopdf)                    date: 2021-01-19 10:02:23
 (epstopdf)                    size: 105067 bytes
 (epstopdf)             Command: <repstopdf --outfile=modesAddPointsInCenter-eps-converted-to.pdf modesAddPointsInCenter.eps>
-(epstopdf)             \includegraphics on input line 569.
+(epstopdf)             \includegraphics on input line 587.
 Package epstopdf Info: Output file is already uptodate.
- <modesAddPointsInCenter-eps-converted-to.pdf, id=123, 562.1pt x 421.575pt>
+ <modesAddPointsInCenter-eps-converted-to.pdf, id=141, 562.1pt x 421.575pt>
 File: modesAddPointsInCenter-eps-converted-to.pdf Graphic file (type pdf)
  <use modesAddPointsInCenter-eps-converted-to.pdf>
-Package pdftex.def Info: modesAddPointsInCenter-eps-converted-to.pdf used on input line 569.
+Package pdftex.def Info: modesAddPointsInCenter-eps-converted-to.pdf used on input line 587.
 (pdftex.def)             Requested size: 199.60895pt x 149.70198pt.
 Package epstopdf Info: Source file: <specAddCenter.eps>
 (epstopdf)                    date: 2020-11-16 11:02:34
@@ -884,18 +920,14 @@ Package epstopdf Info: Source file: <specAddCenter.eps>
 (epstopdf)                    date: 2021-01-19 10:02:23
 (epstopdf)                    size: 341535 bytes
 (epstopdf)             Command: <repstopdf --outfile=specAddCenter-eps-converted-to.pdf specAddCenter.eps>
-(epstopdf)             \includegraphics on input line 571.
+(epstopdf)             \includegraphics on input line 589.
 Package epstopdf Info: Output file is already uptodate.
- <specAddCenter-eps-converted-to.pdf, id=124, 562.1pt x 421.575pt>
+ <specAddCenter-eps-converted-to.pdf, id=142, 562.1pt x 421.575pt>
 File: specAddCenter-eps-converted-to.pdf Graphic file (type pdf)
  <use specAddCenter-eps-converted-to.pdf>
-Package pdftex.def Info: specAddCenter-eps-converted-to.pdf used on input line 571.
+Package pdftex.def Info: specAddCenter-eps-converted-to.pdf used on input line 589.
 (pdftex.def)             Requested size: 199.60895pt x 149.70198pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[12 </Users/SilvinW/repositories/DynamicBoundaries/modalAnalysisFigs/linearMid-eps-converted-to.pdf> </Users/SilvinW/repositories/DynamicBoundaries/modalAnalysisFigs/specLinearMid-eps-converted-to.pdf>]
+ [13 </Users/SilvinW/repositories/DynamicBoundaries/modalAnalysisFigs/quadraticMid-eps-converted-to.pdf> </Users/SilvinW/repositories/DynamicBoundaries/modalAnalysisFigs/specQuadraticMid-eps-converted-to.pdf> </Users/SilvinW/repositories/DynamicBoundaries/modesAddPointsInCenter-eps-converted-to.pdf> </Users/SilvinW/repositories/DynamicBoundaries/specAddCenter-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <modalAnalysisFigs/altCubicMid.eps>
 (epstopdf)                    date: 2021-01-19 15:42:54
 (epstopdf)                    size: 110238 bytes
@@ -903,50 +935,73 @@ Package epstopdf Info: Source file: <modalAnalysisFigs/altCubicMid.eps>
 (epstopdf)                    date: 2021-01-19 16:07:11
 (epstopdf)                    size: 103812 bytes
 (epstopdf)             Command: <repstopdf --outfile=modalAnalysisFigs/altCubicMid-eps-converted-to.pdf modalAnalysisFigs/altCubicMid.eps>
-(epstopdf)             \includegraphics on input line 610.
+(epstopdf)             \includegraphics on input line 629.
 Package epstopdf Info: Output file is already uptodate.
- <modalAnalysisFigs/altCubicMid-eps-converted-to.pdf, id=141, 562.1pt x 421.575pt>
+ <modalAnalysisFigs/altCubicMid-eps-converted-to.pdf, id=173, 562.1pt x 421.575pt>
 File: modalAnalysisFigs/altCubicMid-eps-converted-to.pdf Graphic file (type pdf)
  <use modalAnalysisFigs/altCubicMid-eps-converted-to.pdf>
-Package pdftex.def Info: modalAnalysisFigs/altCubicMid-eps-converted-to.pdf used on input line 610.
+Package pdftex.def Info: modalAnalysisFigs/altCubicMid-eps-converted-to.pdf used on input line 629.
 (pdftex.def)             Requested size: 199.60895pt x 149.70198pt.
 Package epstopdf Info: Source file: <modalAnalysisFigs/specAltCubicMid.eps>
 (epstopdf)                    date: 2021-01-19 16:06:49
 (epstopdf)                    size: 314227 bytes
 (epstopdf)             Output file: <modalAnalysisFigs/specAltCubicMid-eps-converted-to.pdf>
-(epstopdf)             Command: <repstopdf --outfile=modalAnalysisFigs/specAltCubicMid-eps-converted-to.pdf modalAnalysisFigs/specAltCubicMid.eps>
-(epstopdf)             \includegraphics on input line 612.
-runsystem(repstopdf --outfile=modalAnalysisFigs/specAltCubicMid-eps-converted-to.pdf modalAnalysisFigs/specAltCubicMid.eps)...executed safely (allowed).
-
-Package epstopdf Info: Result file: <modalAnalysisFigs/specAltCubicMid-eps-converted-to.pdf>
 (epstopdf)                    date: 2021-01-19 16:07:25
-(epstopdf)                    size: 345067 bytes.
- <modalAnalysisFigs/specAltCubicMid-eps-converted-to.pdf, id=142, 562.1pt x 421.575pt>
+(epstopdf)                    size: 345067 bytes
+(epstopdf)             Command: <repstopdf --outfile=modalAnalysisFigs/specAltCubicMid-eps-converted-to.pdf modalAnalysisFigs/specAltCubicMid.eps>
+(epstopdf)             \includegraphics on input line 631.
+Package epstopdf Info: Output file is already uptodate.
+ <modalAnalysisFigs/specAltCubicMid-eps-converted-to.pdf, id=174, 562.1pt x 421.575pt>
 File: modalAnalysisFigs/specAltCubicMid-eps-converted-to.pdf Graphic file (type pdf)
  <use modalAnalysisFigs/specAltCubicMid-eps-converted-to.pdf>
-Package pdftex.def Info: modalAnalysisFigs/specAltCubicMid-eps-converted-to.pdf used on input line 612.
+Package pdftex.def Info: modalAnalysisFigs/specAltCubicMid-eps-converted-to.pdf used on input line 631.
+(pdftex.def)             Requested size: 199.60895pt x 149.70198pt.
+ [14 </Users/SilvinW/repositories/DynamicBoundaries/modalAnalysisFigs/altCubicMid-eps-converted-to.pdf> </Users/SilvinW/repositories/DynamicBoundaries/modalAnalysisFigs/specAltCubicMid-eps-converted-to.pdf>]
+Package epstopdf Info: Source file: <modalAnalysisFigs/quarticMid.eps>
+(epstopdf)                    date: 2021-01-21 09:48:45
+(epstopdf)                    size: 110311 bytes
+(epstopdf)             Output file: <modalAnalysisFigs/quarticMid-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-21 10:53:07
+(epstopdf)                    size: 103735 bytes
+(epstopdf)             Command: <repstopdf --outfile=modalAnalysisFigs/quarticMid-eps-converted-to.pdf modalAnalysisFigs/quarticMid.eps>
+(epstopdf)             \includegraphics on input line 689.
+Package epstopdf Info: Output file is already uptodate.
+ <modalAnalysisFigs/quarticMid-eps-converted-to.pdf, id=191, 562.1pt x 421.575pt>
+File: modalAnalysisFigs/quarticMid-eps-converted-to.pdf Graphic file (type pdf)
+ <use modalAnalysisFigs/quarticMid-eps-converted-to.pdf>
+Package pdftex.def Info: modalAnalysisFigs/quarticMid-eps-converted-to.pdf used on input line 689.
+(pdftex.def)             Requested size: 199.60895pt x 149.70198pt.
+Package epstopdf Info: Source file: <modalAnalysisFigs/specQuarticMid.eps>
+(epstopdf)                    date: 2021-01-21 10:31:58
+(epstopdf)                    size: 304500 bytes
+(epstopdf)             Output file: <modalAnalysisFigs/specQuarticMid-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-21 10:53:08
+(epstopdf)                    size: 348718 bytes
+(epstopdf)             Command: <repstopdf --outfile=modalAnalysisFigs/specQuarticMid-eps-converted-to.pdf modalAnalysisFigs/specQuarticMid.eps>
+(epstopdf)             \includegraphics on input line 691.
+Package epstopdf Info: Output file is already uptodate.
+ <modalAnalysisFigs/specQuarticMid-eps-converted-to.pdf, id=192, 562.1pt x 421.575pt>
+File: modalAnalysisFigs/specQuarticMid-eps-converted-to.pdf Graphic file (type pdf)
+ <use modalAnalysisFigs/specQuarticMid-eps-converted-to.pdf>
+Package pdftex.def Info: modalAnalysisFigs/specQuarticMid-eps-converted-to.pdf used on input line 691.
 (pdftex.def)             Requested size: 199.60895pt x 149.70198pt.
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+LaTeX Warning: Reference `fig:addInCenter' on page 15 undefined on input line 696.
 
 
-LaTeX Warning: Reference `fig:addInCenter' on page 13 undefined on input line 616.
+LaTeX Warning: Reference `fig:modesAddInCenter' on page 15 undefined on input line 696.
 
-
-LaTeX Warning: Reference `fig:modesAddInCenter' on page 13 undefined on input line 616.
-
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 618.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 698.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 618.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 698.
+ [15 </Users/SilvinW/repositories/DynamicBoundaries/modalAnalysisFigs/quarticMid-eps-converted-to.pdf> </Users/SilvinW/repositories/DynamicBoundaries/modalAnalysisFigs/specQuarticMid-eps-converted-to.pdf>]
 
+LaTeX Warning: Reference `fig:modesAddInCenter' on page 16 undefined on input line 702.
 
-LaTeX Warning: Reference `fig:modesAddInCenter' on page 13 undefined on input line 622.
-
-[13 </Users/SilvinW/repositories/DynamicBoundaries/modesAddPointsInCenter-eps-converted-to.pdf> </Users/SilvinW/repositories/DynamicBoundaries/specAddCenter-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <modesAddPointsAtRightBound.eps>
 (epstopdf)                    date: 2020-11-16 14:24:01
 (epstopdf)                    size: 106468 bytes
@@ -954,12 +1009,12 @@ Package epstopdf Info: Source file: <modesAddPointsAtRightBound.eps>
 (epstopdf)                    date: 2021-01-19 10:02:24
 (epstopdf)                    size: 99982 bytes
 (epstopdf)             Command: <repstopdf --outfile=modesAddPointsAtRightBound-eps-converted-to.pdf modesAddPointsAtRightBound.eps>
-(epstopdf)             \includegraphics on input line 653.
+(epstopdf)             \includegraphics on input line 733.
 Package epstopdf Info: Output file is already uptodate.
- <modesAddPointsAtRightBound-eps-converted-to.pdf, id=160, 562.1pt x 421.575pt>
+<modesAddPointsAtRightBound-eps-converted-to.pdf, id=209, 562.1pt x 421.575pt>
 File: modesAddPointsAtRightBound-eps-converted-to.pdf Graphic file (type pdf)
  <use modesAddPointsAtRightBound-eps-converted-to.pdf>
-Package pdftex.def Info: modesAddPointsAtRightBound-eps-converted-to.pdf used on input line 653.
+Package pdftex.def Info: modesAddPointsAtRightBound-eps-converted-to.pdf used on input line 733.
 (pdftex.def)             Requested size: 199.60895pt x 149.70198pt.
 Package epstopdf Info: Source file: <specAddPointsAtRightBound.eps>
 (epstopdf)                    date: 2020-11-16 14:31:22
@@ -968,22 +1023,23 @@ Package epstopdf Info: Source file: <specAddPointsAtRightBound.eps>
 (epstopdf)                    date: 2021-01-19 10:02:24
 (epstopdf)                    size: 335694 bytes
 (epstopdf)             Command: <repstopdf --outfile=specAddPointsAtRightBound-eps-converted-to.pdf specAddPointsAtRightBound.eps>
-(epstopdf)             \includegraphics on input line 655.
+(epstopdf)             \includegraphics on input line 735.
 Package epstopdf Info: Output file is already uptodate.
- <specAddPointsAtRightBound-eps-converted-to.pdf, id=161, 562.1pt x 421.575pt>
+ <specAddPointsAtRightBound-eps-converted-to.pdf, id=210, 562.1pt x 421.575pt>
 File: specAddPointsAtRightBound-eps-converted-to.pdf Graphic file (type pdf)
  <use specAddPointsAtRightBound-eps-converted-to.pdf>
-Package pdftex.def Info: specAddPointsAtRightBound-eps-converted-to.pdf used on input line 655.
+Package pdftex.def Info: specAddPointsAtRightBound-eps-converted-to.pdf used on input line 735.
 (pdftex.def)             Requested size: 199.60895pt x 149.70198pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[14 </Users/SilvinW/repositories/DynamicBoundaries/modalAnalysisFigs/altCubicMid-eps-converted-to.pdf> </Users/SilvinW/repositories/DynamicBoundaries/modalAnalysisFigs/specAltCubicMid-eps-converted-to.pdf>] [15 </Users/SilvinW/repositories/DynamicBoundaries/modesAddPointsAtRightBound-eps-converted-to.pdf> </Users/SilvinW/repositories/DynamicBoundaries/specAddPointsAtRightBound-eps-converted-to.pdf>]
-Overfull \hbox (1.16693pt too wide) detected at line 706
+[16]
+Overfull \hbox (1.16693pt too wide) detected at line 786
 []
  []
 
+[17 </Users/SilvinW/repositories/DynamicBoundaries/modesAddPointsAtRightBound-eps-converted-to.pdf> </Users/SilvinW/repositories/DynamicBoundaries/specAddPointsAtRightBound-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <twoStringsOverlap.eps>
 (epstopdf)                    date: 2020-08-07 11:13:58
 (epstopdf)                    size: 20473 bytes
@@ -991,12 +1047,12 @@ Package epstopdf Info: Source file: <twoStringsOverlap.eps>
 (epstopdf)                    date: 2021-01-19 10:02:25
 (epstopdf)                    size: 9380 bytes
 (epstopdf)             Command: <repstopdf --outfile=twoStringsOverlap-eps-converted-to.pdf twoStringsOverlap.eps>
-(epstopdf)             \includegraphics on input line 719.
+(epstopdf)             \includegraphics on input line 799.
 Package epstopdf Info: Output file is already uptodate.
-<twoStringsOverlap-eps-converted-to.pdf, id=194, 562.1pt x 421.575pt>
+ <twoStringsOverlap-eps-converted-to.pdf, id=231, 562.1pt x 421.575pt>
 File: twoStringsOverlap-eps-converted-to.pdf Graphic file (type pdf)
  <use twoStringsOverlap-eps-converted-to.pdf>
-Package pdftex.def Info: twoStringsOverlap-eps-converted-to.pdf used on input line 719.
+Package pdftex.def Info: twoStringsOverlap-eps-converted-to.pdf used on input line 799.
 (pdftex.def)             Requested size: 221.78923pt x 166.33696pt.
 Package epstopdf Info: Source file: <overlapForces.eps>
 (epstopdf)                    date: 2020-08-07 11:56:22
@@ -1005,24 +1061,24 @@ Package epstopdf Info: Source file: <overlapForces.eps>
 (epstopdf)                    date: 2021-01-19 10:02:25
 (epstopdf)                    size: 19966 bytes
 (epstopdf)             Command: <repstopdf --outfile=overlapForces-eps-converted-to.pdf overlapForces.eps>
-(epstopdf)             \includegraphics on input line 720.
+(epstopdf)             \includegraphics on input line 800.
 Package epstopdf Info: Output file is already uptodate.
- <overlapForces-eps-converted-to.pdf, id=195, 562.1pt x 421.575pt>
+ <overlapForces-eps-converted-to.pdf, id=232, 562.1pt x 421.575pt>
 File: overlapForces-eps-converted-to.pdf Graphic file (type pdf)
  <use overlapForces-eps-converted-to.pdf>
-Package pdftex.def Info: overlapForces-eps-converted-to.pdf used on input line 720.
+Package pdftex.def Info: overlapForces-eps-converted-to.pdf used on input line 800.
 (pdftex.def)             Requested size: 221.78923pt x 166.33696pt.
 
-Overfull \hbox (6.66664pt too wide) in paragraph at lines 719--721
+Overfull \hbox (6.66664pt too wide) in paragraph at lines 799--801
  [][][] 
  []
 
-[16 </Users/SilvinW/repositories/DynamicBoundaries/twoStringsOverlap-eps-converted-to.pdf> </Users/SilvinW/repositories/DynamicBoundaries/overlapForces-eps-converted-to.pdf>] [17] [18]
-Overfull \hbox (66.41754pt too wide) in paragraph at lines 851--851
+[18 </Users/SilvinW/repositories/DynamicBoundaries/twoStringsOverlap-eps-converted-to.pdf> </Users/SilvinW/repositories/DynamicBoundaries/overlapForces-eps-converted-to.pdf>] [19] [20]
+Overfull \hbox (66.41754pt too wide) in paragraph at lines 931--931
 [] 
  []
 
-[19] [20] (/Users/SilvinW/repositories/DynamicBoundaries/main.aux)
+[21] [22] (/Users/SilvinW/repositories/DynamicBoundaries/main.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -1031,18 +1087,18 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 6151 strings out of 493014
- 91692 string characters out of 6133351
- 184999 words of memory out of 5000000
- 9560 multiletter control sequences out of 15000+600000
+ 6180 strings out of 493014
+ 92910 string characters out of 6133351
+ 185095 words of memory out of 5000000
+ 9585 multiletter control sequences out of 15000+600000
  15752 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  44i,18n,49p,1347b,423s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/euler/eufm10.pfb>
-Output written on /Users/SilvinW/repositories/DynamicBoundaries/main.pdf (20 pages, 2265898 bytes).
+Output written on /Users/SilvinW/repositories/DynamicBoundaries/main.pdf (22 pages, 3162896 bytes).
 PDF statistics:
- 290 PDF objects out of 1000 (max. 8388607)
- 181 compressed objects within 2 object streams
+ 326 PDF objects out of 1000 (max. 8388607)
+ 197 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 106 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 126 words of extra memory for PDF output out of 10000 (max. 10000000)
 

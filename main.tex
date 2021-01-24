@@ -453,7 +453,7 @@ In order to analyse the behaviour of the interpolator, one can perform a modal a
 \end{equation}
 where \begin{equation}
 \mathbf{U}^n = \begin{bmatrix}
-u^n_1, \hdots, u^n_M, w_0^n, \hdots, w_{M_w-2}^n
+u^n_1, \hdots, u^n_M, w_0^n, \hdots, w_{M_w-1}  ^n
 \end{bmatrix}^T,
 \end{equation}
 (so $\mathbf{u}^n$ and $\mathbf{w}^n$ concatenated excluding the outer boundaries).  The modal frequencies (eigenfrequencies) of the system can then be calculated using the following formula \cite[p. 174]{Bilbao2009}
@@ -528,8 +528,27 @@ We can change $\mathbf{B}$ to include linear interpolation using (focusing only 
     \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:specLinAddCenter}{ \includegraphics[width=0.45\textwidth]{modalAnalysisFigs/specLinearMid.eps}}}
     \caption{1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$). Points are added in the middle.}\label{fig:linAddInCenter}
 \end{figure}
-
+\subsubsection{Quadratic Interpolation}
+One could increase the number of points to take into account in the interpolation. Here we use $u_{M}$, $w_0$ and $w_1$ to calculate $u_{M+1}$. The matrix then becomes
+\begin{equation}
+    \mathbf{B}_2 = \begin{bmatrix}[cccc|cccc]
+     & \ddots  &\ddots & & & & 0 & \\
+       & 1 & 0 & 1 & & & & \\
+      & & 1 & \frac{\alpha - 1}{\alpha + 1} & 1 & -\frac{\alpha - 1}{\alpha + 1} & \\ \cline{2-7}
+      & & -\frac{\alpha - 1}{\alpha + 1} & 1 & \frac{\alpha - 1}{\alpha + 1} & 1 & & \\
+         & & & &1 & 0 & 1  \\
+         & 0 & &  &  &\ddots & \ddots &
+    \end{bmatrix}
+\end{equation}
+\begin{figure}[h]
+    \centering
+    \subfloat[Modal analysis for linear interpolation.]{\label{fig:quadModesAddInCenter}{ \includegraphics[width=0.45\textwidth]{modalAnalysisFigs/quadraticMid.eps}}}
+    \hspace{0.05\textwidth}
+    \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:specQuadAddCenter}{ \includegraphics[width=0.45\textwidth]{modalAnalysisFigs/specQuadraticMid.eps}}}
+    \caption{1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$). Points are added in the middle.}\label{fig:linAddInCenter}
+\end{figure}
 \subsubsection{Cubic Interpolation}
+\subsubsection*{Equally spaced grid points}
 Cubic interpolation (using equally spaced points) is slightly trickier but still possible. Renaming $\mathbf{A}^{-1}$ from Eq. \eqref{eq:Av} to $\mathbf{A}^\text{i}$ and writing out \eqref{eq:matSolution} yields
 \begin{align}
     u_{M+1}^n = \mathbf{A}^\text{i}_{1, 1}\begin{bmatrix}
@@ -553,7 +572,6 @@ Cubic interpolation (using equally spaced points) is slightly trickier but still
 \end{align}
 Recalling Eq. \eqref{eq:resultOneConnectedPoint1} where $w_1^n$ acts as virtual grid point $u_{M+1}^n$ and Eq. \eqref{eq:resultOneConnectedPoint2}
 we can use this to insert the solution from \eqref{eq:matSolution} into $\mathbf{B}$ according to
-
 \begin{equation}
     \mathbf{B}_3 = \begin{bmatrix}[cccc|cccc]
      & \ddots  &\ddots & & & & 0 & \\
@@ -566,11 +584,12 @@ we can use this to insert the solution from \eqref{eq:matSolution} into $\mathbf
 \end{equation}
 \begin{figure}[h]
     \centering
-    \subfloat[Modal analysis. Modes are sorted at all times.]{\label{fig:cubModesAddInCenter}{ \includegraphics[width=0.45\textwidth]{modesAddPointsInCenter.eps}}}
+    \subfloat[Modal analysis for cubic interpolation.]{\label{fig:cubModesAddInCenter}{ \includegraphics[width=0.45\textwidth]{modesAddPointsInCenter.eps}}}
     \hspace{0.05\textwidth}
-    \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:cubSpecAddCenter}{ \includegraphics[width=0.45\textwidth]{specAddCenter.eps}}}
-    \caption{1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$). Points are added in the middle.}\label{fig:cubAddInCenter}
+    \subfloat[Spectrogram.]{\label{fig:cubSpecAddCenter}{ \includegraphics[width=0.45\textwidth]{specAddCenter.eps}}}
+    \caption{Cubic Interpolation}\label{fig:cubAddInCenter}
 \end{figure}
+\subsubsection*{Two points on each side}
 Alternatively, one can create a custom cubic interpolator for unequally spaced gridpoints using \eqref{eq:lagrangeForm}. If we want the number of points to the left and the right of $u_{M+1}$ to be the same we need to consider $u_M$ and $w_0$ and right of it are $w_1$ and $w_2$ (look at Figure \ref{fig:interpolatedZoom} for reference). Similar to section \ref{sec:lagrangeDeriv} we define the following 
 \begin{equation}
     \begin{aligned}
@@ -607,11 +626,72 @@ This results in the following $\mathbf{B}$ matrix:
 \end{equation}
 \begin{figure}[h]
     \centering
-    \subfloat[Modal analysis. Modes are sorted at all times.]{\label{fig:altCubModesAddInCenter}{ \includegraphics[width=0.45\textwidth]{modalAnalysisFigs/altCubicMid.eps}}}
+    \subfloat[Modal analysis for alternative cubic interpolation.]{\label{fig:altCubModesAddInCenter}{ \includegraphics[width=0.45\textwidth]{modalAnalysisFigs/altCubicMid.eps}}}
     \hspace{0.05\textwidth}
-    \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:altCubSpecAddCenter}{ \includegraphics[width=0.45\textwidth]{modalAnalysisFigs/specAltCubicMid.eps}}}
-    \caption{1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$). Points are added in the middle.}\label{fig:altCubAddInCenter}
+    \subfloat[Spectrogram.]{\label{fig:altCubSpecAddCenter}{ \includegraphics[width=0.45\textwidth]{modalAnalysisFigs/specAltCubicMid.eps}}}
+    \caption{Alternative Cubic interpolation.}\label{fig:altCubAddInCenter}
 \end{figure}
+\subsubsection*{Same points for both virtual grid points}
+As the results were still slightly unsatisfactory, a shifted version 
+
+where for both virtual grid points, $u_{M-1}$, $u_{M}$, $w_0$ and $w_1$ were used.
+\begin{equation}
+    \mathbf{B}_3' = \begin{bmatrix}[cccc|cccc]
+     & \ddots  &\ddots & & & & 0 & \\
+       & 1 & 0 & 1 & & & & \\
+      & & 1-\frac{\alpha(\alpha - 1)}{(\alpha + 1)(\alpha + 2)}& \frac{2(\alpha - 1)}{\alpha + 1} & \frac{2}{\alpha + 1} & -\frac{2(\alpha - 1)}{(\alpha + 1)(\alpha + 2)} \\ \cline{2-7}
+      & & -\frac{2(\alpha - 1)}{(\alpha + 1)(\alpha + 2)}  & \frac{2}{\alpha + 1} &  \frac{2(\alpha - 1)}{\alpha + 1} &  1-\frac{\alpha(\alpha - 1)}{(\alpha + 1)(\alpha + 2)} & & \\
+         & & & &1 & 0 & 1  \\
+         & 0 & &  &  &\ddots & \ddots &
+    \end{bmatrix}
+\end{equation}
+\subsubsection{Quartic interpolation}
+Although with the alternative cubic interpolation approach there are two points on either side of the point we want to calculate, and in that sense symmetric, the distance from that point is not. We can take one extra point and create a quartic interpolator:
+\begin{equation}
+    \begin{aligned}
+     x_0 &= x_{u_{M-1}} = 0 \\     
+     x_1 &= x_{u_{M}} = 1 \\
+     x_2 &= x_{w_0} = \alpha + 1 \\
+     x_3& = x_{w_1} = \alpha + 2 \\
+     x_4 &= x_{w_2} = \alpha + 3,
+    \end{aligned}
+\end{equation}
+and the $x$ that we're solving for is 
+\begin{equation}
+    x = x_{u_M+1} = 2.
+\end{equation}
+This results in the following interpolator:
+\begin{equation}
+    \mathcal{I}_4 = 
+    \begin{bmatrix}
+        \frac{-\alpha(\alpha - 1)}{(\alpha + 2)(\alpha + 3)}
+        &
+        \frac{2(\alpha - 1)}{\alpha + 2}&
+        1&
+        \frac{-2(\alpha - 1)}{\alpha + 2}&
+        \frac{\alpha(\alpha - 1)}{(\alpha + 2)(\alpha + 3)}
+    \end{bmatrix}\ .
+\end{equation}
+and the following matrix
+\begin{equation}
+    \mathbf{B}_4 = \begin{bmatrix}[cccc|cccc]
+     & \ddots  &\ddots & & & & 0 & \\
+       & 1 & 0 & 1 & & & & \\
+      & & 1 - \frac{\alpha(\alpha - 1)}{(\alpha + 2)(\alpha + 3)}& \frac{2(\alpha - 1)}{\alpha + 2} & 1 & -\frac{2(\alpha - 1)}{\alpha + 2} &\frac{\alpha(\alpha - 1)}{(\alpha + 2)(\alpha + 3)}\\ \cline{2-7}
+      & \frac{\alpha(\alpha - 1)}{(\alpha + 2)(\alpha + 3)} & -\frac{2(\alpha - 1)}{\alpha + 2}  & 1 & \frac{2(\alpha - 1)}{\alpha + 2}  & 1 - \frac{\alpha(\alpha - 1)}{(\alpha + 2)(\alpha + 3)} & & \\
+         & & & &1 & 0 & 1  \\
+         & 0 & &  &  &\ddots & \ddots &
+    \end{bmatrix}
+\end{equation}
+
+\begin{figure}[h]
+    \centering
+    \subfloat[Modal analysis for quartic interpolation.]{\label{fig:quartModesAddInCenter}{ \includegraphics[width=0.45\textwidth]{modalAnalysisFigs/quarticMid.eps}}}
+    \hspace{0.05\textwidth}
+    \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:quartSpecAddCenter}{ \includegraphics[width=0.45\textwidth]{modalAnalysisFigs/specQuarticMid.eps}}}
+    \caption{Quartic interpolation.}\label{fig:quartSpecAddInCenter}
+\end{figure}
+
 
 The results for a system going linearly from $c=2940$ m/s ($N=15$) to $c = 2205$ m/s ($N=20$), can be found in Figure \ref{fig:addInCenter}. Figure \ref{fig:modesAddInCenter} shows a number of interesting things 
 \begin{itemize}

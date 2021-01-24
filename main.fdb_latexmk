@@ -1,15 +1,15 @@
 # Fdb version 3
-["bibtex main"] 1611068832 "main.aux" "main.bbl" "main" 1611068845
+["bibtex main"] 1611238003 "main.aux" "main.bbl" "main" 1611238004
   "/usr/local/texlive/2016/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
   "bibliography.bib" 1593693642 155 dba35f0e19d76ad95900b68ef3583eb8 ""
-  "main.aux" 1611068845 10744 7ef1411032414664ba5bd2676c8127ef ""
+  "main.aux" 1611238004 11975 2e0c890e3c33a93bead31a02b0019c97 ""
   "main.bcf" 0 -1 0 ""
   (generated)
-  "main.blg"
   "main.bbl"
-["pdflatex"] 1611068844 "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" "/Users/SilvinW/repositories/DynamicBoundaries/main.pdf" "main" 1611068845
-  "/Users/SilvinW/repositories/DynamicBoundaries/main.aux" 1611068845 10744 7ef1411032414664ba5bd2676c8127ef ""
-  "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" 1611068843 63188 805b1d71ecbb12c4c68d12f19be65848 ""
+  "main.blg"
+["pdflatex"] 1611238004 "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" "/Users/SilvinW/repositories/DynamicBoundaries/main.pdf" "main" 1611238004
+  "/Users/SilvinW/repositories/DynamicBoundaries/main.aux" 1611238004 11975 2e0c890e3c33a93bead31a02b0019c97 ""
+  "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" 1611238001 67193 85955a974569b655cb942d7dba1e4101 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2016/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -120,13 +120,17 @@
   "addingPoint.eps" 1606239328 44845 8c36686829de277553a90daa2de337c6 ""
   "dynamic2.eps" 1593611827 21885 7a15b127a9cd578540594db7ab4d7839 ""
   "dynamicBoundaryDrawChange.eps" 1593769613 27636 6ce3bfbc0eb4f8e36dc1e2713c759e74 ""
-  "main.aux" 1611068845 10744 7ef1411032414664ba5bd2676c8127ef ""
-  "main.bbl" 1611068832 166 78353ecaa7c75d63dbd4bc5693bc4627 "bibtex main"
-  "main.tex" 1611068843 63188 805b1d71ecbb12c4c68d12f19be65848 ""
+  "main.aux" 1611238004 11975 2e0c890e3c33a93bead31a02b0019c97 ""
+  "main.bbl" 1611238004 166 78353ecaa7c75d63dbd4bc5693bc4627 "bibtex main"
+  "main.tex" 1611238001 67193 85955a974569b655cb942d7dba1e4101 ""
   "modalAnalysisFigs/altCubicMid.eps" 1611067374 110238 914d567dd402abd82cc446177e967da1 ""
   "modalAnalysisFigs/linearMid.eps" 1611048257 112013 87986514ef011bfba568b61f40409036 ""
+  "modalAnalysisFigs/quadraticMid.eps" 1611232690 110830 14b41e594b0be8508ef6ba1868c8a0c3 ""
+  "modalAnalysisFigs/quarticMid.eps" 1611218925 110311 59ca67d696eb814e95a6249f2db827a2 ""
   "modalAnalysisFigs/specAltCubicMid.eps" 1611068809 314227 5236130aa7e75024646381e31d0d4e53 ""
   "modalAnalysisFigs/specLinearMid.eps" 1611051699 318297 e31b1f3b5df23c4ff5175191fff8c6d1 ""
+  "modalAnalysisFigs/specQuadraticMid.eps" 1611237998 300989 fc4bb129f3c76a9be2359e50ce2bff9f ""
+  "modalAnalysisFigs/specQuarticMid.eps" 1611221518 304500 75b01b18a26057bbcb2820c833a8a663 ""
   "modesAddPointsAtRightBound.eps" 1605533041 106468 3f94e7fe8aefb8dcb2a5383b85018df5 ""
   "modesAddPointsInCenter.eps" 1605348184 111266 faf5c1e0f055bd9ed09e4d77f142fa02 ""
   "overlapForces.eps" 1596794182 33377 2278e32de214779f4d0ffa444f1f5107 ""
@@ -142,8 +146,8 @@
   "twoFreeStringsInterpolatedFull.eps" 1596200453 27519 35c672b0ff23de7cb32b28b413396c66 ""
   "twoStringsOverlap.eps" 1596791638 20473 a924c4fb6ad121d7483da1ce548b15e8 ""
   (generated)
-  "main.aux"
   "/Users/SilvinW/repositories/DynamicBoundaries/main.pdf"
   "/Users/SilvinW/repositories/DynamicBoundaries/main.log"
   "main.log"
   "main.pdf"
+  "main.aux"
