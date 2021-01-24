@@ -951,4 +951,26 @@ for some wavenumber $\beta$. WLOG, assume $x^{*} = 0$. You can then define an er
 where here, $\beta_{max}$ is a maximal wavenumber; if the grid points are equally spaced, with spacing $h$, you might choose $\beta_{max} = \pi/h$, but you don't have to! It could be smaller than this, allowing for optimisation over a smaller range of wavenumbers. 
 
 Then...you need to minimise this error with respect to all the parameters $a_{l}$. If the points are equally spaced, you end up with a sinc interpolant. If not, well, you end up with something else. 
+
+Expanding the expression for E gives:
+
+\begin{equation}
+E = 2\beta_{max}-\sum_{l=1}^{N}a_{l}\int_{-\beta_{max}}^{\beta_{max}}e^{j\beta x_{l}}d\beta-\sum_{l=1}^{N}a_{l}\int_{-\beta_{max}}^{\beta_{max}}e^{-j\beta x_{l}}d\beta+\sum_{l=1}^{N}\sum_{m=1}^{M}a_{l}a_{m}\int_{-\beta_{max}}^{\beta_{max}}e^{j\beta\left(x_{l}-x_{m}\right)}
+\end{equation}
+or
+\begin{equation}
+E = 2\beta_{max}-2\sum_{l=1}^{N}a_{l}\int_{-\beta_{max}}^{\beta_{max}}\cos(\beta x_{l})d\beta+\sum_{l=1}^{N}\sum_{m=1}^{M}a_{l}a_{m}\int_{-\beta_{max}}^{\beta_{max}}\cos(\beta\left(x_{l}-x_{m}\right))d\beta
+\end{equation}
+
+Now, take the gradient with respect to $a_{p}$, $p=1,\hdots,N$, and set to zero for a minimum, to get
+\begin{equation}
+\frac{\partial E}{\partial a_{p}} = 4\frac{\sin(\beta_{max} x_{p})}{x_{p}}-4\sum_{l=1}^{N}a_{l}\frac{\sin(\beta_{max} \left(x_{p}-x_{l}\right))}{x_{p}-x_{l}} = 0
+\end{equation}
+
+This can be rewritten as a linear system as
+\begin{equation}
+    {\bf A}{\bf a} = {\bf b}
+\end{equation}
+This is what is in the code. Note that this is not really sinc interpolation! It is something more general...it reduces to sinc interpolation if you have equally spaced points (separation $h$) and if $\beta_{max} = \pi/h$...
+
 \end{document}
