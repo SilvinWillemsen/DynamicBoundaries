@@ -735,7 +735,79 @@ Analysing this using Eq. \eqref{eq:modalAnalysis} yields Figure \ref{fig:modesAd
     \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:specAddCenter}{ \includegraphics[width=0.45\textwidth]{specAddPointsAtRightBound.eps}}}
     \caption{1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$). Points are added at the boundary.}\label{fig:addAtBoundary}
 \end{figure}
+\subsection{Displacement correction}
+When the wavespeed is increased and points are removed, it is not necessarily true that $u_M = w_0$ at the time of removal and the rigid connection in \eqref{eq:rigid} is violated. On top of the virtual grid point ``generation'' from the interpolation described above, one could add a connection force that is dependent on how close the inner boundaries $u_M$ and $w_0$ are.
 
+We can extend \eqref{eq:systemHalfStrings} to have a spring force between $u_M$, $w_0$ and the average between them ($(u_M + w_0) / 2$)
+\begin{align}
+    &\begin{cases}\nonumber
+        \delta_{tt}u^n &= c^2\delta_{xx}u_M^n - J(x_{u_M})F\\
+        \delta_{tt}w^n &= c^2\delta_{xx}w_0^n + J(x_{u_M})F
+    \end{cases}\\
+    &\begin{cases}\nonumber
+        \delta_{tt}u_M^n &= c^2\delta_{xx}u_M^n - \frac{\beta}{h} \left(u_M^n - \frac{u_M^n + w_0^n}{2}\right)\\
+        \delta_{tt}w_0^n &= c^2\delta_{xx}w_0^n - \frac{\beta}{h} \left(w_0^n - \frac{u_M^n + w_0^n}{2}\right)
+    \end{cases}\\
+    &\begin{cases}\nonumber
+        \delta_{tt}u_M^n &= c^2\delta_{xx}u_M^n + \beta \left(\frac{w_0^n - u_M^n}{2}\right)\\
+        \delta_{tt}w_0^n &= c^2\delta_{xx}w_0^n - \beta\left( \frac{w_0^n - u_M^n}{2}\right)
+    \end{cases}
+    \\
+    &\begin{cases}\label{eq:systemHalfStringsDispCorr}
+        \delta_{tt}u_M^n &= c^2\delta_{xx}u_M^n + \beta \eta^n\\
+        \delta_{tt}w_0^n &= c^2\delta_{xx}w_0^n - \beta\eta^n
+    \end{cases}
+\end{align}
+with
+\begin{equation}\label{eq:etaCorrDef}
+    \eta^n \triangleq \frac{w_0^n - u_M^n}{2}
+\end{equation}
+and $\beta = \beta(\alpha)$. We unfortunately can't just add the force like this as this might cause instability at the connection. Instead we need to add the centred temporal averaging operator $\mu_{t\cdot}$ which ensures stability \cite{Bilbao2009}.
+
+\begin{equation}\label{eq:corrForceNoDamp}
+    F = \beta \mu_{t\cdot}\eta^n.
+\end{equation}
+Setting $\beta$ inversely proportional to $\alpha$, i.e., the smaller $\alpha$ is the higher the `correction' effect, according to
+\def\plusEps{+ \epsilon};
+% \def\plusEps{};
+\def\alfPlusEps{(\alpha \plusEps)};
+% \def\alfPlusEps{\alpha}
+\begin{equation}
+    \beta = \frac{1 - \alpha}{\alpha \plusEps},
+\end{equation}
+with $0<\epsilon \ll 1$ to prevent a division by 0. It will be shown that when calculating the force, a division by 0 can be prevented and $\epsilon = 0$ will still be defined. We can observe that when $\alpha = 0$ and the correction effect needs to be at a maximum, $\beta\rightarrow \infty$. When $\alpha \rightarrow 1$, $\beta \rightarrow 0$.
+
+We can also add a damping coefficient to \eqref{eq:corrForceNoDamp} as
+\begin{equation}\label{eq:corrForce}
+    F = \beta \left(\mu_{t\cdot}\eta^n +\sigma_0\delta_{t\cdot}\eta^n \right),
+\end{equation}
+and solve for $\eta^{n+1}$ 
+
+\begin{align}
+    F &= \beta\left(\frac{1}{2}\left(\eta^{n+1}+\eta^{n-1}\right) + \frac{\sigma_0}{2k}\left(\eta^{n+1}-\eta^{n-1}\right)\right)\nonumber\\
+    F&= \left(\frac{\beta (1 + \sigma_0/k)}{2}\right)\eta^{n+1} + \left(\frac{\beta (1 - \sigma_0/k)}{2}\right) \eta^{n-1}\nonumber\\
+    \eta^{n+1} &= \left(\frac{2
+    \alfPlusEps}{(1+\sigma_0/k)(1-\alpha)}\right)F - \underbrace{\frac{1-\sigma_0/k}{1+\sigma_0/k}}_{r}\eta^{n-1}.\label{eq:etaSolut1}
+\end{align}
+Using superscript $I$ to denote an intermediate state describing of $u^{n+1}$ and $w^{n+1}$ without the connection force, we also know, through Eq. \eqref{eq:etaCorrDef}, that 
+
+\begin{align}
+    \eta^{n+1} &= \frac{w_0^I-\frac{k^2}{h}F-\left(u_M^I+\frac{k^2}{h}F\right)}{2}\nonumber\\
+    \eta^{n+1} &= \frac{w_0^I - u_M^I}{2} - \frac{k^2}{h}F,
+\end{align}
+which can be set equal to \eqref{eq:etaSolut1} and solved for $F$ according to 
+
+\begin{align*}
+    \left(\frac{2
+    \alfPlusEps}{(1+\sigma_0/k)(1-\alpha)}\right)F - r \eta^{n-1} &= \frac{w_0^I - u_M^I}{2} - \frac{k^2}{h}F\\
+    \left(\frac{2h
+    \alfPlusEps + k^2(1+\sigma_0/k)(1-\alpha)}{h(1+\sigma_0/k)(1-\alpha)}\right)F &= \frac{w_0^I - u_M^I}{2}+r\eta^{n-1}\\
+    F &= \left(\frac{w_0^I - u_M^I}{2}+r\eta^{n-1}\right)\left(\frac{h(1+\sigma_0/k)(1-\alpha)}{2h \alfPlusEps + k^2(1+\sigma_0/k)(1-\alpha)}\right).
+\end{align*}
+It is clear now that no matter the value of $\alpha$, no division by 0 will occur, so $\epsilon = 0$ is still defined. The final equation for $F$ can thus be written as
+\begin{equation}
+    F = \left(\frac{w_0^I - u_M^I}{2}+r\eta^{n-1}\right)\left(\frac{h(1+\sigma_0/k)(1-\alpha)}{2h\alpha + k^2(1+\sigma_0/k)(1-\alpha)}\right).
+\end{equation}
 \subsection{Stiff string}
 To prove that this technique also works with more complicated schemes, we can apply the above to the stiff string with the following scheme
 \begin{equation}
