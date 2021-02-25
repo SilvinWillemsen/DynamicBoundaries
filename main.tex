@@ -530,7 +530,7 @@ We can change $\mathbf{B}$ to include linear interpolation using (focusing only 
 \end{figure}
 \subsubsection{Quadratic Interpolation}
 One could increase the number of points to take into account in the interpolation. Here we use $u_{M}$, $w_0$ and $w_1$ to calculate $u_{M+1}$. The matrix then becomes
-\begin{equation}
+\begin{equation}\label{eq:quadMat}
     \mathbf{B}_2 = \begin{bmatrix}[cccc|cccc]
      & \ddots  &\ddots & & & & 0 & \\
        & 1 & 0 & 1 & & & & \\
@@ -738,85 +738,75 @@ Analysing this using Eq. \eqref{eq:modalAnalysis} yields Figure \ref{fig:modesAd
 \subsection{Displacement correction}
 When the wavespeed is increased and points are removed, it is not necessarily true that $u_M = w_0$ at the time of removal and the rigid connection in \eqref{eq:rigid} is violated. On top of the virtual grid point ``generation'' from the interpolation described above, one could add a connection force that is dependent on how close the inner boundaries $u_M$ and $w_0$ are.
 
-We can extend \eqref{eq:systemHalfStrings} to have a spring force between $u_M$, $w_0$ and the average between them ($(u_M + w_0) / 2$). Using some coefficient $\beta$ acting as a spring coefficient scaling the effect of this force we get
-\begin{align}
-    &\begin{cases}\nonumber
-        \delta_{tt}u_M^n &= c^2\delta_{xx}u_M^n - \frac{\beta}{h} \left(u_M^n - \frac{u_M^n + w_0^n}{2}\right)\\
-        \delta_{tt}w_0^n &= c^2\delta_{xx}w_0^n - \frac{\beta}{h} \left(w_0^n - \frac{u_M^n + w_0^n}{2}\right)
-    \end{cases}\\
-    &\begin{cases}\nonumber
-        \delta_{tt}u_M^n &= c^2\delta_{xx}u_M^n + \frac{\beta}{h} \left(\frac{w_0^n - u_M^n}{2}\right)\\
-        \delta_{tt}w_0^n &= c^2\delta_{xx}w_0^n - \frac{\beta}{h}\left( \frac{w_0^n - u_M^n}{2}\right)
-    \end{cases}
-    \\
-    &\begin{cases}\nonumber
-        \delta_{tt}u_M^n &= c^2\delta_{xx}u_M^n + \frac{\beta}{h} \eta^n\\
-        \delta_{tt}w_0^n &= c^2\delta_{xx}w_0^n - \frac{\beta}{h}\eta^n
-    \end{cases}
-\end{align}
-with
-\begin{equation}\label{eq:etaCorrDef}
-    \eta^n \triangleq \frac{w_0^n - u_M^n}{2}.
-\end{equation}
-We unfortunately can't just add the effect like this as this might cause instability at the connection. Instead we need to add the centred temporal averaging operator $\mu_{t\cdot}$ which ensures stability \cite{Bilbao2009}.
-
-Taking the entire scheme and rewriting the last terms above in terms of some force yields
+We can extend \eqref{eq:systemHalfStrings} to have a spring force between $u_M$ and $w_0$ as
 \begin{equation}\label{eq:dispCorrSyst}
     \begin{cases}
         \delta_{tt}u^n &= c^2\delta_{xx}u^n + J(x_{u_M})F\\
         \delta_{tt}w^n &= c^2\delta_{xx}w_0^n - J(x_{w_0})F
     \end{cases}
 \end{equation}
-with
+with 
 \begin{equation}\label{eq:corrForceNoDamp}
     F = \beta \mu_{t\cdot}\eta^n.
 \end{equation}
+Here,
+\begin{equation}\label{eq:etaCorrDef}
+    \eta^n \triangleq w_0^n - u_M^n
+\end{equation}
+is the difference in displacement between the inner boundaries
+and $\beta = \beta(\alpha)$ 
+acts as a spring coefficient that is a function of the distance between the inner boundaries along the grid, i.e., $\alpha$. Furthermore, the centred temporal averaging operator $\mu_{t\cdot}$ is used in \eqref{eq:corrForceNoDamp} to ensure stability \cite{Bilbao2009}.
 
 We then continue by finding a definition for $\beta$ that is inversely proportional to $\alpha$, i.e., the smaller $\alpha$ is the higher the `correction' effect, ideally approaching an infinite stiffness, or rigid connection, when $\alpha = 0$ and no stiffness when $\alpha \rightarrow 1$. This can be achieved by defining $\beta = \beta(\alpha)$ as
 \def\plusEps{+ \epsilon}
 % \def\plusEps{};
 \def\alfPlusEps{(\alpha \plusEps)}
 % \def\alfPlusEps{\alpha}
-\begin{equation}
+\begin{equation}\label{eq:betaDef}
     \beta = \frac{1 - \alpha}{\alpha \plusEps},
 \end{equation}
 with $0<\epsilon \ll 1$ to prevent a division by 0. It will be shown that when calculating the force after expansion, a division by 0 can be prevented and $\epsilon = 0$ will still yield a defined solution. We can observe that when $\alpha = 0$ and the correction effect needs to be at a maximum, $\beta\rightarrow \infty$. When $\alpha \rightarrow 1$, $\beta \rightarrow 0$.
 
-We can also add a damping coefficient to \eqref{eq:corrForceNoDamp} as
+We can also add a damping term to \eqref{eq:corrForceNoDamp} which is also scaled by $\beta$ as
 \begin{equation}\label{eq:corrForce}
     F = \beta \left(\mu_{t\cdot}\eta^n +\sigma_0\delta_{t\cdot}\eta^n \right),
 \end{equation}
-and solve for $\eta^{n+1}$ 
-
+where $\sigma_0$ is the damping coefficient. Then, we can solve for $\eta^{n+1}$ 
 \begin{align}
     F &= \beta\left(\frac{1}{2}\left(\eta^{n+1}+\eta^{n-1}\right) + \frac{\sigma_0}{2k}\left(\eta^{n+1}-\eta^{n-1}\right)\right)\nonumber\\
     F&= \left(\frac{\beta (1 + \sigma_0/k)}{2}\right)\eta^{n+1} + \left(\frac{\beta (1 - \sigma_0/k)}{2}\right) \eta^{n-1}\nonumber\\
-    \eta^{n+1} &= \left(\frac{2
+    \xLeftrightarrow{\mystrut\ \text{Eq. \eqref{eq:betaDef}}\ } \quad \eta^{n+1} &= \left(\frac{2
     \alfPlusEps}{(1+\sigma_0/k)(1-\alpha)}\right)F - \underbrace{\frac{1-\sigma_0/k}{1+\sigma_0/k}}_{r}\eta^{n-1}.\label{eq:etaSolut1}
 \end{align}
 Using superscript $\text{I}$ to denote an intermediate state describing of $u^{n+1}_M$ and $w^{n+1}_0$ without the connection force (see \eqref{eq:resultOneConnectedPoint}), we also know, through Eq. \eqref{eq:etaCorrDef}, that 
 
 \begin{align}
-    \eta^{n+1} &= \frac{w_0^\text{I}-\frac{k^2}{h}F-\left(u_M^\text{I}+\frac{k^2}{h}F\right)}{2}\nonumber\\
-    \eta^{n+1} &= \frac{w_0^\text{I} - u_M^\text{I}}{2} - \frac{k^2}{h}F,
+    \eta^{n+1} &= w_0^\text{I}-\frac{k^2}{h}F-\left(u_M^\text{I}+\frac{k^2}{h}F\right)\nonumber\\
+    \eta^{n+1} &= w_0^\text{I} - u_M^\text{I} - \frac{2k^2}{h}F,\label{eq:etaNext}
 \end{align}
 which can be set equal to \eqref{eq:etaSolut1} and solved for $F$ according to 
 
 \begin{align*}
     \left(\frac{2
-    \alfPlusEps}{(1+\sigma_0/k)(1-\alpha)}\right)F - r \eta^{n-1} &= \frac{w_0^{I} - u_M^{I}}{2} - \frac{k^2}{h}F\\
+    \alfPlusEps}{(1+\sigma_0/k)(1-\alpha)}\right)F - r \eta^{n-1} &= w_0^{I} - u_M^{I}- \frac{2k^2}{h}F\\
     \left(\frac{2h
-    \alfPlusEps + k^2(1+\sigma_0/k)(1-\alpha)}{h(1+\sigma_0/k)(1-\alpha)}\right)F &= \frac{w_0^{I} - u_M^{I}}{2}+r\eta^{n-1}\\
-    F &= \left(\frac{w_0^{I} - u_M^{I}}{2}+r\eta^{n-1}\right)\left(\frac{h(1+\sigma_0/k)(1-\alpha)}{2h \alfPlusEps + k^2(1+\sigma_0/k)(1-\alpha)}\right).
+    \alfPlusEps + 2k^2(1+\sigma_0/k)(1-\alpha)}{h(1+\sigma_0/k)(1-\alpha)}\right)F &= w_0^{I} - u_M^{I}+r\eta^{n-1}\\
+    F &= \left(w_0^{I} - u_M^{I}+r\eta^{n-1}\right)\left(\frac{h(1+\sigma_0/k)(1-\alpha)}{2h \alfPlusEps + 2k^2(1+\sigma_0/k)(1-\alpha)}\right).
 \end{align*}
 It is clear now that no matter the value of $\alpha$, no division by 0 will occur, so $\epsilon = 0$ is still defined. The final equation for $F$ can thus be written as
 \begin{equation}\label{eq:finalForce}
-    F = \left(\frac{w_0^{I} - u_M^{I}}{2}+r\eta^{n-1}\right)\underbrace{\left(\frac{h(1+\sigma_0/k)(1-\alpha)}{2h\alpha + k^2(1+\sigma_0/k)(1-\alpha)}\right)}_{\Psi}.
+    F = \left(w_0^{I} - u_M^{I}+r\eta^{n-1}\right)\underbrace{\left(\frac{h(1+\sigma_0/k)(1-\alpha)}{2h\alpha + 2k^2(1+\sigma_0/k)(1-\alpha)}\right)}_{\Psi}.
 \end{equation}
-This can then be filled into \eqref{eq:dispCorrSyst} and used to get $u_M^{n+1}$ and $w_0^{n+1}$ respectively. Using $\alpha = 0$ and $\sigma_0 = 0$ as a test case to see what would happen to the scheme at the inner boundaries when they perfectly overlap (and without damping, just restoring force), we get that $r = 1$ and \eqref{eq:finalForce} becomes
-\begin{equation}
-    F = \left(\frac{w_0^{I} - u_M^{I}}{2}+\eta^{n-1}\right)\left(\frac{h}{k^2}\right).
-\end{equation}
+This can then be filled into \eqref{eq:dispCorrSyst} and used to get $u_M^{n+1}$ and $w_0^{n+1}$ respectively. \SWcomment[Using $\alpha = 0$ and $\sigma_0 = 0$ as a test case to see what would happen to the scheme at the inner boundaries when they perfectly overlap (and without damping, just restoring force), we get that $r = 1$ and \eqref{eq:finalForce} becomes
+\begin{align*}
+    F &= \left(w_0^{I} - u_M^{I}+\eta^{n-1}\right)\left(\frac{h}{2k^2}\right)\\
+    \xLeftrightarrow{\mystrut\ \text{Eq. \eqref{eq:etaNext}}\ } \quad F &= \left(\eta^{n+1} + \frac{2k^2}{h}F + \eta^{n-1}\right)\left(\frac{h}{2k^2}\right)\\
+    F - F &= \eta^{n+1} + \eta^{n-1}\\
+    2\mu_{t\cdot}\eta^n &= 0\\
+    \mu_{t\cdot}\eta^n &= 0
+\end{align*}
+showing that when $\alpha = 0$, the $\eta^n$ should be 0 and thus boils down to a rigid connection.]
+
 As the intermediate states are as defined as \eqref{eq:resultOneConnectedPoint} (the scheme without the correction effect), %with virtual gridpoints $u_{M+1}^n \triangleq w_1^n$ and $w_{-1}^n \triangleq u_{M-1}^n$, 
 and %knowing that $\lambda = 1$ at all times, we can simplify this to
 % \begin{subequations}
@@ -827,11 +817,51 @@ and %knowing that $\lambda = 1$ at all times, we can simplify this to
 % \end{subequations}
 % Then, 
 using \eqref{eq:etaCorrDef} for $\eta^{n-1}$ yields
+\begin{align*}
+    F &= \Psi\left(w_{-1}^n + w_1^n - w_0^{n-1} - u_{M+1}^n-u_{M-1}^n + u_M^{n-1} + r (w_0^{n-1} - u_M^{n-1}\right)\\
+    F&= \Psi\left(w_{-1}^n + w_1^n - (1-r)w_0^{n-1} - u_{M+1}^n-u_{M-1}^n + (1-r)u_M^{n-1}\right).
+\end{align*}
+Substituting this into \eqref{eq:dispCorrSyst} and evaluated at the inner boundaries yields
+\begin{align*}
+    u^{n+1}_M &= u_{M-1}^n + u_{M+1}^n - u_M^{n-1} + \underbrace{\frac{\Psi k^2}{h}}_{\psi}\left(w_{-1}^n + w_1^n - (1-r)w_0^{n-1} - u_{M+1}^n-u_{M-1}^n + (1-r)u_M^{n-1}\right)\\
+    u^{n+1}_M &= (1-\psi)u_{M-1}^n + (1-\psi)u_{M+1}^n - (1-\psi(1-r))u_M^{n-1} + \psi\left(w_{-1}^n + w_1^n - (1-r)w_0^{n-1}\right)
+\end{align*}
+and
+\begin{align*}
+    w^{n+1}_0 &= w_{-1}^n + w_{1}^n - w_0^{n-1} - \psi\left(w_{-1}^n + w_1^n - (1-r)w_0^{n-1} - u_{M+1}^n-u_{M-1}^n + (1-r)u_M^{n-1}\right)\\
+    w^{n+1}_0 &= (1-\psi)w_{-1}^n + (1-\psi)w_{1}^n - (1-\psi(1-r))w_0^{n-1} + \psi\left(u_{M+1}^n+u_{M-1}^n - (1-r)u_M^{n-1}\right)
+\end{align*}
+Then, filling in the definitions for the virtual using quadratic interpolation:
+\def\Iterm{\mathcal{A}}
+\begin{subequations}\label{eq:quadraticDef}
+    \begin{align}
+        &\begin{aligned}\label{eq:calcUMP1}
+            u_{M+1}^n = \Iterm u_{M}^n + w_0^n - \Iterm w_1^n
+        \end{aligned}\\
+        &\ \ \begin{aligned}\label{eq:calcWM1}
+            w_{-1}^n
+            =-\Iterm u_{M-1}^n + u_{M}^n+ \Iterm w_{0}^n.
+        \end{aligned}
+    \end{align}
+\end{subequations}
+with 
 \begin{equation}
-    F = \frac{h}{2k^2}\left(w_{-1}^n + w_1^n - w_0^{n-1} - u_{M+1}^n-u_{M-1}^n + u_M^{n-1} + w_0^{n-1} - u_M^{n-1}\right)
+    \Iterm = \frac{\alpha - 1}{\alpha + 1}
 \end{equation}
-
-
+yields
+\begin{align*}
+    u^{n+1}_M =\ & (1-\psi)u_{M-1}^n + (1-\psi)\left(\Iterm u_{M}^n + w_0^n - \Iterm w_1^n\right) - (1-\psi(1-r))u_M^{n-1} \\
+    &+ \psi\left(-\Iterm u_{M-1}^n + u_{M}^n+ \Iterm w_{0}^n + w_1^n - (1-r)w_0^{n-1}\right)\\
+    u_M^{n+1} =\ & (1-\psi - \psi\Iterm)u_{M-1}^n + (\Iterm-\psi \Iterm + \psi)u_M^n + (1-\psi + \psi\Iterm) w_0^n - (\Iterm-\psi \Iterm - \psi) w_1^n\\
+    &- (1 - \psi + \psi r) u_M^{n-1} - (\psi - \psi r) w_0^{n-1}
+\end{align*}
+and
+\begin{align*}
+    w^{n+1}_0 =\ & (1-\psi)w_1^n + (1-\psi)\left(-\Iterm u_{M-1}^n + u_M^n + \Iterm w_0^n\right) - (1-\psi(1-r))w_0^{n-1} \\
+    &+ \psi\left(\Iterm u_M^n + w_0^n-\Iterm w_1^n + u_{M-1}^n - (1-r)u_M^{n-1}\right)\\
+    w_0^{n+1} =\ & (1-\psi - \psi\Iterm)w_1^n + (\Iterm-\psi \Iterm + \psi)w_0^n + (1-\psi + \psi\Iterm) u_M^n - (\Iterm-\psi \Iterm - \psi) u_{M-1}^n\\
+    &- (1 - \psi + \psi r) w_0^{n-1} - (\psi - \psi r) u_M^{n-1}
+\end{align*}
 % \begin{align*}
 %     & \begin{cases}
         
@@ -841,6 +871,31 @@ using \eqref{eq:etaCorrDef} for $\eta^{n-1}$ yields
 \subsubsection{Modal Analysis}
 In order to be able to perform a modal analysis on this system, 
 
+\begin{equation}
+    \mathbf{B} = \begin{bmatrix}[cccc|cccc]
+     & \ddots  &\ddots & & & & 0 & \\
+       & 1 & 0 & 1 & & & & \\
+      & & (1-\psi-\psi \Iterm) & (\Iterm-\psi\Iterm+\psi) & (1-\psi+\psi\Iterm) & -(\Iterm-\psi\Iterm - \psi) & \\ \cline{2-7}
+      & & -(\Iterm-\psi\Iterm-\psi) & (1-\psi+\psi\Iterm) & (\Iterm-\psi\Iterm+\psi) & (1-\psi-\psi\Iterm) & & \\
+         & & & &1 & 0 & 1  \\
+         & 0 & &  &  &\ddots & \ddots &
+    \end{bmatrix}
+\end{equation}
+or decomposed in \eqref{eq:quadMat} and the correction force
+\begin{equation}
+    \mathbf{B} = \mathbf{B}_2 + \mathbf{B}_\text{c}
+\end{equation}
+where
+\begin{equation}
+    \mathbf{B}_c = \psi \cdot \begin{bmatrix}[cccc|cccc]
+     & 0  & & & & & 0 & \\
+       & & & & & & & \\
+      & & -(1+\Iterm) & (1-\Iterm) & (\Iterm-1) & (\Iterm + 1) & \\ \cline{2-7}
+      & & (\Iterm+1) & (\Iterm-1) & (1-\Iterm) &-(1+\Iterm) & & \\
+         & & & & & &  \\
+         & 0 & &  &  & & 0 &
+    \end{bmatrix}
+\end{equation}
 
 \subsection{Stiff string}
 To prove that this technique also works with more complicated schemes, we can apply the above to the stiff string with the following scheme
