@@ -29,6 +29,19 @@
 \def\type[#1]{\textcolor{purple}{#1}}
 \def\mystrut{\rule[-.2\baselineskip]{0pt}{\baselineskip}}
 
+\def\u{\mathbf{u}}
+\def\w{\mathbf{w}}
+\def\I{\mathbf{I}}
+\def\A{\mathbf{A}}
+\def\B{\mathbf{B}}
+\def\C{\mathbf{C}}
+\def\Q{\mathbf{Q}}
+\def\U{\mathbf{U}}
+\def\J{\mathbf{J}}
+
+\def\Dxx{\mathbf{D}_{xx}}
+
+
 \begin{document}
 \maketitle
 
@@ -284,12 +297,12 @@ and grid-point locations $x_{u_{M+1}}$ and $w_{-1}$. Note that when $h$ changes 
 Then, when the boundary points surpass with the virtual points (i.e. $x_{u_M} \leq x_{w_{-1}}$ and $x_{u_{M+1}} \leq x_{w_0}$) we alternate between adding / removing a point to the right side of $u$ and the left side of $w$.
 \begin{equation}\label{eq:addingRemovingPoints}
     \begin{cases}
-        \begin{cases}\mathbf{u}^n = [\mathbf{u}^n, \mathcal{I}(x_{u_{M+1}})\mathbf{v}^n]^T & \text{if $N^n$ is odd}\\
+        \begin{cases}\u^n = [\u^n, \mathcal{I}(x_{u_{M+1}})\mathbf{v}^n]^T & \text{if $N^n$ is odd}\\
         \mathbf{w}^n = [\mathcal{I}(x_{w_{-1}})\mathbf{v}_\star^n, \mathbf{w}^n]^T & \text{if $N^n$ is even}
         \end{cases} & \text{if } N^n > N^{n-1} \text{ (adding a point)}\\
         \\
         \begin{cases}
-        \mathbf{u}^n = [u_0^n, u_1^n ..., u_{M-1}^n]^T & \text{if $N^n$ is even} \\
+        \u^n = [u_0^n, u_1^n ..., u_{M-1}^n]^T & \text{if $N^n$ is even} \\
          \mathbf{w}^n = [w_1^n, w_2^n ..., w_{M_w}^n]^T & \text{if $N^n$ is odd} 
         \end{cases} &\text{if } N^n < N^{n-1} \text{ (removing a point)}
         % u^{n-1} = [u^{n-1}, I(x_{u_{M+1}})w^{n-1}];
@@ -449,14 +462,14 @@ where $\mathcal{D}_\text{i}$ is the range for interpolation. Ideally, one uses t
 \subsection{Modal Analysis}\label{sec:modal}
 In order to analyse the behaviour of the interpolator, one can perform a modal analysis. It is possible to write the complete system in matrix form as
 \begin{equation}
-    \mathbf{U}^{n+1} = \mathbf{B}\mathbf{U}^n - \mathbf{U}^{n-1}
+    \U^{n+1} = \mathbf{B}\U^n - \U^{n-1}
 \end{equation}
-where \begin{equation}
-\mathbf{U}^n = \begin{bmatrix}
+where \begin{equation}\label{eq:uVecDef}
+\U^n = \begin{bmatrix}
 u^n_1, \hdots, u^n_M, w_0^n, \hdots, w_{M_w-1}  ^n
 \end{bmatrix}^T,
 \end{equation}
-(so $\mathbf{u}^n$ and $\mathbf{w}^n$ concatenated excluding the outer boundaries).  The modal frequencies (eigenfrequencies) of the system can then be calculated using the following formula \cite[p. 174]{Bilbao2009}
+(so $\U^n$ and $\mathbf{w}^n$ concatenated excluding the outer boundaries).  The modal frequencies (eigenfrequencies) of the system can then be calculated using the following formula \cite[p. 174]{Bilbao2009}
 
 \begin{equation}\label{eq:modalAnalysis}
     f_p = \frac{1}{2\pi k}\cos^{-1}\left(\frac{1}{2}\text{eig}_p(\mathbf{B})\right).
@@ -491,7 +504,7 @@ As $\lambda = 1$ at all times we can write \eqref{eq:alphaIs0Full} as
         & & & & & & & & & 1 & 0 & 
     \end{bmatrix}
 \end{equation}
-The $1$'s in the top-right and bottom-left quadrant show the interaction between $\mathbf{u}$ and $\mathbf{w}$ as shown in \eqref{eq:resultOneConnectedPoint}. In other words, $u_M^n$ is calculated using $w_1^n$ and $w_0^n$ using $u_{M-1}^n$. The following subsections show the experiments done with the three different types of interpolation mentioned in the previous section, i.e., linear, cubic and sinc interpolation.
+The $1$'s in the top-right and bottom-left quadrant show the interaction between $\U$ and $\mathbf{w}$ as shown in \eqref{eq:resultOneConnectedPoint}. In other words, $u_M^n$ is calculated using $w_1^n$ and $w_0^n$ using $u_{M-1}^n$. The following subsections show the experiments done with the three different types of interpolation mentioned in the previous section, i.e., linear, cubic and sinc interpolation.
 
 \subsubsection{Linear interpolation}
 We can change $\mathbf{B}$ to include linear interpolation using (focusing only on the middle of the matrix)
@@ -818,7 +831,7 @@ and %knowing that $\lambda = 1$ at all times, we can simplify this to
 % Then, 
 using \eqref{eq:etaCorrDef} for $\eta^{n-1}$ yields
 \begin{align*}
-    F &= \Psi\left(w_{-1}^n + w_1^n - w_0^{n-1} - u_{M+1}^n-u_{M-1}^n + u_M^{n-1} + r (w_0^{n-1} - u_M^{n-1}\right)\\
+    F &= \Psi\left(w_{-1}^n + w_1^n - w_0^{n-1} - u_{M+1}^n-u_{M-1}^n + u_M^{n-1} + r (w_0^{n-1} - u_M^{n-1})\right)\\
     F&= \Psi\left(w_{-1}^n + w_1^n - (1-r)w_0^{n-1} - u_{M+1}^n-u_{M-1}^n + (1-r)u_M^{n-1}\right).
 \end{align*}
 Substituting this into \eqref{eq:dispCorrSyst} and evaluated at the inner boundaries yields
@@ -849,19 +862,26 @@ with
     \Iterm = \frac{\alpha - 1}{\alpha + 1}
 \end{equation}
 yields
-\begin{align*}
+\begin{align}
+    &\begin{aligned}
     u^{n+1}_M =\ & (1-\psi)u_{M-1}^n + (1-\psi)\left(\Iterm u_{M}^n + w_0^n - \Iterm w_1^n\right) - (1-\psi(1-r))u_M^{n-1} \\
-    &+ \psi\left(-\Iterm u_{M-1}^n + u_{M}^n+ \Iterm w_{0}^n + w_1^n - (1-r)w_0^{n-1}\right)\\
+    &+ \psi\left(-\Iterm u_{M-1}^n + u_{M}^n+ \Iterm w_{0}^n + w_1^n - (1-r)w_0^{n-1}\right)
+    \end{aligned}\nonumber\\
+    &\begin{aligned}
     u_M^{n+1} =\ & (1-\psi - \psi\Iterm)u_{M-1}^n + (\Iterm-\psi \Iterm + \psi)u_M^n + (1-\psi + \psi\Iterm) w_0^n - (\Iterm-\psi \Iterm - \psi) w_1^n\\
-    &- (1 - \psi + \psi r) u_M^{n-1} - (\psi - \psi r) w_0^{n-1}
-\end{align*}
+    &- (1 - \psi + \psi r) u_M^{n-1} - (\psi - \psi r) w_0^{n-1}\end{aligned}\label{eq:uMnp1expanded}
+\end{align}
 and
-\begin{align*}
-    w^{n+1}_0 =\ & (1-\psi)w_1^n + (1-\psi)\left(-\Iterm u_{M-1}^n + u_M^n + \Iterm w_0^n\right) - (1-\psi(1-r))w_0^{n-1} \\
-    &+ \psi\left(\Iterm u_M^n + w_0^n-\Iterm w_1^n + u_{M-1}^n - (1-r)u_M^{n-1}\right)\\
+\begin{align}
+    &\begin{aligned}
+    w^{n+1}_0 =\ & (1-\psi)w_1^n + (1-\psi)\left(-\Iterm u_{M-1}^n + u_M^n + \Iterm w_0^n\right) - (1-\psi(1-r))w_0^{n-1}\\
+    &+ \psi\left(\Iterm u_M^n + w_0^n-\Iterm w_1^n + u_{M-1}^n - (1-r)u_M^{n-1}\right)
+    \end{aligned}\nonumber\\
+    &\begin{aligned}
     w_0^{n+1} =\ & (1-\psi - \psi\Iterm)w_1^n + (\Iterm-\psi \Iterm + \psi)w_0^n + (1-\psi + \psi\Iterm) u_M^n - (\Iterm-\psi \Iterm - \psi) u_{M-1}^n\\
-    &- (1 - \psi + \psi r) w_0^{n-1} - (\psi - \psi r) u_M^{n-1}
-\end{align*}
+    &- (1 - \psi + \psi r) w_0^{n-1} - (\psi - \psi r) u_M^{n-1}\end{aligned}
+    \label{eq:w0np1expanded} 
+\end{align}
 % \begin{align*}
 %     & \begin{cases}
         
@@ -869,8 +889,29 @@ and
 % \end{align*}
 
 \subsubsection{Modal Analysis}
-In order to be able to perform a modal analysis on this system, 
-
+Due to the damping that is present in the system, it needs to be written in one-step form. Recalling \eqref{eq:uVecDef} we can write write \eqref{eq:dispCorrSyst} in vector-matrix form
+\begin{equation}\label{eq:formForOneStep}
+    \A \U^{n+1} = \B \U^n + \C\U^{n-1}
+\end{equation}
+and rewrite to one-step form as
+\begin{equation}\label{eq:oneStepForm}
+    \underbrace{\begin{bmatrix}
+        \U^{n+1}\\
+        \U^n
+    \end{bmatrix}}_{\mathbf{W}^{n+1}} = 
+    \underbrace{\begin{bmatrix}
+        \A^{-1}\B & \A^{-1}\C\\
+        \I & \mathbf{0}
+    \end{bmatrix}}_{\Q}
+    \underbrace{\begin{bmatrix}
+        \U^n\\
+        \U^{n-1}
+    \end{bmatrix}}_{\mathbf{W}^n}
+\end{equation}
+Using Eqs. \eqref{eq:uMnp1expanded} and \eqref{eq:w0np1expanded} we get the following definitions for the matrices
+\begin{equation}
+    \A = \I
+\end{equation}
 \begin{equation}
     \mathbf{B} = \begin{bmatrix}[cccc|cccc]
      & \ddots  &\ddots & & & & 0 & \\
@@ -896,6 +937,44 @@ where
          & 0 & &  &  & & 0 &
     \end{bmatrix}
 \end{equation}
+and 
+\begin{equation}
+    \C = \begin{bmatrix}[cccc|cccc]
+     & \ddots  & & & & & \mathbf{0} & \\
+       & 0 & -1 & 0 & & & & \\
+      & &  & -(1-\psi + \psi r) & -(\psi - \psi r)  &  & \\ \cline{2-7}
+      & &  & -(\psi - \psi r)& -(1-\psi + \psi r)  &  & & \\
+         & & & & 0 & -1 & 0 \\
+         & \mathbf{0} & &  &  & & \ddots &
+    \end{bmatrix}
+\end{equation}
+Alternatively, and possibly more straightforward, is to expand the forces in system \eqref{eq:dispCorrSyst} directly. 
+% \begin{equation}
+%     \begin{cases}
+%         \delta_{tt}u^n &= c^2\delta_{xx}u^n + J(x_{u_M})\frac{\beta}{2}(\eta^{n+1} + \eta^{n-1} + \sigma_0/k (\eta^{n+1} - \eta^{n-1}))\\
+%         \delta_{tt}w^n &= c^2\delta_{xx}w_0^n - J(x_{w_0})\frac{\beta}{2}(\eta^{n+1} + \eta^{n-1} + \sigma_0/k (\eta^{n+1} - \eta^{n-1}))
+%     \end{cases}
+% \end{equation}
+% and
+Recalling $\U$ from \eqref{eq:uVecDef} (of size $\mathcal{M} = M+M_w$) and, (very important) including the virtual grid point definitions encapsulated in $\B_2$, we can rewrite the system to
+\begin{equation}
+    \I\U^{n+1} = \B_2\U^n - \I\U^{n-1} + (\J\boldsymbol{\eta})\frac{\beta k^2}{2}\left((1+\sigma_0/k)\U^{n+1} + (1-\sigma_0/k)\U^{n-1}\right)
+\end{equation}
+where 
+\begin{equation}
+    \J = [\mathbf{0}_{M-1}, 1/h, -1/h, \mathbf{0}_{M_w-1}]^T
+\end{equation}
+where $\mathbf{0}_i$ is a row-vector of zeros with length $i$ and
+\begin{equation}
+    \boldsymbol{\eta} = [\mathbf{0}_{M-1}, -1, 1, \mathbf{0}_{M_w-1}].
+\end{equation}
+vectorising the effect of \eqref{eq:etaCorrDef} on $\U$. Note that as $\J$ is a column vector and $\boldsymbol{\eta}$ a row vector, the multiplication of the two yields an $\mathcal{M}\times\mathcal{M}$ matrix.
+
+Then refactoring to the form in \eqref{eq:formForOneStep} and using identity matrix $\I$ with size $\mathcal{M} \times \mathcal{M}$ yields
+\begin{equation}
+    \underbrace{\left(\I - \frac{\beta k^2 (1+\sigma_0/k)}{2}\J\boldsymbol{\eta}\right)}_{\A}\U^{n+1} = \underbrace{\mathbf{B}_2}_{\B}\U^n - \underbrace{\left(\I - \frac{\beta k^2 (1-\sigma_0/k)}{2}\J\boldsymbol{\eta}\right)}_{\C} \U^{n-1}
+\end{equation}
+Although substituting these definitions into \eqref{eq:oneStepForm} gives an identical result to the matrix definitions above (comparisons show a difference between the $\Q$ matrices around machine precision), $\beta$ can still go to infinity. In this case, $\epsilon \neq 0$ in \eqref{eq:betaDef}. 
 
 \subsection{Stiff string}
 To prove that this technique also works with more complicated schemes, we can apply the above to the stiff string with the following scheme
