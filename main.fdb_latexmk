@@ -1,15 +1,15 @@
 # Fdb version 3
-["bibtex main"] 1614611802 "main.aux" "main.bbl" "main" 1614612507
+["bibtex main"] 1614613720 "main.aux" "main.bbl" "main" 1614617178
   "/usr/local/texlive/2016/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
   "bibliography.bib" 1593693642 155 dba35f0e19d76ad95900b68ef3583eb8 ""
-  "main.aux" 1614611832 12983 3db8a1cc18d3b38de51664ea2322eac4 ""
+  "main.aux" 1614613720 12985 e79a96920e0cd934b645cb42e9371760 ""
   "main.bcf" 0 -1 0 ""
   (generated)
-  "main.bbl"
   "main.blg"
-["pdflatex"] 1614611832 "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" "/Users/SilvinW/repositories/DynamicBoundaries/main.pdf" "main" 1614612507
-  "/Users/SilvinW/repositories/DynamicBoundaries/main.aux" 1614611832 12983 3db8a1cc18d3b38de51664ea2322eac4 ""
-  "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" 1614612507 88338 931c2c9b4c7ecc28af61dfe70489cc82 ""
+  "main.bbl"
+["pdflatex"] 1614613720 "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" "/Users/SilvinW/repositories/DynamicBoundaries/main.pdf" "main" 1614617178
+  "/Users/SilvinW/repositories/DynamicBoundaries/main.aux" 1614613720 12985 e79a96920e0cd934b645cb42e9371760 ""
+  "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" 1614613718 88901 b40c08a393d67da1500d7969c5b4b55b ""
   "/usr/local/texlive/2016/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
   "/usr/local/texlive/2016/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy7.tfm" 1246382020 1120 7f9f170e8aa57527ad6c49feafd45d54 ""
@@ -130,9 +130,9 @@
   "addingPoint.eps" 1606239328 44845 8c36686829de277553a90daa2de337c6 ""
   "dynamic2.eps" 1593611827 21885 7a15b127a9cd578540594db7ab4d7839 ""
   "dynamicBoundaryDrawChange.eps" 1593769613 27636 6ce3bfbc0eb4f8e36dc1e2713c759e74 ""
-  "main.aux" 1614611832 12983 3db8a1cc18d3b38de51664ea2322eac4 ""
-  "main.bbl" 1614611802 166 78353ecaa7c75d63dbd4bc5693bc4627 "bibtex main"
-  "main.tex" 1614612507 88338 931c2c9b4c7ecc28af61dfe70489cc82 ""
+  "main.aux" 1614613720 12985 e79a96920e0cd934b645cb42e9371760 ""
+  "main.bbl" 1614613720 166 78353ecaa7c75d63dbd4bc5693bc4627 "bibtex main"
+  "main.tex" 1614613718 88901 b40c08a393d67da1500d7969c5b4b55b ""
   "modalAnalysisFigs/altCubicMid.eps" 1611067374 110238 914d567dd402abd82cc446177e967da1 ""
   "modalAnalysisFigs/linearMid.eps" 1611048257 112013 87986514ef011bfba568b61f40409036 ""
   "modalAnalysisFigs/quadraticMid.eps" 1611232690 110830 14b41e594b0be8508ef6ba1868c8a0c3 ""
@@ -159,5 +159,5 @@
   "main.aux"
   "main.log"
   "/Users/SilvinW/repositories/DynamicBoundaries/main.log"
-  "/Users/SilvinW/repositories/DynamicBoundaries/main.pdf"
   "main.pdf"
+  "/Users/SilvinW/repositories/DynamicBoundaries/main.pdf"

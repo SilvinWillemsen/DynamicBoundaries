@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.3)  1 MAR 2021 16:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.11.3)  1 MAR 2021 16:48
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1039,7 +1039,7 @@ File: specAddPointsAtRightBound-eps-converted-to.pdf Graphic file (type pdf)
 Package pdftex.def Info: specAddPointsAtRightBound-eps-converted-to.pdf used on input line 749.
 (pdftex.def)             Requested size: 199.60895pt x 149.70198pt.
  [17 </Users/SilvinW/repositories/DynamicBoundaries/modesAddPointsAtRightBound-eps-converted-to.pdf> </Users/SilvinW/repositories/DynamicBoundaries/specAddPointsAtRightBound-eps-converted-to.pdf>] [18] [19] [20] [21] [22]
-Overfull \hbox (1.16693pt too wide) detected at line 1113
+Overfull \hbox (1.16693pt too wide) detected at line 1126
 []
  []
 
@@ -1051,12 +1051,12 @@ Package epstopdf Info: Source file: <twoStringsOverlap.eps>
 (epstopdf)                    date: 2021-01-19 10:02:25
 (epstopdf)                    size: 9380 bytes
 (epstopdf)             Command: <repstopdf --outfile=twoStringsOverlap-eps-converted-to.pdf twoStringsOverlap.eps>
-(epstopdf)             \includegraphics on input line 1126.
+(epstopdf)             \includegraphics on input line 1139.
 Package epstopdf Info: Output file is already uptodate.
  <twoStringsOverlap-eps-converted-to.pdf, id=254, 562.1pt x 421.575pt>
 File: twoStringsOverlap-eps-converted-to.pdf Graphic file (type pdf)
  <use twoStringsOverlap-eps-converted-to.pdf>
-Package pdftex.def Info: twoStringsOverlap-eps-converted-to.pdf used on input line 1126.
+Package pdftex.def Info: twoStringsOverlap-eps-converted-to.pdf used on input line 1139.
 (pdftex.def)             Requested size: 221.78923pt x 166.33696pt.
 Package epstopdf Info: Source file: <overlapForces.eps>
 (epstopdf)                    date: 2020-08-07 11:56:22
@@ -1065,20 +1065,20 @@ Package epstopdf Info: Source file: <overlapForces.eps>
 (epstopdf)                    date: 2021-01-19 10:02:25
 (epstopdf)                    size: 19966 bytes
 (epstopdf)             Command: <repstopdf --outfile=overlapForces-eps-converted-to.pdf overlapForces.eps>
-(epstopdf)             \includegraphics on input line 1127.
+(epstopdf)             \includegraphics on input line 1140.
 Package epstopdf Info: Output file is already uptodate.
  <overlapForces-eps-converted-to.pdf, id=255, 562.1pt x 421.575pt>
 File: overlapForces-eps-converted-to.pdf Graphic file (type pdf)
  <use overlapForces-eps-converted-to.pdf>
-Package pdftex.def Info: overlapForces-eps-converted-to.pdf used on input line 1127.
+Package pdftex.def Info: overlapForces-eps-converted-to.pdf used on input line 1140.
 (pdftex.def)             Requested size: 221.78923pt x 166.33696pt.
 
-Overfull \hbox (6.66664pt too wide) in paragraph at lines 1126--1128
+Overfull \hbox (6.66664pt too wide) in paragraph at lines 1139--1141
  [][][] 
  []
 
 [24 </Users/SilvinW/repositories/DynamicBoundaries/twoStringsOverlap-eps-converted-to.pdf> </Users/SilvinW/repositories/DynamicBoundaries/overlapForces-eps-converted-to.pdf>] [25] [26]
-Overfull \hbox (66.41754pt too wide) in paragraph at lines 1258--1258
+Overfull \hbox (66.41754pt too wide) in paragraph at lines 1271--1271
 [] 
  []
 
@@ -1093,13 +1093,13 @@ LaTeX Warning: There were multiply-defined labels.
 Here is how much of TeX's memory you used:
  6215 strings out of 493014
  93377 string characters out of 6133351
- 182361 words of memory out of 5000000
+ 181363 words of memory out of 5000000
  9614 multiletter control sequences out of 15000+600000
  17582 words of font info for 67 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  44i,18n,49p,1347b,423s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/euler/eufm10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/euler/eufm7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on /Users/SilvinW/repositories/DynamicBoundaries/main.pdf (28 pages, 3217024 bytes).
+Output written on /Users/SilvinW/repositories/DynamicBoundaries/main.pdf (28 pages, 3217605 bytes).
 PDF statistics:
  362 PDF objects out of 1000 (max. 8388607)
  222 compressed objects within 3 object streams
