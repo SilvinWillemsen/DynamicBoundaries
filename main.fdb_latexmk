@@ -1,15 +1,15 @@
 # Fdb version 3
-["bibtex main"] 1614347206 "main.aux" "main.bbl" "main" 1614350084
+["bibtex main"] 1614611802 "main.aux" "main.bbl" "main" 1614612507
   "/usr/local/texlive/2016/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
   "bibliography.bib" 1593693642 155 dba35f0e19d76ad95900b68ef3583eb8 ""
-  "main.aux" 1614350084 12781 9014261c426053a4bc984373d56519f9 ""
+  "main.aux" 1614611832 12983 3db8a1cc18d3b38de51664ea2322eac4 ""
   "main.bcf" 0 -1 0 ""
   (generated)
-  "main.blg"
   "main.bbl"
-["pdflatex"] 1614350083 "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" "/Users/SilvinW/repositories/DynamicBoundaries/main.pdf" "main" 1614350084
-  "/Users/SilvinW/repositories/DynamicBoundaries/main.aux" 1614350084 12781 9014261c426053a4bc984373d56519f9 ""
-  "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" 1614350083 81357 53a6e1cec92202559fdec15d43c321dd ""
+  "main.blg"
+["pdflatex"] 1614611832 "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" "/Users/SilvinW/repositories/DynamicBoundaries/main.pdf" "main" 1614612507
+  "/Users/SilvinW/repositories/DynamicBoundaries/main.aux" 1614611832 12983 3db8a1cc18d3b38de51664ea2322eac4 ""
+  "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" 1614612507 88338 931c2c9b4c7ecc28af61dfe70489cc82 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
   "/usr/local/texlive/2016/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy7.tfm" 1246382020 1120 7f9f170e8aa57527ad6c49feafd45d54 ""
@@ -69,6 +69,7 @@
   "/usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1248133631 32716 08e384dc442464e7285e891af9f45947 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1248133631 37944 359e864bd06cde3b1cf57bb20757fb06 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/euler/eufm10.pfb" 1336858727 21098 d4aee7c0aac232caac5688b586b9363c ""
+  "/usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/euler/eufm7.pfb" 1336858727 21251 56705123063d7b34002d6b6e7142345e ""
   "/usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb" 1248133631 31764 459c573c03a4949a528c2cc7f557e217 ""
   "/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1461363279 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/local/texlive/2016/texmf-dist/tex/generic/ifxetex/ifxetex.sty" 1284331290 1458 43ab4710dc82f3edeabecd0d099626b2 ""
@@ -129,9 +130,9 @@
   "addingPoint.eps" 1606239328 44845 8c36686829de277553a90daa2de337c6 ""
   "dynamic2.eps" 1593611827 21885 7a15b127a9cd578540594db7ab4d7839 ""
   "dynamicBoundaryDrawChange.eps" 1593769613 27636 6ce3bfbc0eb4f8e36dc1e2713c759e74 ""
-  "main.aux" 1614350084 12781 9014261c426053a4bc984373d56519f9 ""
-  "main.bbl" 1614347207 166 78353ecaa7c75d63dbd4bc5693bc4627 "bibtex main"
-  "main.tex" 1614350083 81357 53a6e1cec92202559fdec15d43c321dd ""
+  "main.aux" 1614611832 12983 3db8a1cc18d3b38de51664ea2322eac4 ""
+  "main.bbl" 1614611802 166 78353ecaa7c75d63dbd4bc5693bc4627 "bibtex main"
+  "main.tex" 1614612507 88338 931c2c9b4c7ecc28af61dfe70489cc82 ""
   "modalAnalysisFigs/altCubicMid.eps" 1611067374 110238 914d567dd402abd82cc446177e967da1 ""
   "modalAnalysisFigs/linearMid.eps" 1611048257 112013 87986514ef011bfba568b61f40409036 ""
   "modalAnalysisFigs/quadraticMid.eps" 1611232690 110830 14b41e594b0be8508ef6ba1868c8a0c3 ""
@@ -155,8 +156,8 @@
   "twoFreeStringsInterpolatedFull.eps" 1596200453 27519 35c672b0ff23de7cb32b28b413396c66 ""
   "twoStringsOverlap.eps" 1596791638 20473 a924c4fb6ad121d7483da1ce548b15e8 ""
   (generated)
-  "/Users/SilvinW/repositories/DynamicBoundaries/main.pdf"
-  "main.log"
-  "main.pdf"
   "main.aux"
+  "main.log"
   "/Users/SilvinW/repositories/DynamicBoundaries/main.log"
+  "/Users/SilvinW/repositories/DynamicBoundaries/main.pdf"
+  "main.pdf"

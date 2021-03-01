@@ -38,6 +38,7 @@
 \def\Q{\mathbf{Q}}
 \def\U{\mathbf{U}}
 \def\J{\mathbf{J}}
+\def\Iterm{\mathcal{A}}
 
 \def\Dxx{\mathbf{D}_{xx}}
 
@@ -267,10 +268,10 @@ Because \eqref{eq:rigid} is true we also know that $\delta_{tt}u_M^n = \delta_{t
 \end{align}
 Filling this into \eqref{eq:expandedSystem} after expansion of the second-time derivative yields
 \begin{subequations}\label{eq:resultOneConnectedPoint}
-\begin{numcases}{}
-    u^{n+1}_M = 2u_M^n - u_M^{n-1} + \lambda^2(u_{M-1}^n-2u_M^n+w_1^n)\label{eq:resultOneConnectedPoint1}\\
-    w^{n+1}_0 = 2w_0^n - w_0^{n-1} + \lambda^2(u_{M-1}^n-2w_0^n+w_1^n)\label{eq:resultOneConnectedPoint2}
-\end{numcases}
+\begin{align}
+    u^{n+1}_M &= 2u_M^n - u_M^{n-1} + \lambda^2(u_{M-1}^n-2u_M^n+\overbrace{w_1^n}^{u_{M+1}^n})\label{eq:resultOneConnectedPoint1}\\
+    w^{n+1}_0 &= 2w_0^n - w_0^{n-1} + \lambda^2(\underbrace{u_{M-1}^n}_{w_{-1}^n}-2w_0^n+w_1^n)\label{eq:resultOneConnectedPoint2}
+\end{align}
 \end{subequations}
 which, (again, recalling \eqref{eq:rigid}) are indeed equivalent expressions for the connected point. Here, $w_1$ in the first expression acts as virtual grid point $u_{M+1}^n$ and $u_{M-1}^n$ as virtual grid point $w_{-1}^n$. So essentially, to connect the two strings we add a state of one string to the update of the other.
 
@@ -748,6 +749,88 @@ Analysing this using Eq. \eqref{eq:modalAnalysis} yields Figure \ref{fig:modesAd
     \subfloat[Spectrogram of system wave excited with raised cosine when $N = 15$.]{\label{fig:specAddCenter}{ \includegraphics[width=0.45\textwidth]{specAddPointsAtRightBound.eps}}}
     \caption{1D wave going linearly from $c = 2940$ m/s ($N=15$) to $c =2205$ m/s ($N=20$). Points are added at the boundary.}\label{fig:addAtBoundary}
 \end{figure}
+
+\subsection{Energy}
+\SWcomment[As the quadratic interpolation has been chosen as the best interpolation technique (due to simplicity with small modal deviation), we continue with this.] To get the rate of change of the energy of $u$, we take the inner product of Eq. \eqref{eq:resultOneConnectedPoint1} with $\delta_{t\cdot}u$ over domain $\mathcal{D}_u = [0, M]$. As the right boundary is (partly) overlapping with the left boundary of $w$, a weighted inner product needs to be used
+\begin{equation}\label{eq:weightedInnerProduct}
+    \langle f,g \rangle_{\mathcal{D}}^{\epsilon_\text{l}, \epsilon_\text{r}}= \sum_{l = 1}^{N-1}hf_lg_l + \frac{\epsilon_\text{l}}{2}hf_0g_0 + \frac{\epsilon_\text{r}}{2}hf_Ng_N.
+\end{equation}
+Using Eq. \eqref{eq:weightedInnerProduct} with $\epsilon_\text{l} = 2$ (simply including that term into the sum) we get (a definition for $\epsilon_\text{r}$ will be defined later)
+\begin{align*}
+    \langle \delta_{t\cdot}u, \delta_{tt}u\rangle_{\mathcal{D}_u}^{\epsilon_\text{r}} &= c^2 \langle \delta_{t\cdot}u, \delta_{xx}u\rangle_{\mathcal{D}_u}^{\epsilon_\text{r}}\\
+    \sum_{l = 0}^{M-1}h(\delta_{t\cdot}u_l^n)(\delta_{tt}u_l^n) + \frac{\epsilon_\text{r}}{2}h(\delta_{t\cdot}u_M^n)(\delta_{tt}u_M^n) &= c^2\left(\sum_{l = 0}^{M-1}h(\delta_{t\cdot}u_l^n)(\delta_{xx}u_l^n) + \frac{\epsilon_\text{r}}{2}h(\delta_{t\cdot}u_M^n)(\delta_{xx}u_M^n)\right)
+\end{align*}
+The total energy of $u$ is defined as
+\begin{equation}
+    \mathfrak{h}_u = \mathfrak{t}_u + \mathfrak{v}_u
+\end{equation}
+
+Taking the left-hand side and utilising identity (2.22a) from \cite{Bilbao2009} yields
+\begin{equation}
+    \delta_{t+}\mathfrak{t}_u = \delta_{t+}\left(\frac{1}{2}\sum_{l=0}^{M-1}h(\delta_{t-}u_l^n)^2 + \frac{\epsilon_\text{r}}{4}h(\delta_{t-}u_M^n)^2\right).
+\end{equation}
+The right-hand side is slightly more complicated. We can perform integration by parts to get:
+\begin{equation}
+    \delta_{t+}\left(\underbrace{c^2 \sum_{l=0}^{M-1} h (\delta_{t\cdot}\delta_{x+}u_l^n)(\delta_{x+}u_l^n)}_{\mathfrak{v}_u}\right) = \mathfrak{b}_u
+\end{equation}
+where
+\begin{align}
+    \mathfrak{b}_u &= c^2\left((\delta_{t\cdot}u_M^n)\underbrace{(\delta_{x+}u_{M-1}^n)}_{\delta_{x-}u_M^n}- \underbrace{(\delta_{t\cdot}u_0^n)}_{= 0}(\delta_{x+}u_{-1}^n)+\frac{\epsilon_\text{r}}{2}h(\delta_{t\cdot}u_M^n)(\delta_{xx}u_M^n)\right)\nonumber\\
+    & = c^2(\delta_{t\cdot}u_M^n)\left((\delta_{x-}u_M^n)+\frac{\epsilon_\text{r}}{2}h(\delta_{xx}u_M^n)\right)
+\end{align}
+%
+We can do the same for Eq. \eqref{eq:resultOneConnectedPoint2} $\delta_{t\cdot}w$ over domain $\mathcal{D}_w = [0, M_w]$ and $\epsilon_\text{r} = 2$ to get 
+\begin{equation}
+    \delta_{t+}\mathfrak{t}_w = \delta_{t+}\left(\frac{1}{2}\sum_{l=1}^M h(\delta_{t-}w_l^n)^2 + \frac{\epsilon_\text{l}}{4}h(\delta_{t-}w_0^n)^2\right),
+\end{equation}
+and 
+\begin{equation}
+    -\delta_{t+}\mathfrak{v}_w = \delta_{t+}\left(-c^2 \sum_{l=1}^M h (\delta_{t\cdot}\delta_{x-}w_l^n)(\delta_{x-}w_l^n)\right) + \mathfrak{b}_w
+\end{equation}
+where
+\begin{align}
+    \mathfrak{b}_w &= c^2\left(-(\delta_{t\cdot}w_0^n)\underbrace{(\delta_{x-}w_{1}^n)}_{\delta_{x+}w_0^n}- \underbrace{(\delta_{t\cdot}w_{M_w}^n)}_{= 0}(\delta_{x-}w_{M_w+1}^n)+\frac{\epsilon_\text{l}}{2}h(\delta_{t\cdot}w_0^n)(\delta_{xx}w_0^n)\right)\nonumber\\
+    &= c^2(\delta_{t\cdot}w_0^n)\left(-(\delta_{x+}w_0^n)+\frac{\epsilon_\text{l}}{2}h(\delta_{xx}w_0^n)\right)
+\end{align}
+The total (rate of change of) energy will then become 
+\begin{equation}
+    \delta_{t+}\left(\mathfrak{h}_u + \mathfrak{h}_w\right) = \mathfrak{b}_u + \mathfrak{b}_w
+\end{equation}
+where the right hand side can be seen as the potential energy between the two inner boundaries. We can now find the value of $\epsilon_\text{r}$ and $\epsilon_\text{l}$. When $\alpha = 0$ we know that all energy should be contained within $\mathfrak{h}_u$ and $\mathfrak{h}_w$ and $\mathfrak{b}_u + \mathfrak{b}_w = 0$. 
+\begin{equation}\label{eq:innerBoundEnergyCalcIntermediate}
+    \mathfrak{b}_u + \mathfrak{b}_w = c^2\left[(\delta_{t\cdot}u_M^n)\left((\delta_{x-}u_M^n)+\frac{\epsilon_\text{r}}{2}h(\delta_{xx}u_M^n)\right) + (\delta_{t\cdot}w_0^n)\left(-(\delta_{x+}w_0^n)+\frac{\epsilon_\text{l}}{2}h(\delta_{xx}w_0^n)\right)\right]= 0
+\end{equation}
+Furthermore, the rigid connection imposed on the inner boundaries when $\alpha = 0$ means that $\delta_{t\cdot}u_M^n = \delta_{t\cdot}w_0^n$. Eq. \eqref{eq:innerBoundEnergyCalcIntermediate} can be rewritten to 
+\begin{equation*}
+    c^2(\delta_{t\cdot}u_M^n)\left((\delta_{x-}u_M^n)+\frac{\epsilon_\text{r}}{2}h(\delta_{xx}u_M^n) -(\delta_{x+}w_0^n)+\frac{\epsilon_\text{l}}{2}h(\delta_{xx}w_0^n)\right)= 0
+\end{equation*}
+which is true if $\delta_{t\cdot}u_M^n=0$, $c = 0$ or the rest is $0$. As the first two solutions are trivial, we continue with the latter and expand
+\begin{equation*}
+    \frac{1}{h}\left(u_M^n - u_{M-1}^n +\frac{\epsilon_\text{r}}{2}(u_{M+1}^n-2u_M^n+u_{M-1}^n) -w_1^n + w_0^n + \frac{\epsilon_\text{l}}{2}(w_1^n - 2 w_0^n + w_{-1}^n) \right)= 0,
+\end{equation*}
+after which the definitions for the virtual grid points ($u_{M+1}^n$ and $w_{-1}^n$) can be filled in. Using 
+\begin{equation}
+    \Iterm = \frac{\alpha - 1}{\alpha + 1}
+\end{equation}
+and ignoring the $1/h$ multiplication yields
+\begin{equation}
+    (2+\epsilon_\text{r}(\Iterm - 2) + \epsilon_\text{l})u_M^n + (-2 + \epsilon_\text{r} - \epsilon_\text{l}\Iterm) u_{M-1}^n + (2+\epsilon_\text{l}(\Iterm - 2) + \epsilon_\text{r})w_0^n + (-2 + \epsilon_\text{l} - \epsilon_\text{r}\Iterm) w_1^n = 0.
+\end{equation}
+In order for this equality to hold, all coefficients need to be 0, as the grid values change value per definition. It can be shown that the coefficients are identical, apart from a sign inversion. Assuming that $\epsilon_\text{r} = \epsilon_\text{l}$ (as the connection is symmetric anyway) we can set one of the coefficients to 0, and solve for $\epsilon$ 
+\begin{align*}
+    2 + \epsilon(\Iterm-2) + \epsilon &= 0\\
+    \epsilon = - \frac{2}{\Iterm - 1}
+\end{align*}
+Expanding $\Iterm$ yields
+\begin{align*}
+    \epsilon &= -\frac{2}{\frac{\alpha - 1}{\alpha + 1} - 1}\\
+    \epsilon &= -\frac{2(\alpha + 1)}{\alpha - 1 - (\alpha + 1)}\\
+\end{align*}
+and finally yielding the following definition for $\epsilon$
+\begin{equation}
+    \epsilon = \alpha + 1.
+\end{equation}
+This is also inline with the amount of ``space'' one grid point takes. A perfect overlap ($\alpha = 0$) scales the kinetic energy of $u_M$ and $w_0$ by 0.5 obtaining the full kinetic energy for that grid location when added together. As $\alpha \rightarrow 1$ these points are not scaled at all, i.e, $\epsilon \rightarrow 2$.
 \subsection{Displacement correction}
 When the wavespeed is increased and points are removed, it is not necessarily true that $u_M = w_0$ at the time of removal and the rigid connection in \eqref{eq:rigid} is violated. On top of the virtual grid point ``generation'' from the interpolation described above, one could add a connection force that is dependent on how close the inner boundaries $u_M$ and $w_0$ are.
 
@@ -970,9 +1053,13 @@ where $\mathbf{0}_i$ is a row-vector of zeros with length $i$ and
 \end{equation}
 vectorising the effect of \eqref{eq:etaCorrDef} on $\U$. Note that as $\J$ is a column vector and $\boldsymbol{\eta}$ a row vector, the multiplication of the two yields an $\mathcal{M}\times\mathcal{M}$ matrix.
 
-Then refactoring to the form in \eqref{eq:formForOneStep} and using identity matrix $\I$ with size $\mathcal{M} \times \mathcal{M}$ yields
+Then refactoring to the form in \eqref{eq:formForOneStep} and using identity matrix $\I$ with size $\mathcal{M} \times \mathcal{M}$ yields the following matrices
+% \begin{equation}
+%     \underbrace{\left(\I - \frac{\beta k^2 (1+\sigma_0/k)}{2}\J\boldsymbol{\eta}\right)}_{\A}\U^{n+1} = \underbrace{\mathbf{B}_2}_{\B}\U^n +\underbrace{\left(- \I - \frac{\beta k^2 (1-\sigma_0/k)}{2}\J\boldsymbol{\eta}\right)}_{\C} \U^{n-1}
+% \end{equation}
+
 \begin{equation}
-    \underbrace{\left(\I - \frac{\beta k^2 (1+\sigma_0/k)}{2}\J\boldsymbol{\eta}\right)}_{\A}\U^{n+1} = \underbrace{\mathbf{B}_2}_{\B}\U^n - \underbrace{\left(\I - \frac{\beta k^2 (1-\sigma_0/k)}{2}\J\boldsymbol{\eta}\right)}_{\C} \U^{n-1}
+    \A = \I - \frac{\beta k^2 (1+\sigma_0/k)}{2}\J\boldsymbol{\eta}, \qquad \B = \mathbf{B}_2, \qquad \text{and} \qquad \C = -\left(\I - \frac{\beta k^2 (1-\sigma_0/k)}{2}\J\boldsymbol{\eta}\right)
 \end{equation}
 Although substituting these definitions into \eqref{eq:oneStepForm} gives an identical result to the matrix definitions above (comparisons show a difference between the $\Q$ matrices around machine precision), $\beta$ can still go to infinity. In this case, $\epsilon \neq 0$ in \eqref{eq:betaDef}. 
 
