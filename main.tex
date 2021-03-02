@@ -770,8 +770,12 @@ Taking the left-hand side and utilising identity (2.22a) from \cite{Bilbao2009} 
     \delta_{t+}\mathfrak{t}_u = \delta_{t+}\left(\frac{1}{2}\sum_{l=0}^{M-1}h(\delta_{t-}u_l^n)^2 + \frac{\epsilon_\text{r}}{4}h(\delta_{t-}u_M^n)^2\right).
 \end{equation}
 The right-hand side is slightly more complicated. We can perform integration by parts to get:
+\begin{equation*}
+    c^2 \sum_{l=0}^{M-1} h (\delta_{t\cdot}\delta_{x+}u_l^n)(\delta_{x+}u_l^n) = \mathfrak{b}_u
+\end{equation*}
+and identity (2.22b) from \cite{Bilbao2009} to get 
 \begin{equation}
-    \delta_{t+}\left(\underbrace{c^2 \sum_{l=0}^{M-1} h (\delta_{t\cdot}\delta_{x+}u_l^n)(\delta_{x+}u_l^n)}_{\mathfrak{v}_u}\right) = \mathfrak{b}_u
+    \delta_{t+}\left(\underbrace{\frac{c^2}2 \sum_{l=0}^{M-1} h (\delta_{x+}u_l^n)(\delta_{x+}u_l^{n-1})}_{\mathfrak{v}_u}\right) = \mathfrak{b}_u
 \end{equation}
 where
 \begin{align}
@@ -785,7 +789,7 @@ We can do the same for Eq. \eqref{eq:resultOneConnectedPoint2} $\delta_{t\cdot}w
 \end{equation}
 and 
 \begin{equation}
-    \delta_{t+}\left(\underbrace{c^2 \sum_{l=1}^{M_w} h (\delta_{t\cdot}\delta_{x-}w_l^n)(\delta_{x-}w_l^n)}_{\mathfrak{v}_w}\right) = \mathfrak{b}_w
+    \delta_{t+}\left(\underbrace{\frac{c^2}2 \sum_{l=1}^{M_w} h (\delta_{x+}w_l^n)(\delta_{x+}w_l^{n-1})}_{\mathfrak{v}_w}\right) = \mathfrak{b}_w
 \end{equation}
 where
 \begin{align}
@@ -830,7 +834,21 @@ and finally yielding the following definition for $\epsilon$
 \begin{equation}
     \epsilon = \alpha + 1.
 \end{equation}
-This is also inline with the amount of ``space'' one grid point takes. A perfect overlap ($\alpha = 0$) scales the kinetic energy of $u_M$ and $w_0$ by 0.5 obtaining the full kinetic energy for that grid location when added together. As $\alpha \rightarrow 1$ these points are not scaled at all, i.e, $\epsilon \rightarrow 2$.
+This is also inline with the amount of ``space'' one grid point takes. A perfect overlap ($\alpha = 0$) scales the kinetic energy of $u_M$ and $w_0$ by 0.5 obtaining the full kinetic energy for that grid location when added together. As $\alpha \rightarrow 1$ these points are not scaled at all, i.e, $\epsilon \rightarrow 2$. In this case, the boundary terms actually reduce to the potential energy between the inner boundaries. 
+\begin{align*}
+    \mathfrak{b}_u + \mathfrak{b}_w &=c^2\Big[(\delta_{t\cdot}u_M^n)\big((\delta_{x-}u_M^n)+h(\delta_{xx}u_M^n)\big)+(\delta_{t\cdot}w_0^n)\big(-(\delta_{x+}w_0^n)+h(\delta_{xx}w_0^n)\big)\Big]
+    \\
+    &= \frac{c^2}{h}\Big((\delta_{t\cdot}u_M^n)(u_M^n - u_{M-1}^n + \Iterm u_M^n + w_0^n - \Iterm w_1^n - 2u_M^n + u_{M-1}^n) \\
+    &\qquad+ (\delta_{t\cdot}w_0^n)(-w_1^n+w_0^n + w_1^n-2w_0^n-\Iterm u_{M-1}^n + u_M^n + \Iterm w_0^n)\Big)\\
+    \xLeftrightarrow{\mystrut\ \Iterm = 0\ } &= \frac{c^2}{h}\Big((\delta_{t\cdot}u_M^n)(w_0^n - u_M^n )+ (\delta_{t\cdot}w_0^n)(-w_0^n+ u_M^n)\Big)\\
+    &= \frac{c^2}{h}\Big((\delta_{t\cdot}u_M^n - \delta_{t\cdot}w_0^n)(w_0^n - u_M^n)\Big)\\
+    \xLeftrightarrow{\mystrut\ w_0^n = u_{M+1}^n\ }&= -c^2h(\delta_{t\cdot}\delta_{x+}u_M^n)(\delta_{x+}u_M^n)
+\end{align*}
+which, again using Eq. (2.22b) from \cite{Bilbao2009} can be rewritten to
+\begin{equation}
+    \mathfrak{b}_u+\mathfrak{b}_w = -\frac{c^2}{2}\delta_{t+}\big(h(\delta_{x+}u_M^n)(\delta_{x+}u_M^{n-1})\big),  
+\end{equation}
+and is reduced to the potential energy between the inner boundaries. 
 
 To summarise, the total energy of the system can be calculated using
 \begin{equation}
@@ -844,6 +862,8 @@ with
     \end{aligned}
 \end{equation}
 and $\epsilon = \alpha + 1$.
+
+
 \subsection{Displacement correction}
 When the wavespeed is increased and points are removed, it is not necessarily true that $u_M = w_0$ at the time of removal and the rigid connection in \eqref{eq:rigid} is violated. On top of the virtual grid point ``generation'' from the interpolation described above, one could add a connection force that is dependent on how close the inner boundaries $u_M$ and $w_0$ are.
 
