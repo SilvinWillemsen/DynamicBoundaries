@@ -1,15 +1,15 @@
 # Fdb version 3
-["bibtex main"] 1614675823 "main.aux" "main.bbl" "main" 1614676016
+["bibtex main"] 1614675823 "main.aux" "main.bbl" "main" 1615901648
   "/usr/local/texlive/2016/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
   "bibliography.bib" 1593693642 155 dba35f0e19d76ad95900b68ef3583eb8 ""
-  "main.aux" 1614675970 13030 ed6749f11d0375169e9caca763d7e341 ""
+  "main.aux" 1615901648 13030 ed6749f11d0375169e9caca763d7e341 ""
   "main.bcf" 0 -1 0 ""
   (generated)
-  "main.bbl"
   "main.blg"
-["pdflatex"] 1614675970 "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" "/Users/SilvinW/repositories/DynamicBoundaries/main.pdf" "main" 1614676016
-  "/Users/SilvinW/repositories/DynamicBoundaries/main.aux" 1614675970 13030 ed6749f11d0375169e9caca763d7e341 ""
-  "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" 1614676016 90300 9cd1248795d2f9f194f539a76087737c ""
+  "main.bbl"
+["pdflatex"] 1615901647 "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" "/Users/SilvinW/repositories/DynamicBoundaries/main.pdf" "main" 1615901648
+  "/Users/SilvinW/repositories/DynamicBoundaries/main.aux" 1615901648 13030 ed6749f11d0375169e9caca763d7e341 ""
+  "/Users/SilvinW/repositories/DynamicBoundaries/main.tex" 1615901646 90302 0bd3bb13aad2fa2c4ba9af737c883337 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
   "/usr/local/texlive/2016/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy7.tfm" 1246382020 1120 7f9f170e8aa57527ad6c49feafd45d54 ""
@@ -130,9 +130,9 @@
   "addingPoint.eps" 1606239328 44845 8c36686829de277553a90daa2de337c6 ""
   "dynamic2.eps" 1593611827 21885 7a15b127a9cd578540594db7ab4d7839 ""
   "dynamicBoundaryDrawChange.eps" 1593769613 27636 6ce3bfbc0eb4f8e36dc1e2713c759e74 ""
-  "main.aux" 1614675970 13030 ed6749f11d0375169e9caca763d7e341 ""
+  "main.aux" 1615901648 13030 ed6749f11d0375169e9caca763d7e341 ""
   "main.bbl" 1614675823 166 78353ecaa7c75d63dbd4bc5693bc4627 "bibtex main"
-  "main.tex" 1614676016 90300 9cd1248795d2f9f194f539a76087737c ""
+  "main.tex" 1615901646 90302 0bd3bb13aad2fa2c4ba9af737c883337 ""
   "modalAnalysisFigs/altCubicMid.eps" 1611067374 110238 914d567dd402abd82cc446177e967da1 ""
   "modalAnalysisFigs/linearMid.eps" 1611048257 112013 87986514ef011bfba568b61f40409036 ""
   "modalAnalysisFigs/quadraticMid.eps" 1611232690 110830 14b41e594b0be8508ef6ba1868c8a0c3 ""
@@ -156,8 +156,8 @@
   "twoFreeStringsInterpolatedFull.eps" 1596200453 27519 35c672b0ff23de7cb32b28b413396c66 ""
   "twoStringsOverlap.eps" 1596791638 20473 a924c4fb6ad121d7483da1ce548b15e8 ""
   (generated)
+  "main.pdf"
   "main.log"
+  "main.aux"
   "/Users/SilvinW/repositories/DynamicBoundaries/main.pdf"
   "/Users/SilvinW/repositories/DynamicBoundaries/main.log"
-  "main.aux"
-  "main.pdf"
