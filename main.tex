@@ -751,7 +751,9 @@ Analysing this using Eq. \eqref{eq:modalAnalysis} yields Figure \ref{fig:modesAd
 \end{figure}
 
 \subsection{Energy}
-\SWcomment[As the quadratic interpolation has been chosen as the best interpolation technique (due to simplicity with small modal deviation), we continue with this.] To get the rate of change of the energy of $u$, we take the inner product of Eq. \eqref{eq:resultOneConnectedPoint1} with $\delta_{t\cdot}u$ over domain $\mathcal{D}_u = [0, M]$. As the right boundary is (partly) overlapping with the left boundary of $w$, a weighted inner product needs to be used
+As the quadratic interpolation has been chosen as the best interpolation technique (due to simplicity with small modal deviation), we continue with this.
+
+To get the rate of change of the energy of $u$, we take the inner product of Eq. \eqref{eq:resultOneConnectedPoint1} with $\delta_{t\cdot}u$ over domain $\mathcal{D}_u = [0, M]$. As the right boundary is (partly) overlapping with the left boundary of $w$, a weighted inner product needs to be used
 \begin{equation}\label{eq:weightedInnerProduct}
     \langle f,g \rangle_{\mathcal{D}}^{\epsilon_\text{l}, \epsilon_\text{r}}= \sum_{l = 1}^{N-1}hf_lg_l + \frac{\epsilon_\text{l}}{2}hf_0g_0 + \frac{\epsilon_\text{r}}{2}hf_Ng_N.
 \end{equation}
@@ -764,12 +766,12 @@ The total energy of $u$ is defined as
 \begin{equation}
     \mathfrak{h}_u = \mathfrak{t}_u + \mathfrak{v}_u
 \end{equation}
-
+%
 Taking the left-hand side and utilising identity (2.22a) from \cite{Bilbao2009} yields
 \begin{equation}
     \delta_{t+}\mathfrak{t}_u = \delta_{t+}\left(\frac{1}{2}\sum_{l=0}^{M-1}h(\delta_{t-}u_l^n)^2 + \frac{\epsilon_\text{r}}{4}h(\delta_{t-}u_M^n)^2\right).
 \end{equation}
-The right-hand side is slightly more complicated. We can perform integration by parts to get:
+The right-hand side is slightly more complicated. Moving it to the left-hand side and performing integration by parts we get:
 \begin{equation*}
     c^2 \sum_{l=0}^{M-1} h (\delta_{t\cdot}\delta_{x+}u_l^n)(\delta_{x+}u_l^n) = \mathfrak{b}_u
 \end{equation*}
@@ -800,7 +802,9 @@ The total (rate of change of) energy will then become
 \begin{equation}
     \delta_{t+}\left(\mathfrak{h}_u + \mathfrak{h}_w\right) = \mathfrak{b}_u + \mathfrak{b}_w
 \end{equation}
-where the right hand side can be seen as the potential energy between the two inner boundaries. We can now find the value of $\epsilon_\text{r}$ and $\epsilon_\text{l}$. When $\alpha = 0$ we know that all energy should be contained within $\mathfrak{h}_u$ and $\mathfrak{h}_w$ and $\mathfrak{b}_u + \mathfrak{b}_w = 0$. 
+where the boundary terms on the right hand side of the equation can be seen as the potential energy between the two inner boundaries. 
+
+We can now find the values of $\epsilon_\text{r}$ and $\epsilon_\text{l}$. When $\alpha = 0$ we know that all energy should be contained within $\mathfrak{h}_u$ and $\mathfrak{h}_w$ and $\mathfrak{b}_u + \mathfrak{b}_w = 0$. 
 \begin{equation}\label{eq:innerBoundEnergyCalcIntermediate}
     \mathfrak{b}_u + \mathfrak{b}_w = c^2\left[(\delta_{t\cdot}u_M^n)\left((\delta_{x-}u_M^n)+\frac{\epsilon_\text{r}}{2}h(\delta_{xx}u_M^n)\right) + (\delta_{t\cdot}w_0^n)\left(-(\delta_{x+}w_0^n)+\frac{\epsilon_\text{l}}{2}h(\delta_{xx}w_0^n)\right)\right]= 0
 \end{equation}
@@ -809,14 +813,14 @@ Furthermore, the rigid connection imposed on the inner boundaries when $\alpha =
     c^2(\delta_{t\cdot}u_M^n)\left((\delta_{x-}u_M^n)+\frac{\epsilon_\text{r}}{2}h(\delta_{xx}u_M^n) -(\delta_{x+}w_0^n)+\frac{\epsilon_\text{l}}{2}h(\delta_{xx}w_0^n)\right)= 0
 \end{equation*}
 which is true if $\delta_{t\cdot}u_M^n=0$, $c = 0$ or the rest is $0$. As the first two solutions are trivial, we continue with the latter and expand
-\begin{equation*}
+\begin{equation}\label{eq:intermediateEnergyEq}
     \frac{1}{h}\left(u_M^n - u_{M-1}^n +\frac{\epsilon_\text{r}}{2}(u_{M+1}^n-2u_M^n+u_{M-1}^n) -w_1^n + w_0^n + \frac{\epsilon_\text{l}}{2}(w_1^n - 2 w_0^n + w_{-1}^n) \right)= 0,
-\end{equation*}
+\end{equation}
 after which the definitions for the virtual grid points ($u_{M+1}^n$ and $w_{-1}^n$) can be filled in. Using 
 \begin{equation}
     \Iterm = \frac{\alpha - 1}{\alpha + 1}
 \end{equation}
-and ignoring the $1/h$ multiplication yields
+and multiplying Eq. \eqref{eq:intermediateEnergyEq} by $2h$ yields
 \begin{equation}
     (2+\epsilon_\text{r}(\Iterm - 2) + \epsilon_\text{l})u_M^n + (-2 + \epsilon_\text{r} - \epsilon_\text{l}\Iterm) u_{M-1}^n + (2+\epsilon_\text{l}(\Iterm - 2) + \epsilon_\text{r})w_0^n + (-2 + \epsilon_\text{l} - \epsilon_\text{r}\Iterm) w_1^n = 0.
 \end{equation}
